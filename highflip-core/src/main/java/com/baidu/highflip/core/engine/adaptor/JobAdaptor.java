@@ -1,6 +1,5 @@
 package com.baidu.highflip.core.engine.adaptor;
 
-import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.Job;
 
 import java.util.Iterator;
