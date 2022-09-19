@@ -1,22 +1,33 @@
 package com.baidu.highflip.core.entity.runtime;
 
-import com.google.type.DateTime;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import com.baidu.highflip.core.entity.dag.Graph;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Data
+@NoArgsConstructor
 @Entity
-@Getter
-@Setter
-@Table(schema = "hf_job")
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "hf_job")
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Job {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "job_id")
+    @GenericGenerator(name="id_gen", strategy="uuid")
+    @GeneratedValue(generator="id_gen")
     String jobid;
 
     @Column(name = "name")
@@ -25,11 +36,20 @@ public class Job {
     @Column(name = "description")
     String description;
 
+    @CreatedDate
     @Column(name = "create_time")
-    DateTime createTime;
+    LocalDateTime createTime;
 
-    @Column(name = "change_time")
-    DateTime changeTime;
+    @LastModifiedDate
+    @Column(name = "update_time")
+    LocalDateTime updateTime;
 
-    Object binding;
+    /*
+    @Type(type = "json")
+    @Column(name = "graph")
+    Graph graph;
+    */
+    @Type(type = "json")
+    @Column(name = "binding")
+    Map<String, String> binding;
 }

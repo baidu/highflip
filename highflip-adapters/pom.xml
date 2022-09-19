@@ -12,7 +12,7 @@
 
 
     <modules>
-
+        <module>highflip-adapter-fate</module>
     </modules>
 
 </project>

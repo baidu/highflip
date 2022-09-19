@@ -10,13 +10,12 @@
    
     <url>http://maven.apache.org</url>
 
-    <!--
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.3</version>
+        <groupId>com.baidu</groupId>
+        <artifactId>highflip</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    -->
 
     <dependencies>
         <dependency>
@@ -45,6 +44,11 @@
                     <artifactId>grpc-netty-shaded</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>2.19.2</version>
         </dependency>
 
         <dependency>
@@ -112,7 +116,7 @@
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
-                <version>0.5.1</version>
+                <version>0.6.1</version>
                 <configuration>
                     <protocArtifact>com.google.protobuf:protoc:3.21.4:exe:${os.detected.classifier}</protocArtifact>
                     <pluginId>grpc-java</pluginId>

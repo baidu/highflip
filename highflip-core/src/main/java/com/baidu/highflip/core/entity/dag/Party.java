@@ -1,11 +1,13 @@
 package com.baidu.highflip.core.entity.dag;
 
+import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-public class Party{
+@Data
+public class Party implements Serializable {
 
     private String name;
 

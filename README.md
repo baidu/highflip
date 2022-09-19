@@ -3,6 +3,7 @@ HIGHFLIP
 HIGHFLIP is named by capital letters of HIGH Layer Federated Learning Intercommunication Protocol
 
 # Introduction
+HIGHFLIP is
 
 # Architecture
 

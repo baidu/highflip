@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @GRpcService
-public class HighFlipService extends HighFlipImplBase{
+public class HighFlipRpcService extends HighFlipImplBase{
 
     @Autowired
     HighFlipEngine engine;
@@ -40,7 +40,7 @@ public class HighFlipService extends HighFlipImplBase{
     public void createJob(JobCreateRequest request,
                           io.grpc.stub.StreamObserver<JobId> responseObserver) {
 
-        engine.createJob(null);
+
     }
 
     /**

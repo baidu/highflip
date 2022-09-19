@@ -5,10 +5,12 @@ import com.baidu.highflip.core.entity.runtime.Job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Iterator;
+
 @Slf4j
 @Component
 public class JobAdaptor implements com.baidu.highflip.core.engine.adaptor.JobAdaptor {
-    public String createJob(Graph graph) {
+    public Job createJob(Job job) {
         return null;
     }
 
@@ -22,5 +24,10 @@ public class JobAdaptor implements com.baidu.highflip.core.engine.adaptor.JobAda
 
     public void controlJob(Job job, String action) {
 
+    }
+
+    @Override
+    public Iterator<String> getJobLog(Job job) {
+        return null;
     }
 }

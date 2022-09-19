@@ -1,20 +1,22 @@
 package com.baidu.highflip.core.entity.dag;
 
+import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-@Getter
-public class Graph {
+@Data
+public class Graph implements Serializable {
 
-    private String name;
+    String name;
 
-    private String description;
+    String description;
 
-    private Map<String, Object> attributes;
+    Map<String, Object> attributes;
 
-    private List<Node> nodes;
+    List<Node> nodes;
 
-    private List<Party> parties;
+    List<Party> parties;
 }

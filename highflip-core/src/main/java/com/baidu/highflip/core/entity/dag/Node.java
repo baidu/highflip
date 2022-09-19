@@ -1,11 +1,13 @@
 package com.baidu.highflip.core.entity.dag;
 
+import lombok.Data;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.Map;
 
-@Getter
-public class Node {
+@Data
+public class Node implements Serializable {
 
     String name;
 
