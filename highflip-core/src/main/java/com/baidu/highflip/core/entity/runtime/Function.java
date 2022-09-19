@@ -1,7 +1,6 @@
 package com.baidu.highflip.core.entity.runtime;
 
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import org.checkerframework.checker.units.qual.C;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
