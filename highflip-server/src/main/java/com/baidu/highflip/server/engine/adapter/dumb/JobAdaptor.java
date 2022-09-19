@@ -9,6 +9,7 @@ import java.util.Iterator;
 @Slf4j
 @Component
 public class JobAdaptor implements com.baidu.highflip.core.engine.adaptor.JobAdaptor {
+    @Override
     public Job createJob(Job job) {
         return null;
     }

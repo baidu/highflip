@@ -40,12 +40,12 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    //JOB
+    // JOB
     @Transactional
     public String createJob(String name, Graph graph){
         Job job = new Job();
         job.setJobName(name);
-        //job.setGraph(graph);
+        // job.setGraph(graph);
 
         jobAd.createJob(job);
         jobs.save(job);
@@ -75,7 +75,7 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    //TASK
+    // TASK
     public List<Task> listTask(String jobid){
 
         return tasks.findAllByJobid(jobid);
@@ -93,7 +93,7 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    //DATA
+    // DATA
     public List<String> listData(){
         throw new UnsupportedOperationException();
     }
@@ -114,7 +114,7 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    //FUNCTION
+    // FUNCTION
     public List<String> listFunction(){
         throw new UnsupportedOperationException();
     }
@@ -123,7 +123,7 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    //PARTY
+    // PARTY
     public List<String> listParty(){
         throw new UnsupportedOperationException();
     }
