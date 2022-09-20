@@ -1,10 +1,10 @@
-package com.baidu.highflip.server.engine.adapter.dumb;
+package com.baidu.highflip.adaptor.dumb;
 
 import com.baidu.highflip.core.entity.runtime.Function;
 
 import java.util.Iterator;
 
-public class FunctionAdaptor implements com.baidu.highflip.core.engine.adaptor.FunctionAdaptor {
+public class FunctionAdaptor {
     public Iterator<Function> listFunction() {
         return null;
     }

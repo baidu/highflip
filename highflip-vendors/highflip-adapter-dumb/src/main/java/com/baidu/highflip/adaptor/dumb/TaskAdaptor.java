@@ -1,4 +1,4 @@
-package com.baidu.highflip.server.engine.adapter.dumb;
+package com.baidu.highflip.adaptor.dumb;
 
 import com.baidu.highflip.core.entity.runtime.Task;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Iterator;
 
 @Component
-public class TaskAdaptor implements com.baidu.highflip.core.engine.adaptor.TaskAdaptor {
+public class TaskAdaptor{
     public Task getTask(String taskid) {
         return null;
     }

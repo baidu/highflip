@@ -7,11 +7,19 @@ import java.util.List;
 
 public interface DataAdaptor {
 
-    Data getData(String dataid);
+    List<String> getFeatures();
 
-    Iterator<List> readData(String dataid, long offset, long size);
+    Data getData(Data data);
 
-    void createData(String name);
+    int getCount();
 
-    void writeData(String dataid, Iterator<List> data);
+    Data getDataByIndex(int index, Data data);
+
+    Iterator<List> readData(Data data, long offset, long size);
+
+    Data createData(Data data);
+
+    void writeData(Data data, Iterator<List> body);
+
+    void deleteData(Data data);
 }

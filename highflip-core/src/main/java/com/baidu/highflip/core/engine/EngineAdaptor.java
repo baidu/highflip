@@ -4,7 +4,7 @@ import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.Function;
 import com.baidu.highflip.core.entity.runtime.Job;
-import com.baidu.highflip.core.entity.runtime.Party;
+import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Task;
 
 import java.util.Iterator;
@@ -51,5 +51,5 @@ public abstract class EngineAdaptor {
     //PARTY
     public abstract List<String> listParty();
 
-    public abstract Party getParty(String partyid);
+    public abstract Partner getParty(String partyid);
 }

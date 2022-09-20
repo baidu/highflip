@@ -8,6 +8,8 @@ import java.util.List;
 @Data
 public class Party implements Serializable {
 
+    private static final long serialVersionUID = 0x85710003L;
+
     private String name;
 
     private String role;

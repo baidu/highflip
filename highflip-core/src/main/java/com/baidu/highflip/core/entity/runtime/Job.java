@@ -1,5 +1,6 @@
 package com.baidu.highflip.core.entity.runtime;
 
+import com.baidu.highflip.core.entity.dag.Graph;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,13 +11,17 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -28,10 +33,10 @@ import java.util.Map;
 public class Job {
 
     @Id
-    @Column(name = "job_id")
-    @GenericGenerator(name="id_gen", strategy="uuid")
+    @Column(name = "job_id", length = 36)
+    @GenericGenerator(name="id_gen", strategy="uuid2")
     @GeneratedValue(generator="id_gen")
-    String jobid;
+    String jobId;
 
     @Column(name = "name")
     String jobName;
@@ -47,11 +52,19 @@ public class Job {
     @Column(name = "update_time")
     LocalDateTime updateTime;
 
-    /*
     @Type(type = "json")
     @Column(name = "graph")
     Graph graph;
-    */
+
+    @Column(name = "status")
+    String status;
+
+    @Column(name = "messsage")
+    String message;
+
+    // @OneToMany(targetEntity = Task.class, mappedBy = "jobId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    // List<Task> task;
+
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, String> binding;

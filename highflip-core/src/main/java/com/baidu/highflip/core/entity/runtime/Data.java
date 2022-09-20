@@ -25,10 +25,10 @@ import java.util.Map;
 public class Data {
 
     @Id
-    @Column(name = "data_id")
-    @GenericGenerator(name="id_gen", strategy="uuid")
+    @Column(name = "data_id", length = 36)
+    @GenericGenerator(name="id_gen", strategy="uuid2")
     @GeneratedValue(generator="id_gen")
-    String dataid;
+    String dataId;
 
     @Column(name = "name")
     String name;

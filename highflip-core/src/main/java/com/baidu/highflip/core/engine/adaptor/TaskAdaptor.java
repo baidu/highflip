@@ -1,5 +1,6 @@
 package com.baidu.highflip.core.engine.adaptor;
 
+import com.baidu.highflip.core.entity.runtime.Action;
 import com.baidu.highflip.core.entity.runtime.Task;
 
 import java.util.Iterator;
@@ -7,13 +8,17 @@ import java.util.Iterator;
 public interface TaskAdaptor {
 
     //TASK
-    Task getTask(String taskid);
+    Task getTask(Task task);
 
-    void deleteTask(String taskid);
+    void deleteTask(Task task);
 
-    Iterator<String> getTaskLog(String taskid);
+    boolean hasTask(Task task);
 
-    void controlTask(Task task, String action);
+    int getTaskLogCount();
 
-    void invokeTask(String taskid);
+    Iterator<String> getTaskLog(Task task, int offset, int limit);
+
+    void controlTask(Task task, Action action);
+
+    void invokeTask(Task task);
 }

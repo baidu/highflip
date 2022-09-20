@@ -8,5 +8,11 @@ public interface FunctionAdaptor {
 
     Iterator<Function> listFunction();
 
-    void getFunction(String funcid);
+    int getCount();
+
+    Function getFunctionByIndex(int index);
+
+    boolean hasFunction(Function func);
+
+    void deleteFunction(Function func);
 }

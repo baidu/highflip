@@ -26,7 +26,7 @@
         <module>highflip-core</module>
         <module>highflip-server</module>
         <module>highflip-client</module>
-        <module>highflip-adapters</module>
+        <module>highflip-vendors</module>
         <module>highflip-doc</module>
     </modules>
 

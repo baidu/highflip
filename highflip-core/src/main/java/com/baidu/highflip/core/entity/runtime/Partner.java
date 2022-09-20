@@ -1,6 +1,7 @@
 package com.baidu.highflip.core.entity.runtime;
 
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -15,17 +16,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
+@Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_function")
+@Table(name = "hf_partner")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class Function {
+public class Partner {
 
     @Id
-    @Column(name = "function_id", length = 36)
+    @Column(name = "partner_id", length = 36)
     @GenericGenerator(name="id_gen", strategy="uuid2")
     @GeneratedValue(generator="id_gen")
     String id;
@@ -37,24 +38,12 @@ public class Function {
     String description;
 
     @CreatedDate
-    @Column(name = "create_time", updatable = false)
+    @Column(name = "create_time")
     LocalDateTime createTime;
 
     @LastModifiedDate
     @Column(name = "update_time")
     LocalDateTime updateTime;
-
-    @Type(type = "json")
-    @Column(name = "inputs")
-    List<String> inputs;
-
-    @Type(type = "json")
-    @Column(name = "outputs")
-    String outputs;
-
-    @Type(type = "json")
-    @Column(name = "parameters")
-    List<Parameter> parameters;
 
     @Type(type = "json")
     @Column(name = "binding")

@@ -15,17 +15,20 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.List;
 import java.util.Map;
 
 @Data
 @Entity(name = "hf_task")
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "hf_task")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Task {
 
     @Id
-    @Column(name = "task_id")
-    @GenericGenerator(name="id_gen", strategy="uuid")
+    @Column(name = "task_id", length = 36)
+    @GenericGenerator(name="id_gen", strategy="uuid2")
     @GeneratedValue(generator="id_gen")
     String taskid;
 
@@ -35,13 +38,33 @@ public class Task {
     @Column(name = "name")
     String name;
 
+    @Column(name = "description")
+    String description;
+
     @CreatedDate
-    @Column(name = "create_time")
+    @Column(name = "create_time", updatable = false)
     DateTime createTime;
 
     @LastModifiedDate
     @Column(name = "update_time")
     DateTime updateTime;
+
+    @Column(name = "node")
+    String nodeName;
+
+    @Column(name = "status")
+    String status;
+
+    @Column(name = "messsage")
+    String message;
+
+    @Type(type = "json")
+    @Column(name = "previous")
+    List<String> previous;
+
+    @Type(type = "json")
+    @Column(name = "next")
+    List<String> next;
 
     @Type(type = "json")
     @Column(name = "binding")

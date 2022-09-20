@@ -49,7 +49,7 @@ public class HighFlipEngine {
 
         jobAd.createJob(job);
         jobs.save(job);
-        return job.getJobid();
+        return job.getJobId();
     }
 
     @Transactional
@@ -128,7 +128,7 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    public Party getParty(String partyid){
+    public Partner getParty(String partyid){
         throw new UnsupportedOperationException();
     }
 }

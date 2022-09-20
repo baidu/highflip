@@ -16,13 +16,10 @@ import java.time.LocalDateTime;
 public class Platform {
 
     @Id
-    @Column(name = "platform_id")
-    @GenericGenerator(name="id_gen", strategy="uuid")
+    @Column(name = "platform_id", length = 36)
+    @GenericGenerator(name="id_gen", strategy="uuid2")
     @GeneratedValue(generator="id_gen")
-    String id;
-
-    @Column(name = "name")
-    String name;
+    String platformId;
 
     @CreatedDate
     @Column(name = "create_time")
@@ -31,4 +28,19 @@ public class Platform {
     @LastModifiedDate
     @Column(name = "update_time")
     LocalDateTime updateTime;
+
+    @Column(name = "status")
+    String status;
+
+    @Column(name = "name")
+    String name;
+
+    @Column(name = "company")
+    String company;
+
+    @Column(name = "product")
+    String product;
+
+    @Column(name = "version")
+    String version;
 }

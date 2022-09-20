@@ -1,4 +1,4 @@
-package com.baidu.highflip.server.engine.adapter.dumb;
+package com.baidu.highflip.adaptor.dumb;
 
 import com.baidu.highflip.core.entity.runtime.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class DataAdaptor implements com.baidu.highflip.core.engine.adaptor.DataAdaptor {
+public class DataAdaptor {
 
     public Data getData(String dataid) {
 

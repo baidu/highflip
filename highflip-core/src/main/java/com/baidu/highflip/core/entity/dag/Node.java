@@ -8,6 +8,8 @@ import java.util.Map;
 @Data
 public class Node implements Serializable {
 
+    private static final long serialVersionUID = 0x85710002L;
+
     String name;
 
     String type;

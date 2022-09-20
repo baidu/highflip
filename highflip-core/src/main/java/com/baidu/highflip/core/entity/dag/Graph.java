@@ -9,6 +9,8 @@ import java.util.Map;
 @Data
 public class Graph implements Serializable {
 
+    private static final long serialVersionUID = 0x85710001L;
+
     String name;
 
     String description;
