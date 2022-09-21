@@ -1,28 +1,22 @@
 Global:
-  tool : build_submitter
-  languages:
-    # Java Version: 1.7, 1.8, 9, 10
-    - language : java
-      version : 11
-  envs:
-    # Maven Version: 3.0.4, 3.1.1, 3.2.5, 3.3.9, 3.5.3
-    - env : maven
-      version : 3.6.3
+  version: 2.0
 
 Default:
-  profile : [develop]
+  profile: [develop]
 
 Profiles:
   - profile:
-    name : develop
-    tool : build_submitter
-    env : DECK_CENTOS7U5_K3
-    command : mvn compile
-    release : false
-
-  - profile:
-    name : release
-    tool: build_submitter
-    env : DECK_CENTOS7U5_K3
-    command : mvn compile
-    release : true
+    name: develop
+    mode: AGENT
+    environment:
+      cluster: DECK_CENTOS7U5_K3
+      tools:
+        - maven: 3.6.3
+        - oraclejdk: 11.0.7
+    check:
+      - reuse: ARTIFACTS
+        enable: true
+    build:
+      command: mvn package
+    artifacts:
+      release: false
