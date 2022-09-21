@@ -48,6 +48,9 @@ public class Job {
     @Column(name = "update_time")
     LocalDateTime updateTime;
 
+    @Column(name = "finish_time")
+    LocalDateTime finishTime;
+
     @Type(type = "json")
     @Column(name = "graph")
     Graph graph;

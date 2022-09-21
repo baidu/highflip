@@ -16,6 +16,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,9 @@ public class Task {
     @LastModifiedDate
     @Column(name = "update_time")
     DateTime updateTime;
+
+    @Column(name = "finish_time")
+    LocalDateTime finishTime;
 
     @Column(name = "node")
     String nodeName;

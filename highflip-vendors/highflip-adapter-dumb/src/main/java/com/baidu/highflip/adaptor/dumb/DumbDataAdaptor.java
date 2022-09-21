@@ -9,7 +9,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class DataAdaptor {
+public class DumbDataAdaptor {
 
     public Data getData(String dataid) {
 

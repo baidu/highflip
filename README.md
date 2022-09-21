@@ -38,5 +38,5 @@ interface definitions and adaptation method.
 - chenzhiyu (quby@sina.com)
 
 # Version
-1.0.0
+- 1.0.0
 

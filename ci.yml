@@ -16,13 +16,13 @@ Profiles:
   - profile:
     name : develop
     tool : build_submitter
-    env : DECK_CENTOS6U3_K3
+    env : DECK_CENTOS7U5_K3
     command : mvn compile
     release : false
 
   - profile:
     name : release
     tool: build_submitter
-    env : DECK_CENTOS6U3_K3
+    env : DECK_CENTOS7U5_K3
     command : mvn compile
     release : true

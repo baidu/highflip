@@ -1,5 +1,7 @@
 package com.baidu.highflip.server.engine;
 
+import com.baidu.highflip.adaptor.dumb.DumbJobAdaptor;
+import com.baidu.highflip.adaptor.dumb.DumbTaskAdaptor;
 import com.baidu.highflip.core.engine.adaptor.JobAdaptor;
 import com.baidu.highflip.core.engine.adaptor.TaskAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
@@ -23,7 +25,6 @@ public class HighFlipEngine {
 
     @Autowired
     JobAdaptor jobAd;
-
 
     @Autowired
     TaskRepository tasks;

@@ -1,5 +1,7 @@
 package com.baidu.highflip.core.engine.adaptor;
 
+import com.baidu.highflip.core.engine.translator.AbstractTranslator;
+
 public interface AdaptorContext {
 
     PlatformAdaptor getPlatformAdaptor();
@@ -14,4 +16,5 @@ public interface AdaptorContext {
 
     PartnerAdaptor getPartnerAdaptor();
 
+    AbstractTranslator getJobTranslator();
 }

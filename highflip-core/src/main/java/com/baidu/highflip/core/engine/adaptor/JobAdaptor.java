@@ -27,5 +27,7 @@ public interface JobAdaptor {
 
     Task getTaskByIndex(int index, Task task);
 
-    Iterator<String> getJobLog(Job job);
+    int getJobLogCount(Job job);
+
+    Iterator<String> getJobLog(Job job, int offset, int limit);
 }

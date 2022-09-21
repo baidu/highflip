@@ -14,11 +14,11 @@ public interface TaskAdaptor {
 
     boolean hasTask(Task task);
 
-    int getTaskLogCount();
-
-    Iterator<String> getTaskLog(Task task, int offset, int limit);
-
     void controlTask(Task task, Action action);
 
     void invokeTask(Task task);
+
+    int getTaskLogCount();
+
+    Iterator<String> getTaskLog(Task task, int offset, int limit);
 }

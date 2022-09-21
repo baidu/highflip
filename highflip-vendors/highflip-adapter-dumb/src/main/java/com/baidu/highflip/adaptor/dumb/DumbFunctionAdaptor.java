@@ -4,7 +4,7 @@ import com.baidu.highflip.core.entity.runtime.Function;
 
 import java.util.Iterator;
 
-public class FunctionAdaptor {
+public class DumbFunctionAdaptor {
     public Iterator<Function> listFunction() {
         return null;
     }

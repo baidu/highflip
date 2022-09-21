@@ -11,10 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 @EntityScan(basePackages = {"com.baidu.highflip"})
-public class HighflipServer
-{
-    public static void main( String[] args )
-    {
+public class HighflipServer{
+    public static void main( String[] args ){
         SpringApplication app = new SpringApplication(HighflipServer.class);
         app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
