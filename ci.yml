@@ -13,10 +13,8 @@ Profiles:
       tools:
         - maven: 3.6.3
         - oraclejdk: 11.0.7
-    check:
-      - reuse: ARTIFACTS
-        enable: true
     build:
       command: mvn package
     artifacts:
       release: false
+
