@@ -26,8 +26,8 @@ public class Data {
 
     @Id
     @Column(name = "data_id", length = 36)
-    @GenericGenerator(name="id_gen", strategy="uuid2")
-    @GeneratedValue(generator="id_gen")
+    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GeneratedValue(generator = "id_gen")
     String dataId;
 
     @Column(name = "name")

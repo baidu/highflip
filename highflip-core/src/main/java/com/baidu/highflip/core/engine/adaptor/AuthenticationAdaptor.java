@@ -5,7 +5,6 @@ import java.util.Map;
 public interface AuthenticationAdaptor {
 
     /**
-     *
      * @param context
      * @return
      */

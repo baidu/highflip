@@ -30,8 +30,8 @@ public class Job {
 
     @Id
     @Column(name = "job_id", length = 36)
-    @GenericGenerator(name="id_gen", strategy="uuid2")
-    @GeneratedValue(generator="id_gen")
+    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GeneratedValue(generator = "id_gen")
     String jobId;
 
     @Column(name = "name")

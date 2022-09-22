@@ -3,7 +3,6 @@ package com.baidu.highflip.core.engine.adaptor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Closeable;
-import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -11,16 +10,16 @@ public abstract class AbstractAdaptor implements Closeable {
 
     private AdaptorContext context;
 
-    public void initialize(AdaptorContext context){
+    public void initialize(AdaptorContext context) {
         this.context = context;
     }
 
     @Override
-    public void close(){
+    public void close() {
 
     }
 
-    public AdaptorContext getAdaptorContext(){
+    public AdaptorContext getAdaptorContext() {
         return context;
     }
 

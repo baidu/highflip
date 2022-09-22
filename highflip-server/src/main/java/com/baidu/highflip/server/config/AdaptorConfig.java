@@ -12,11 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Properties;
 
 @Slf4j
 @Configuration
@@ -29,7 +25,7 @@ public class AdaptorConfig {
 
     @PostConstruct
     void initialize() throws IOException {
-        if(adaptorPath != null) {
+        if (adaptorPath != null) {
             AdaptorLoader loader = new AdaptorLoader();
             loader.loadJar(adaptorPath);
             log.info("Loaded adaptor jar from path: {}", adaptorPath);
@@ -39,16 +35,16 @@ public class AdaptorConfig {
     }
 
     @Bean
-    JobAdaptor getJobAdaptor(){
-        if(loader != null){
+    JobAdaptor getJobAdaptor() {
+        if (loader != null) {
             return loader.getInstance(AdaptorLoader.PROPS_HIGHFLIP_ADAPTOR_JOB_CLASS);
         }
         return new DumbJobAdaptor();
     }
 
     @Bean
-    TaskAdaptor getTaskAdaptor(){
-        if(loader != null){
+    TaskAdaptor getTaskAdaptor() {
+        if (loader != null) {
             return loader.getInstance(AdaptorLoader.PROPS_HIGHFLIP_ADAPTOR_TASK_CLASS);
         }
         return new DumbTaskAdaptor();

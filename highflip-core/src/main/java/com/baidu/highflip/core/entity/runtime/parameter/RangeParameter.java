@@ -16,7 +16,7 @@ public class RangeParameter<T> extends Parameter {
 
     Boolean includeBegin;
 
-    Optional<T>  end;
+    Optional<T> end;
 
     Boolean includeEnd;
 }

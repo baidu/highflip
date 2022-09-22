@@ -26,8 +26,8 @@ public class Function {
 
     @Id
     @Column(name = "function_id", length = 36)
-    @GenericGenerator(name="id_gen", strategy="uuid2")
-    @GeneratedValue(generator="id_gen")
+    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GeneratedValue(generator = "id_gen")
     String id;
 
     @Column(name = "name")

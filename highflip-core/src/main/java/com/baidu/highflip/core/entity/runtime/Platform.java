@@ -17,8 +17,8 @@ public class Platform {
 
     @Id
     @Column(name = "platform_id", length = 36)
-    @GenericGenerator(name="id_gen", strategy="uuid2")
-    @GeneratedValue(generator="id_gen")
+    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GeneratedValue(generator = "id_gen")
     String platformId;
 
     @CreatedDate
