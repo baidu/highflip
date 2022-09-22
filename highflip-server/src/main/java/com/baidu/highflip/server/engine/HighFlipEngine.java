@@ -1,11 +1,13 @@
 package com.baidu.highflip.server.engine;
 
-import com.baidu.highflip.adaptor.dumb.DumbJobAdaptor;
-import com.baidu.highflip.adaptor.dumb.DumbTaskAdaptor;
 import com.baidu.highflip.core.engine.adaptor.JobAdaptor;
 import com.baidu.highflip.core.engine.adaptor.TaskAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
-import com.baidu.highflip.core.entity.runtime.*;
+import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.Function;
+import com.baidu.highflip.core.entity.runtime.Job;
+import com.baidu.highflip.core.entity.runtime.Partner;
+import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.server.respository.JobRepository;
 import com.baidu.highflip.server.respository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -33,17 +35,17 @@ public class HighFlipEngine {
     TaskAdaptor taskAd;
 
     //PLATFORM
-    public String getPlatform(){
+    public String getPlatform() {
         throw new UnsupportedOperationException();
     }
 
-    public List<String> listPlatform(){
+    public List<String> listPlatform() {
         throw new UnsupportedOperationException();
     }
 
     // JOB
     @Transactional
-    public String createJob(String name, Graph graph){
+    public String createJob(String name, Graph graph) {
         Job job = new Job();
         job.setJobName(name);
         // job.setGraph(graph);
@@ -54,82 +56,82 @@ public class HighFlipEngine {
     }
 
     @Transactional
-    public Job getJob(String jobid){
+    public Job getJob(String jobid) {
         Job job = jobs.findById(jobid).get();
         job = jobAd.getJob(job);
         jobs.save(job);
         return job;
     }
 
-    public Iterator<String> listJob(){
+    public Iterator<String> listJob() {
         throw new UnsupportedOperationException();
     }
 
     @Transactional
-    public void deleteJob(String jobid){
+    public void deleteJob(String jobid) {
         Job job = jobs.findById(jobid).get();
         jobAd.deleteJob(job);
         jobs.delete(job);
     }
 
-    public void controlJob(String jobid, String action){
+    public void controlJob(String jobid, String action) {
         throw new UnsupportedOperationException();
     }
 
     // TASK
-    public List<Task> listTask(String jobid){
+    public List<Task> listTask(String jobid) {
 
         return tasks.findAllByJobid(jobid);
     }
 
-    public Task getTask(String taskid){
+    public Task getTask(String taskid) {
         throw new UnsupportedOperationException();
     }
 
-    public Iterator<String> getTaskLog(String taskid){
+    public Iterator<String> getTaskLog(String taskid) {
         throw new UnsupportedOperationException();
     }
 
-    public void invokeTask(String taskid){
+    public void invokeTask(String taskid) {
         throw new UnsupportedOperationException();
     }
 
     // DATA
-    public List<String> listData(){
+    public List<String> listData() {
         throw new UnsupportedOperationException();
     }
 
-    public Data getData(String dataid){
+    public Data getData(String dataid) {
         throw new UnsupportedOperationException();
     }
 
-    public void deleteData(String dataid){
+    public void deleteData(String dataid) {
         throw new UnsupportedOperationException();
     }
 
-    public Iterator<List> fetchData(String dataid, long offset, long size){
+    public Iterator<List> fetchData(String dataid, long offset, long size) {
         throw new UnsupportedOperationException();
     }
 
-    public void provideData(String dataid){
+    public void provideData(String dataid) {
         throw new UnsupportedOperationException();
     }
 
     // FUNCTION
-    public List<String> listFunction(){
+    public List<String> listFunction() {
         throw new UnsupportedOperationException();
     }
 
-    public Function getFunction(String funcid){
+    public Function getFunction(String funcid) {
         throw new UnsupportedOperationException();
     }
 
     // PARTY
-    public List<String> listParty(){
+    public List<String> listParty() {
         throw new UnsupportedOperationException();
     }
 
-    public Partner getParty(String partyid){
+    public Partner getParty(String partyid) {
         throw new UnsupportedOperationException();
     }
 }

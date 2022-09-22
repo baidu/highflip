@@ -11,11 +11,12 @@ import java.util.Properties;
 
 @Slf4j
 public class AdaptorLoader {
-    public final static String PROPS_HIGHFLIP_ADAPTOR_NAME = "highflip.adaptor.name";
-    public final static String PROPS_HIGHFLIP_ADAPTOR_VERSION = "highflip.adaptor.version";
-    public final static String PROPS_HIGHFLIP_ADAPTOR_JOB_CLASS = "highflip.adaptor.job.class";
-    public final static String PROPS_HIGHFLIP_ADAPTOR_TASK_CLASS = "highflip.adaptor.task.class";
-    private final static String HIGHFLIP_PROPERTIES = "highflip.properties";
+    public static final String PROPS_HIGHFLIP_ADAPTOR_NAME = "highflip.adaptor.name";
+
+    public static final String PROPS_HIGHFLIP_ADAPTOR_VERSION = "highflip.adaptor.version";
+    public static final String PROPS_HIGHFLIP_ADAPTOR_JOB_CLASS = "highflip.adaptor.job.class";
+    public static final String PROPS_HIGHFLIP_ADAPTOR_TASK_CLASS = "highflip.adaptor.task.class";
+    private static final String HIGHFLIP_PROPERTIES = "highflip.properties";
     private URLClassLoader loader;
 
     private Properties props = new Properties();
