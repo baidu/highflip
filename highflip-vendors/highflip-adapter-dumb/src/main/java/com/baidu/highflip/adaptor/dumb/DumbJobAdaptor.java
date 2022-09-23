@@ -1,18 +1,19 @@
 package com.baidu.highflip.adaptor.dumb;
 
-import com.baidu.highflip.core.engine.adaptor.JobAdaptor;
+import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.entity.runtime.Action;
 import com.baidu.highflip.core.entity.runtime.Job;
+import com.baidu.highflip.core.entity.runtime.Status;
 import com.baidu.highflip.core.entity.runtime.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
+import java.util.List;
 
 @Slf4j
 @Component
 public class DumbJobAdaptor implements JobAdaptor {
-
 
     @Override
     public Job createJob(Job job) {
@@ -20,7 +21,7 @@ public class DumbJobAdaptor implements JobAdaptor {
     }
 
     @Override
-    public Job getJob(Job job) {
+    public Job updateJob(Job job) {
         return null;
     }
 
@@ -30,17 +31,22 @@ public class DumbJobAdaptor implements JobAdaptor {
     }
 
     @Override
+    public Status getJobStatus(Job job) {
+        return null;
+    }
+
+    @Override
     public void deleteJob(Job job) {
 
     }
 
     @Override
-    public void controlJob(Job job, Action action) {
-
+    public Job controlJob(Job job, Action action) {
+        return null;
     }
 
     @Override
-    public int getJobCount() {
+    public int getJobCount(Job job) {
         return 0;
     }
 
@@ -55,7 +61,7 @@ public class DumbJobAdaptor implements JobAdaptor {
     }
 
     @Override
-    public Task getTaskByIndex(int index, Task task) {
+    public List<Task> getTaskList(Job job, List<Task> task) {
         return null;
     }
 

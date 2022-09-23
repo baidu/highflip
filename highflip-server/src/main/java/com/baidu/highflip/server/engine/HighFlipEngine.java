@@ -1,19 +1,25 @@
 package com.baidu.highflip.server.engine;
 
-import com.baidu.highflip.core.engine.adaptor.JobAdaptor;
-import com.baidu.highflip.core.engine.adaptor.TaskAdaptor;
+import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
+import com.baidu.highflip.core.entity.runtime.Action;
+import com.baidu.highflip.core.entity.runtime.Algorithm;
 import com.baidu.highflip.core.entity.runtime.Data;
-import com.baidu.highflip.core.entity.runtime.Function;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Task;
+import com.baidu.highflip.server.respository.AlgorithmRepository;
+import com.baidu.highflip.server.respository.DataRepository;
 import com.baidu.highflip.server.respository.JobRepository;
+import com.baidu.highflip.server.respository.PartnerRepository;
 import com.baidu.highflip.server.respository.TaskRepository;
+import com.baidu.highflip.server.respository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Iterator;
 import java.util.List;
@@ -23,18 +29,41 @@ import java.util.List;
 public class HighFlipEngine {
 
     @Autowired
-    JobRepository jobs;
+    HighFlipContext context;
 
     @Autowired
-    JobAdaptor jobAd;
+    UserRepository userReps;
 
     @Autowired
-    TaskRepository tasks;
+    JobRepository jobReps;
 
     @Autowired
-    TaskAdaptor taskAd;
+    TaskRepository taskReps;
 
-    //PLATFORM
+    @Autowired
+    DataRepository dataReps;
+
+    @Autowired
+    AlgorithmRepository algorithmReps;
+
+    @Autowired
+    PartnerRepository partnerReps;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // COMMON
+    ///////////////////////////////////////////////////////////////////////////////
+
+    public HighFlipContext getContext(){
+        return context;
+    }
+
+    @PostConstruct
+    private void initialize(){
+
+    }
+    ///////////////////////////////////////////////////////////////////////////////
+    // PLATFORM
+    ///////////////////////////////////////////////////////////////////////////////
     public String getPlatform() {
         throw new UnsupportedOperationException();
     }
@@ -43,95 +72,140 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
     // JOB
+    ///////////////////////////////////////////////////////////////////////////////
     @Transactional
     public String createJob(String name, Graph graph) {
         Job job = new Job();
         job.setJobName(name);
-        // job.setGraph(graph);
+        job.setGraph(graph);
 
-        jobAd.createJob(job);
-        jobs.save(job);
+        context.getJobAdaptor().createJob(job);
+        jobReps.save(job);
         return job.getJobId();
     }
 
-    @Transactional
+
+    @Scheduled
+    protected void updateJob(){
+
+    }
+
     public Job getJob(String jobid) {
-        Job job = jobs.findById(jobid).get();
-        job = jobAd.getJob(job);
-        jobs.save(job);
+        Job job = jobReps.findById(jobid).orElseThrow();
         return job;
     }
 
-    public Iterator<String> listJob() {
-        throw new UnsupportedOperationException();
+    public Iterator<String> listJobIds() {
+        return jobReps.findAll()
+                .stream()
+                .map(job -> job.getJobId())
+                .iterator();
     }
 
     @Transactional
     public void deleteJob(String jobid) {
-        Job job = jobs.findById(jobid).get();
-        jobAd.deleteJob(job);
-        jobs.delete(job);
+        Job job = jobReps.findById(jobid).orElseThrow();
+
+        getContext().getJobAdaptor()
+                .deleteJob(job);
+
+        jobReps.delete(job);
     }
 
-    public void controlJob(String jobid, String action) {
-        throw new UnsupportedOperationException();
+    public void controlJob(String jobid, Action action) {
+        Job job = jobReps.findById(jobid).orElseThrow();
+
+        getContext().getJobAdaptor()
+                .controlJob(job, action);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
     // TASK
+    ///////////////////////////////////////////////////////////////////////////////
     public List<Task> listTask(String jobid) {
 
-        return tasks.findAllByJobid(jobid);
+        return taskReps.findAllByJobid(jobid);
     }
 
     public Task getTask(String taskid) {
-        throw new UnsupportedOperationException();
+
+        return taskReps.findById(taskid).orElseThrow();
     }
 
     public Iterator<String> getTaskLog(String taskid) {
-        throw new UnsupportedOperationException();
+        Task task = getTask(taskid);
+        return getContext().getTaskAdaptor().getTaskLog(task, 0, 0);
     }
 
     public void invokeTask(String taskid) {
         throw new UnsupportedOperationException();
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
     // DATA
-    public List<String> listData() {
-        throw new UnsupportedOperationException();
+    ///////////////////////////////////////////////////////////////////////////////
+    public Iterator<String> listData() {
+        return dataReps.findAll()
+                .stream()
+                .map(d -> d.getDataId())
+                .iterator();
     }
 
     public Data getData(String dataid) {
-        throw new UnsupportedOperationException();
+        return dataReps.findById(dataid)
+                .orElseThrow();
     }
 
+    @Transactional
     public void deleteData(String dataid) {
-        throw new UnsupportedOperationException();
+        Data data = getData(dataid);
+
+        getContext().getDataAdaptor()
+                .deleteData(data);
+
+        dataReps.delete(data);
     }
 
-    public Iterator<List> fetchData(String dataid, long offset, long size) {
-        throw new UnsupportedOperationException();
+    public Iterator<List<Object>> fetchData(String dataid, long offset, long size) {
+        Data data = getData(dataid);
+
+        return getContext().getDataAdaptor()
+                .readData(data, DataAdaptor.PositionType.ROW, offset, size);
     }
 
     public void provideData(String dataid) {
-        throw new UnsupportedOperationException();
+        Data data = getData(dataid);
+
     }
 
-    // FUNCTION
-    public List<String> listFunction() {
-        throw new UnsupportedOperationException();
+    ///////////////////////////////////////////////////////////////////////////////
+    // ALGORITHM
+    ///////////////////////////////////////////////////////////////////////////////
+    public Iterator<String> listAlgorithm() {
+        return algorithmReps.findAll()
+                .stream()
+                .map(a -> a.getId())
+                .iterator();
     }
 
-    public Function getFunction(String funcid) {
-        throw new UnsupportedOperationException();
+    public Algorithm getAlgorithm(String algid) {
+        return algorithmReps.findById(algid).orElseThrow();
     }
 
-    // PARTY
-    public List<String> listParty() {
-        throw new UnsupportedOperationException();
+    ///////////////////////////////////////////////////////////////////////////////
+    // PARTNER
+    ///////////////////////////////////////////////////////////////////////////////
+    public Iterator<String> listPartner() {
+        return partnerReps.findAll()
+                .stream()
+                .map(p -> p.getId())
+                .iterator();
     }
 
-    public Partner getParty(String partyid) {
-        throw new UnsupportedOperationException();
+    public Partner getPartner(String partnerid) {
+        return partnerReps.findById(partnerid)
+                .orElseThrow();
     }
 }

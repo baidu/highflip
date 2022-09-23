@@ -1,4 +1,4 @@
-package com.baidu.highflip.core.engine.adaptor;
+package com.baidu.highflip.core.adaptor;
 
 import com.baidu.highflip.core.entity.runtime.Partner;
 

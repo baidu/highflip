@@ -2,8 +2,8 @@ package com.baidu.highflip.server.config;
 
 import com.baidu.highflip.adaptor.dumb.DumbJobAdaptor;
 import com.baidu.highflip.adaptor.dumb.DumbTaskAdaptor;
-import com.baidu.highflip.core.engine.adaptor.JobAdaptor;
-import com.baidu.highflip.core.engine.adaptor.TaskAdaptor;
+import com.baidu.highflip.core.adaptor.JobAdaptor;
+import com.baidu.highflip.core.adaptor.TaskAdaptor;
 import com.baidu.highflip.server.engine.loader.AdaptorLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +20,7 @@ public class AdaptorConfig {
 
     @Value("${highflip.server.adaptor.path:#{null}}")
     URL adaptorPath;
+
 
     AdaptorLoader loader = null;
 

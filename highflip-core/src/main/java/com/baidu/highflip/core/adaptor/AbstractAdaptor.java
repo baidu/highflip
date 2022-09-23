@@ -1,5 +1,6 @@
-package com.baidu.highflip.core.engine.adaptor;
+package com.baidu.highflip.core.adaptor;
 
+import com.baidu.highflip.core.engine.AdaptorContext;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Closeable;

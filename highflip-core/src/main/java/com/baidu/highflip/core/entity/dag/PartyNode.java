@@ -1,6 +1,8 @@
 package com.baidu.highflip.core.entity.dag;
 
+import highflip.HighflipMeta;
 import lombok.Data;
+import org.hibernate.cfg.NotYetImplementedException;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -10,7 +12,18 @@ public class PartyNode implements Serializable {
 
     private static final long serialVersionUID = 0x85710004L;
 
-    private String name;
+    String name;
 
-    private Map<String, Object> attributes;
+    Map<String, Object> attributes;
+
+    public static PartyNode fromProto(HighflipMeta.PartyProto.PartyNode proto){
+        PartyNode n = new PartyNode();
+        n.setName(proto.getName());
+        n.setAttributes(AttributeMap.fromProto(proto.getAttributesMap()));
+        return n;
+    }
+
+    public static HighflipMeta.PartyProto toProto(PartyNode node){
+        throw new NotYetImplementedException();
+    }
 }

@@ -1,5 +1,6 @@
 package com.baidu.highflip.server.rpc;
 
+import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.server.engine.HighFlipEngine;
 import io.grpc.stub.*;
 import highflip.v1.*;
@@ -15,6 +16,10 @@ public class HighFlipRpcService extends HighFlipImplBase{
 
     @Autowired
     HighFlipEngine engine;
+
+    public HighFlipEngine getEngine(){
+        return engine;
+    }
 
     public void getPlatform(Highflip.Void request,
                             StreamObserver<PlatformGetResponse> responseObserver) {
@@ -38,22 +43,24 @@ public class HighFlipRpcService extends HighFlipImplBase{
     }
 
     public void createJob(JobCreateRequest request,
-                          io.grpc.stub.StreamObserver<JobId> responseObserver) {
+                          StreamObserver<JobId> responseObserver) {
 
-
+        getEngine().createJob(
+                request.getName(),
+                Graph.fromProto(request.getDag()));
     }
 
     /**
      */
     public void getJob(JobId request,
-                       io.grpc.stub.StreamObserver<JobGetResponse> responseObserver) {
+                       StreamObserver<JobGetResponse> responseObserver) {
 
     }
 
     /**
      */
     public void checkJob(JobId request,
-                         io.grpc.stub.StreamObserver<Highflip.JobCheckResponse> responseObserver) {
+                         StreamObserver<Highflip.JobCheckResponse> responseObserver) {
 
     }
 
@@ -61,6 +68,7 @@ public class HighFlipRpcService extends HighFlipImplBase{
      */
     public void deleteJob(JobId request,
                           StreamObserver<Highflip.Void> responseObserver) {
+        getEngine().deleteJob(request.getJobid());
 
     }
 

@@ -1,6 +1,7 @@
 package com.baidu.highflip.core.entity.runtime;
 
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -18,11 +19,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+@Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_function")
+@Table(name = "hf_algorithm")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class Function {
+public class Algorithm {
 
     @Id
     @Column(name = "function_id", length = 36)

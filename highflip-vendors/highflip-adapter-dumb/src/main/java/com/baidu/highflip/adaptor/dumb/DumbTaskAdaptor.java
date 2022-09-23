@@ -1,7 +1,8 @@
 package com.baidu.highflip.adaptor.dumb;
 
-import com.baidu.highflip.core.engine.adaptor.TaskAdaptor;
+import com.baidu.highflip.core.adaptor.TaskAdaptor;
 import com.baidu.highflip.core.entity.runtime.Action;
+import com.baidu.highflip.core.entity.runtime.Status;
 import com.baidu.highflip.core.entity.runtime.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.util.Iterator;
 public class DumbTaskAdaptor implements TaskAdaptor {
 
     @Override
-    public Task getTask(Task task) {
+    public Task updateTask(Task task) {
         return null;
     }
 
@@ -27,7 +28,12 @@ public class DumbTaskAdaptor implements TaskAdaptor {
     }
 
     @Override
-    public int getTaskLogCount() {
+    public Status getTaskStatus(Task task) {
+        return null;
+    }
+
+    @Override
+    public int getTaskLogCount(Task task) {
         return 0;
     }
 
@@ -37,8 +43,8 @@ public class DumbTaskAdaptor implements TaskAdaptor {
     }
 
     @Override
-    public void controlTask(Task task, Action action) {
-
+    public Task controlTask(Task task, Action action) {
+        return null;
     }
     @Override
     public void invokeTask(Task task) {
