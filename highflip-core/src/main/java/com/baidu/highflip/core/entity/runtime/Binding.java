@@ -1,11 +1,8 @@
 package com.baidu.highflip.core.entity.runtime;
 
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.util.Base64Utils;
 
 import javax.persistence.Transient;
-
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;

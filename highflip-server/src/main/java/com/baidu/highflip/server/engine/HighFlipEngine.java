@@ -18,10 +18,8 @@ import com.baidu.highflip.server.respository.TaskRepository;
 import com.baidu.highflip.server.respository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +27,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
@@ -64,14 +61,15 @@ public class HighFlipEngine {
     // COMMON
     ///////////////////////////////////////////////////////////////////////////////
 
-    public HighFlipContext getContext(){
+    public HighFlipContext getContext() {
         return context;
     }
 
     @PostConstruct
-    private void initialize(){
+    private void initialize() {
 
     }
+
     ///////////////////////////////////////////////////////////////////////////////
     // PLATFORM
     ///////////////////////////////////////////////////////////////////////////////
@@ -87,11 +85,11 @@ public class HighFlipEngine {
     // JOB
     ///////////////////////////////////////////////////////////////////////////////
     @Transactional
-    public void initializeJobs(){
+    public void initializeJobs() {
         jobReps.deleteAll();
 
         int jobCount = getContext().getJobAdaptor().getJobCount();
-        for(int i = 0; i < jobCount; i++){
+        for (int i = 0; i < jobCount; i++) {
             Job job = new Job();
 
             Job new_job = getContext().getJobAdaptor()
@@ -119,7 +117,7 @@ public class HighFlipEngine {
                 .getTaskCount(job);
 
         ArrayList<Task> tasks = new ArrayList<>(taskCount);
-        for(int i = 0; i < taskCount; i++){
+        for (int i = 0; i < taskCount; i++) {
             Task task = new Task();
             taskReps.save(task);
             tasks.add(task);
@@ -135,13 +133,13 @@ public class HighFlipEngine {
 
 
     //@Scheduled
-    protected void updateJob(){
+    protected void updateJob() {
 
         JobAdaptor adaptor = getContext().getJobAdaptor();
 
         activeJobs.forEach((job_id, job) -> {
             Status status = adaptor.getJobStatus(job);
-            if(status != job.getStatus()){
+            if (status != job.getStatus()) {
                 job.setStatus(status);
                 jobReps.save(job);
             }
@@ -183,14 +181,14 @@ public class HighFlipEngine {
     ///////////////////////////////////////////////////////////////////////////////
 
     @Transactional
-    public void initializeTasks(){
+    public void initializeTasks() {
         taskReps.deleteAll();
 
         int taskCount = getContext()
                 .getTaskAdaptor()
                 .getTaskCount();
 
-        for(int i = 0; i < taskCount; i++){
+        for (int i = 0; i < taskCount; i++) {
             Task task = new Task();
 
             Task new_task = getContext().getTaskAdaptor()
@@ -201,9 +199,10 @@ public class HighFlipEngine {
     }
 
     //@Scheduled
-    private void updateTask(){
+    private void updateTask() {
 
     }
+
     public List<Task> listTask(String jobid) {
 
         return taskReps.findAllByJobid(jobid);
@@ -287,6 +286,7 @@ public class HighFlipEngine {
         return partnerReps.findById(partnerid)
                 .orElseThrow();
     }
+
     public Iterator<String> listPartner(int offset, int limit) {
         return partnerReps.findAll()
                 .stream()

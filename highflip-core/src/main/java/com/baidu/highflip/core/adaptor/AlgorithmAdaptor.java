@@ -2,8 +2,6 @@ package com.baidu.highflip.core.adaptor;
 
 import com.baidu.highflip.core.entity.runtime.Algorithm;
 
-import java.util.Iterator;
-
 public interface AlgorithmAdaptor {
 
     int getAlgorithmCount();
