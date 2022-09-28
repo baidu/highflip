@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @lombok.Data
@@ -50,4 +52,11 @@ public class Data {
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, Object> binding;
+
+    @Column(name = "data_type")
+    String data_type;
+
+    @Type(type = "json")
+    @Column(name = "columns")
+    List<com.baidu.highflip.core.entity.runtime.Column> columns = new LinkedList<>();
 }

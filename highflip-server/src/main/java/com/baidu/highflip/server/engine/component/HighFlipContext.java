@@ -31,7 +31,7 @@ public class HighFlipContext {
     }
 
     public AbstractTranslator getJobTranslator(){
-        return (AbstractTranslator) getContext()
+        return (AbstractTranslator) register
                 .getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_TRANSLATOR);
     }
 
@@ -48,7 +48,7 @@ public class HighFlipContext {
     }
 
     public JobAdaptor getJobAdaptor(){
-        return (JobAdaptor) getContext()
+        return (JobAdaptor) register
                 .getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_JOB);
     }
 

@@ -1,6 +1,8 @@
 package com.baidu.highflip.server.engine.loader;
 
+import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,14 +11,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-@Slf4j
-public class AdaptorLoader {
-    public static final String PROPS_HIGHFLIP_ADAPTOR_NAME = "highflip.adaptor.name";
+import static com.baidu.highflip.core.common.AdaptorPropsList.HIGHFLIP_PROPERTIES_FILE;
+import static com.baidu.highflip.core.common.AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_CLASS;
 
-    public static final String PROPS_HIGHFLIP_ADAPTOR_VERSION = "highflip.adaptor.version";
-    public static final String PROPS_HIGHFLIP_ADAPTOR_JOB_CLASS = "highflip.adaptor.job.class";
-    public static final String PROPS_HIGHFLIP_ADAPTOR_TASK_CLASS = "highflip.adaptor.task.class";
-    private static final String HIGHFLIP_PROPERTIES = "highflip.properties";
+@Slf4j
+@Component
+public class AdaptorLoader {
     private URLClassLoader loader;
 
     private Properties props = new Properties();
@@ -25,10 +25,19 @@ public class AdaptorLoader {
 
         loader = new URLClassLoader(new URL[]{url});
 
-        try (InputStream stream = loader.getResourceAsStream(HIGHFLIP_PROPERTIES)) {
+        try (InputStream stream = loader.getResourceAsStream(HIGHFLIP_PROPERTIES_FILE)) {
             props.load(stream);
         }
     }
+
+    HighFlipAdaptor loadAdaptor() {
+        HighFlipAdaptor adaptor = getInstance(PROPS_HIGHFLIP_ADAPTOR_CLASS);
+        if (adaptor == null) {
+            return null;
+        }
+        return adaptor;
+    }
+
 
     public String getProperty(String prop) {
         String name = props.getProperty(prop, null);

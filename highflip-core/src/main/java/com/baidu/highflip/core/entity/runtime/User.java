@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Data
 @Entity
@@ -43,5 +44,5 @@ public class User {
 
     @Type(type = "json")
     @Column(name = "binding")
-    Map<String, Object> binding;
+    Map<String, Object> binding = new TreeMap<>();
 }
