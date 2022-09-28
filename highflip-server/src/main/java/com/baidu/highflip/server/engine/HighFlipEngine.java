@@ -92,10 +92,10 @@ public class HighFlipEngine {
         for (int i = 0; i < jobCount; i++) {
             Job job = new Job();
 
-            Job new_job = getContext().getJobAdaptor()
+            Job newJob = getContext().getJobAdaptor()
                     .getJobByIndex(i, job);
 
-            jobReps.save(new_job);
+            jobReps.save(newJob);
         }
     }
 
@@ -132,7 +132,7 @@ public class HighFlipEngine {
     }
 
 
-    //@Scheduled
+    // @Scheduled
     protected void updateJob() {
 
         JobAdaptor adaptor = getContext().getJobAdaptor();
@@ -200,7 +200,7 @@ public class HighFlipEngine {
         }
     }
 
-    //@Scheduled
+    // @Scheduled
     private void updateTask() {
 
     }
