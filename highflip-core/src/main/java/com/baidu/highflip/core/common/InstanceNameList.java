@@ -2,6 +2,9 @@ package com.baidu.highflip.core.common;
 
 public class InstanceNameList {
 
+    public static final String HIGHFLIP_REGISTER = "highflip.register";
+
+    public static final String HIGHFLIP_CONFIGURATION = "highflip.configuration";
     public static final String HIGHFLIP_ADAPTOR_TRANSLATOR = "highflip.adaptor.job.translator";
 
     public static final String HIGHFLIP_ADAPTOR_PLATFORM = "highflip.adptor.platform";

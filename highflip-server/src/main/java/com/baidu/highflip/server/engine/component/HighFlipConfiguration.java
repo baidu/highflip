@@ -1,4 +1,4 @@
-package com.baidu.highflip.server.engine;
+package com.baidu.highflip.server.engine.component;
 
 import com.baidu.highflip.core.engine.Configuration;
 import com.baidu.highflip.server.respository.ConfigurationRepository;

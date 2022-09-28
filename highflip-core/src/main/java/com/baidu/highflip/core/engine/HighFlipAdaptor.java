@@ -1,6 +1,6 @@
 package com.baidu.highflip.core.engine;
 
-public interface AdaptorMain {
+public interface HighFlipAdaptor {
 
     void setup(AdaptorContext context);
 

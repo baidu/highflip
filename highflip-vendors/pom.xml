@@ -13,7 +13,7 @@
 
 
     <modules>
-        <module>highflip-adapter-dumb</module>
+        <module>highflip-adapter-demo</module>
         <module>highflip-adapter-fate</module>
     </modules>
 

@@ -10,17 +10,17 @@ public class DefaultUserAdaptor implements UserAdaptor {
 
     @Override
     public User createUser(User user) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public User updateUser(User user) {
-        return null;
+        return user;
     }
 
     @Override
     public void deleteUser(User user) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -30,11 +30,12 @@ public class DefaultUserAdaptor implements UserAdaptor {
 
     @Override
     public int getCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public User getUserByIndex(int index, User user) {
+
         return null;
     }
 }

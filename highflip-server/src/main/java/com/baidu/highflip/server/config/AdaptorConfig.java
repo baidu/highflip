@@ -1,7 +1,7 @@
 package com.baidu.highflip.server.config;
 
-import com.baidu.highflip.adaptor.dumb.DumbJobAdaptor;
-import com.baidu.highflip.adaptor.dumb.DumbTaskAdaptor;
+import com.baidu.highflip.adaptor.demo.DumbJobAdaptor;
+import com.baidu.highflip.adaptor.demo.DumbTaskAdaptor;
 import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.adaptor.TaskAdaptor;
 import com.baidu.highflip.server.engine.loader.AdaptorLoader;

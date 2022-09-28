@@ -1,4 +1,4 @@
-package com.baidu.highflip.adaptor.dumb;
+package com.baidu.highflip.adaptor.demo;
 
 import com.baidu.highflip.core.entity.runtime.Algorithm;
 import lombok.extern.slf4j.Slf4j;

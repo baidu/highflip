@@ -1,13 +1,13 @@
 package com.webank.ai.fate;
 
 import com.baidu.highflip.core.engine.AdaptorContext;
-import com.baidu.highflip.core.engine.AdaptorMain;
+import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import com.baidu.highflip.core.common.InstanceNameList;
 import com.webank.ai.fate.adaptor.JobAdaptor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class FateMain implements AdaptorMain {
+public class FateMain implements HighFlipAdaptor {
 
     @Override
     public void setup(AdaptorContext context){

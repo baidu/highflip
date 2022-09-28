@@ -10,6 +10,7 @@ import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Status;
 import com.baidu.highflip.core.entity.runtime.Task;
+import com.baidu.highflip.server.engine.component.HighFlipContext;
 import com.baidu.highflip.server.respository.AlgorithmRepository;
 import com.baidu.highflip.server.respository.DataRepository;
 import com.baidu.highflip.server.respository.JobRepository;

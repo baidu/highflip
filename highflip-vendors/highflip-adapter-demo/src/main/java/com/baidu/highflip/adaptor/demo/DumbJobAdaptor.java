@@ -1,4 +1,4 @@
-package com.baidu.highflip.adaptor.dumb;
+package com.baidu.highflip.adaptor.demo;
 
 import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.entity.runtime.Action;

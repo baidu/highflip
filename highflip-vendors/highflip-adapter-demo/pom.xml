@@ -3,10 +3,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.baidu</groupId>
-    <artifactId>highflip-adapter-dumb</artifactId>
+    <artifactId>highflip-adapter-demo</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>highflip-adapter-dumb</name>
+    <name>highflip-adapter-demo</name>
     <url>http://maven.apache.org</url>
 
     <properties>
