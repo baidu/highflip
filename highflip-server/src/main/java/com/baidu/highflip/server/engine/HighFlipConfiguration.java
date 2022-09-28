@@ -35,6 +35,7 @@ public class HighFlipConfiguration implements Configuration {
                 .iterator();
     }
 
+    @Override
     public String getString(String key, String defaultValue){
         com.baidu.highflip.server.entity.Configuration entry = getEntry(key);
         if (entry == null){
@@ -43,6 +44,7 @@ public class HighFlipConfiguration implements Configuration {
         return entry.getValue();
     }
 
+    @Override
     public void setString(String key, String value){
         setEntry(key, value);
     }

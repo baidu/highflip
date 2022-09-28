@@ -82,8 +82,8 @@ public class Job {
     Map<String, String> binding;
 
 
-    public boolean isActive(){
-        switch( status){
+    public boolean isActive() {
+        switch (status) {
             case APPENDING:
             case RUNNING:
             case STOPPED:

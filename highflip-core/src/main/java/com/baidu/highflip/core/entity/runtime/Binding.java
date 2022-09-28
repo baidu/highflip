@@ -15,40 +15,27 @@ public class Binding {
 
     TreeMap<String, Object> values;
 
-    public static class BoxedObject{
-        String value;
-
-        public BoxedObject(String value){
-            this.value = value;
-        }
-
-        public <T> T getObject(ObjectMapper mapper, Class<T> clazz) throws IOException {
-            byte[] bytes = Base64.getDecoder().decode(value);
-            return mapper.readValue(bytes, clazz);
-        }
-    }
-
-    public Binding(ObjectMapper mapper, TreeMap<String, Object> values){
+    public Binding(ObjectMapper mapper, TreeMap<String, Object> values) {
         this.mapper = mapper;
         this.values = values;
     }
 
-    public Binding(){
+    public Binding() {
         this.mapper = null;
         this.values = new TreeMap<>();
     }
 
-    public Map<String, Object> getValues(){
+    public Map<String, Object> getValues() {
         return this.values;
     }
 
-    public void setObject(String key, Object value){
+    public void setObject(String key, Object value) {
         this.values.put(key, value);
     }
 
     public <T extends Class<?>> T getObject(String key, T defaultValue) throws IOException {
         Object value = this.values.getOrDefault(key, defaultValue);
-        if( ! (value instanceof BoxedObject)) {
+        if (!(value instanceof BoxedObject)) {
             return defaultValue;
 
         }
@@ -57,11 +44,11 @@ public class Binding {
         return unboxed;
     }
 
-    public void setBoolean(String key, Boolean value){
+    public void setBoolean(String key, Boolean value) {
         this.values.put(key, value);
     }
 
-    public Boolean getBoolean(String key, Boolean def){
+    public Boolean getBoolean(String key, Boolean def) {
         return (Boolean) values.getOrDefault(key, def);
     }
 
@@ -87,5 +74,18 @@ public class Binding {
 
     public String getString(String key, String def) {
         return (String) values.getOrDefault(key, def);
+    }
+
+    public static class BoxedObject {
+        String value;
+
+        public BoxedObject(String value) {
+            this.value = value;
+        }
+
+        public <T> T getObject(ObjectMapper mapper, Class<T> clazz) throws IOException {
+            byte[] bytes = Base64.getDecoder().decode(value);
+            return mapper.readValue(bytes, clazz);
+        }
     }
 }
