@@ -4,10 +4,20 @@ import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
-import io.grpc.stub.*;
-import highflip.v1.*;
-import highflip.v1.Highflip.*;
-import highflip.v1.HighFlipGrpc.*;
+import highflip.v1.HighFlipGrpc.HighFlipImplBase;
+import highflip.v1.Highflip;
+import highflip.v1.Highflip.JobCheckResponse;
+import highflip.v1.Highflip.JobControlRequest;
+import highflip.v1.Highflip.JobCreateRequest;
+import highflip.v1.Highflip.JobGetResponse;
+import highflip.v1.Highflip.JobId;
+import highflip.v1.Highflip.JobListRequest;
+import highflip.v1.Highflip.JobListResponse;
+import highflip.v1.Highflip.PlatformGetResponse;
+import highflip.v1.Highflip.PlatformMatchRequest;
+import highflip.v1.Highflip.PlatformMatchResponse;
+import highflip.v1.Highflip.PlatformVersion;
+import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Streams;
 import org.lognet.springboot.grpc.GRpcService;
@@ -16,16 +26,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Iterator;
 
 import static com.baidu.highflip.server.utils.GrpcServiceUtils.*;
-import static com.baidu.highflip.server.utils.HighFlipUtils.*;
+import static com.baidu.highflip.server.utils.HighFlipUtils.toJobId;
 
 @Slf4j
 @GRpcService
-public class HighFlipRpcService extends HighFlipImplBase{
+public class HighFlipRpcService extends HighFlipImplBase {
 
     @Autowired
     HighFlipEngine engine;
 
-    public HighFlipEngine getEngine(){
+    public HighFlipEngine getEngine() {
         return engine;
     }
 
@@ -65,6 +75,7 @@ public class HighFlipRpcService extends HighFlipImplBase{
     }
 
     /**
+     *
      */
     public void getJob(JobId request,
                        StreamObserver<JobGetResponse> responseObserver) {
@@ -83,6 +94,7 @@ public class HighFlipRpcService extends HighFlipImplBase{
     }
 
     /**
+     *
      */
     public void checkJob(JobId request,
                          StreamObserver<Highflip.JobCheckResponse> responseObserver) {
@@ -97,6 +109,7 @@ public class HighFlipRpcService extends HighFlipImplBase{
     }
 
     /**
+     *
      */
     public void deleteJob(JobId request,
                           StreamObserver<Highflip.Void> responseObserver) {
@@ -107,6 +120,7 @@ public class HighFlipRpcService extends HighFlipImplBase{
     }
 
     /**
+     *
      */
     public void listJob(JobListRequest request,
                         StreamObserver<JobListResponse> responseObserver) {
@@ -114,14 +128,15 @@ public class HighFlipRpcService extends HighFlipImplBase{
         Iterator<String> ids = getEngine().listJobIds();
 
         Iterator<JobListResponse> responses = Streams.stream(ids)
-            .map(id -> JobListResponse.newBuilder()
-                    .setJobId(id)
-                    .build()).iterator();
+                .map(id -> JobListResponse.newBuilder()
+                        .setJobId(id)
+                        .build()).iterator();
 
         returnMore(responseObserver, responses);
     }
 
     /**
+     *
      */
     public void controlJob(JobControlRequest request,
                            StreamObserver<Highflip.Void> responseObserver) {
