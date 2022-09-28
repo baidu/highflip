@@ -14,7 +14,7 @@ public class Column{
 
     String name;
 
-    String type;
+    Type type;
 
     String description;
 }

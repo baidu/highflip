@@ -60,7 +60,7 @@ public class AdaptorConfig {
             return;
         }
 
-        adaptor.setup(null);
+        // adaptor.setup(null);
     }
 
     public void reload(){

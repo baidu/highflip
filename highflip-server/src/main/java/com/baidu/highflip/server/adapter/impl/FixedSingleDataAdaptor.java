@@ -3,6 +3,7 @@ package com.baidu.highflip.server.adapter.impl;
 import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.runtime.Column;
 import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.Type;
 
 import java.util.Iterator;
 import java.util.List;
@@ -18,9 +19,9 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
     );
 
     public static final List<Column> DATA_COLUMNS = List.of(
-            new Column(1, "id", "integer", ""),
-            new Column(2, "name", "string", ""),
-            new Column(3, "score", "float", "")
+            new Column(1, "id", Type.INT, ""),
+            new Column(2, "name", Type.STRING, ""),
+            new Column(3, "score", Type.FLOAT, "")
     );
 
     @Override
