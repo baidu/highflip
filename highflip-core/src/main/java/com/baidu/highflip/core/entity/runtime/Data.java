@@ -54,7 +54,7 @@ public class Data {
     Map<String, Object> binding;
 
     @Column(name = "data_type")
-    String data_type;
+    String dataType;
 
     @Type(type = "json")
     @Column(name = "columns")
