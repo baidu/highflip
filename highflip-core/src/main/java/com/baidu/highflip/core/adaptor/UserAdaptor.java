@@ -6,6 +6,8 @@ public interface UserAdaptor {
 
     User createUser(User user);
 
+    User updateUser(User user);
+
     void deleteUser(User user);
 
     boolean hasUser(User user);

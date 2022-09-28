@@ -5,8 +5,6 @@ public enum Status {
     CREATED,
     APPENDING,
     RUNNING,
-    STOPPING,
     STOPPED,
-    FAILED,
-    DELETED,
+    FAILED;
 }

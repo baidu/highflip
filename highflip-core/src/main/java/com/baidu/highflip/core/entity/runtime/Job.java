@@ -18,6 +18,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -56,15 +58,38 @@ public class Job {
     Graph graph;
 
     @Column(name = "status")
-    String status;
+    Status status;
 
     @Column(name = "messsage")
     String message;
+
+    @Column(name = "is_deleted")
+    Boolean isDeleted = false;
 
     // @OneToMany(targetEntity = Task.class, mappedBy = "jobId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     // List<Task> task;
 
     @Type(type = "json")
+    @Column(name = "inputs")
+    List<String> input_tasks = new LinkedList<>();
+
+    @Type(type = "json")
+    @Column(name = "outputs")
+    List<String> output_tasks = new LinkedList<>();
+
+    @Type(type = "json")
     @Column(name = "binding")
     Map<String, String> binding;
+
+
+    public boolean isActive(){
+        switch( status){
+            case APPENDING:
+            case RUNNING:
+            case STOPPED:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

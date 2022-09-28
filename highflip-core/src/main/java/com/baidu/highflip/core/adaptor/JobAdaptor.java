@@ -23,7 +23,7 @@ public interface JobAdaptor {
 
     Job controlJob(Job job, Action action);
 
-    int getJobCount(Job job);
+    int getJobCount();
 
     Job getJobByIndex(int index, Job job);
 

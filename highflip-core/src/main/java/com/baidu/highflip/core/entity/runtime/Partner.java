@@ -29,7 +29,7 @@ public class Partner {
     @Column(name = "partner_id", length = 36)
     @GenericGenerator(name = "id_gen", strategy = "uuid2")
     @GeneratedValue(generator = "id_gen")
-    String id;
+    String partnerId;
 
     @Column(name = "name")
     String name;
@@ -44,6 +44,9 @@ public class Partner {
     @LastModifiedDate
     @Column(name = "update_time")
     LocalDateTime updateTime;
+
+    @Column(name = "is_deleted")
+    Boolean isDeleted = false;
 
     @Type(type = "json")
     @Column(name = "binding")

@@ -46,6 +46,17 @@ public class DumbTaskAdaptor implements TaskAdaptor {
     public Task controlTask(Task task, Action action) {
         return null;
     }
+
+    @Override
+    public int getTaskCount() {
+        return 0;
+    }
+
+    @Override
+    public Task getTaskByIndex(int index, Task task) {
+        return null;
+    }
+
     @Override
     public void invokeTask(Task task) {
 

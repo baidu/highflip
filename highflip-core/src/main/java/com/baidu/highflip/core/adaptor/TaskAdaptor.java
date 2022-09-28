@@ -19,6 +19,10 @@ public interface TaskAdaptor {
 
     Task controlTask(Task task, Action action);
 
+    int getTaskCount();
+
+    Task getTaskByIndex(int index, Task task);
+
     void invokeTask(Task task);
 
     int getTaskLogCount(Task task);

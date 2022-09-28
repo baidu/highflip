@@ -14,6 +14,11 @@ public class DefaultUserAdaptor implements UserAdaptor {
     }
 
     @Override
+    public User updateUser(User user) {
+        return null;
+    }
+
+    @Override
     public void deleteUser(User user) {
 
     }

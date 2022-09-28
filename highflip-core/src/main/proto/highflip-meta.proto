@@ -122,7 +122,8 @@ message GraphProto{
 message DataProto{
     enum Type{
         DATA = 0;
-        RESULT = 1;
+        INTERMEDIATE = 1;
+        RESULT = 2;
     }
 
     message Column{
@@ -144,7 +145,7 @@ message DataProto{
 
     map<string, TypedValueProto> attributes = 4;
 
-    Column columns = 5;
+    repeated Column columns = 5;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

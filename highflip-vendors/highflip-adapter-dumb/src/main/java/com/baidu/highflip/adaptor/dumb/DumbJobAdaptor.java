@@ -46,7 +46,7 @@ public class DumbJobAdaptor implements JobAdaptor {
     }
 
     @Override
-    public int getJobCount(Job job) {
+    public int getJobCount() {
         return 0;
     }
 

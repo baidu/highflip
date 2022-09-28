@@ -1,7 +1,8 @@
 package com.baidu.highflip.core.entity.runtime;
 
+
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,27 +12,30 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-@lombok.Data
+@Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_data")
+@Table(name = "hf_permission")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class Data {
+public class Permission {
 
     @Id
-    @Column(name = "data_id", length = 36)
-    @GenericGenerator(name = "id_gen", strategy = "uuid2")
-    @GeneratedValue(generator = "id_gen")
-    String dataId;
+    @Column(name = "object_id")
+    String objectId;
 
-    @Column(name = "name")
-    String name;
+    @Column(name = "object_type")
+    String objectType;
+
+    @Column(name = "user_id")
+    String userId;
+
+    @Column(name = "action")
+    String action;
 
     @Column(name = "description")
     String description;
@@ -43,9 +47,6 @@ public class Data {
     @LastModifiedDate
     @Column(name = "update_time")
     LocalDateTime updateTime;
-
-    @Column(name = "is_deleted")
-    Boolean isDeleted = false;
 
     @Type(type = "json")
     @Column(name = "binding")

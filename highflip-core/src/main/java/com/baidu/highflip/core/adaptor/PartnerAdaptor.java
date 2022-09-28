@@ -6,7 +6,7 @@ public interface PartnerAdaptor {
 
     Partner getPartner(Partner partner);
 
-    int getCount();
+    int getPartnerCount();
 
     Partner getPartnerByIndex(int index, Partner partner);
 }

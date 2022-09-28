@@ -62,6 +62,9 @@ public class Task {
     @Column(name = "messsage")
     String message;
 
+    @Column(name = "is_deleted")
+    Boolean isDeleted = false;
+
     @Type(type = "json")
     @Column(name = "previous")
     List<String> previous;

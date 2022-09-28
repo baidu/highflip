@@ -38,6 +38,7 @@ public class AdaptorLoader {
         return name;
     }
 
+    @SuppressWarnings( " unchecked " )
     public <T> T getInstance(String prop) {
         String name = props.getProperty(prop, null);
         if (prop == null) {
@@ -49,8 +50,8 @@ public class AdaptorLoader {
 
             Constructor<?> cons = clazz.getConstructor();
 
-            T inst = (T) cons.newInstance();
-            return inst;
+            T instance = (T) cons.newInstance();
+            return instance;
         } catch (ReflectiveOperationException e) {
             return null;
         }
