@@ -194,7 +194,7 @@ public class HighFlipEngine {
             Task task = new Task();
 
             Task newTask = getContext().getTaskAdaptor()
-                    .getTaskByIndex(i, newTask);
+                    .getTaskByIndex(i, task);
 
             taskReps.save(newTask);
         }
