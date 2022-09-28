@@ -57,9 +57,9 @@ public class HighFlipEngine {
 
     ConcurrentMap<String, Job> activeJobs;
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // COMMON
-    ///////////////////////////////////////////////////////////////////////////////
+    /******************************************************************************
+     * COMMON
+     ******************************************************************************/
 
     public HighFlipContext getContext() {
         return context;
@@ -70,9 +70,9 @@ public class HighFlipEngine {
 
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // PLATFORM
-    ///////////////////////////////////////////////////////////////////////////////
+    /******************************************************************************
+     * PLATFORM
+     ******************************************************************************/
     public String getPlatform() {
         throw new UnsupportedOperationException();
     }
@@ -81,9 +81,9 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // JOB
-    ///////////////////////////////////////////////////////////////////////////////
+    /******************************************************************************
+     * JOB
+     ******************************************************************************/
     @Transactional
     public void initializeJobs() {
         jobReps.deleteAll();
@@ -148,7 +148,9 @@ public class HighFlipEngine {
 
     @Cacheable("jobs")
     public Job getJob(String jobid) {
-        Job job = jobReps.findById(jobid).orElseThrow();
+        Job job = jobReps.findById(jobid)
+                .orElseThrow();
+
         return job;
     }
 
@@ -176,9 +178,9 @@ public class HighFlipEngine {
                 .controlJob(job, action);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // TASK
-    ///////////////////////////////////////////////////////////////////////////////
+    /******************************************************************************
+     * TASK
+     ******************************************************************************/
 
     @Transactional
     public void initializeTasks() {
@@ -191,10 +193,10 @@ public class HighFlipEngine {
         for (int i = 0; i < taskCount; i++) {
             Task task = new Task();
 
-            Task new_task = getContext().getTaskAdaptor()
-                    .getTaskByIndex(i, task);
+            Task newTask = getContext().getTaskAdaptor()
+                    .getTaskByIndex(i, newTask);
 
-            taskReps.save(new_task);
+            taskReps.save(newTask);
         }
     }
 
@@ -226,9 +228,9 @@ public class HighFlipEngine {
         throw new UnsupportedOperationException();
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // DATA
-    ///////////////////////////////////////////////////////////////////////////////
+    /******************************************************************************
+     * DATA
+     ******************************************************************************/
     public Iterator<String> listData() {
         return dataReps.findAll()
                 .stream()
@@ -264,9 +266,9 @@ public class HighFlipEngine {
 
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // ALGORITHM
-    ///////////////////////////////////////////////////////////////////////////////
+    /******************************************************************************
+     * ALGORITHM
+     ******************************************************************************/
     public Iterator<String> listAlgorithm() {
         return algorithmReps.findAll()
                 .stream()
@@ -278,10 +280,9 @@ public class HighFlipEngine {
         return algorithmReps.findById(algid).orElseThrow();
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // PARTNER
-    ///////////////////////////////////////////////////////////////////////////////
-
+    /******************************************************************************
+     * PARTNER
+     ******************************************************************************/
     public Partner getPartner(String partnerid) {
         return partnerReps.findById(partnerid)
                 .orElseThrow();
@@ -293,6 +294,4 @@ public class HighFlipEngine {
                 .map(p -> p.getPartnerId())
                 .iterator();
     }
-
-
 }

@@ -71,11 +71,11 @@ public class Job {
 
     @Type(type = "json")
     @Column(name = "inputs")
-    List<String> input_tasks = new LinkedList<>();
+    List<String> inputTasks = new LinkedList<>();
 
     @Type(type = "json")
     @Column(name = "outputs")
-    List<String> output_tasks = new LinkedList<>();
+    List<String> outputTasks = new LinkedList<>();
 
     @Type(type = "json")
     @Column(name = "binding")
