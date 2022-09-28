@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 public interface TaskAdaptor {
 
-    //TASK
     Task updateTask(Task task);
 
     void deleteTask(Task task);

@@ -25,7 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
 
-import static com.baidu.highflip.server.utils.GrpcServiceUtils.*;
+import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnMore;
+import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnOne;
+import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnVoid;
 import static com.baidu.highflip.server.utils.HighFlipUtils.toJobId;
 
 @Slf4j
