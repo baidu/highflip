@@ -2,7 +2,7 @@ package com.baidu.highflip.server.engine.component;
 
 import com.baidu.highflip.core.engine.AdaptorContext;
 import com.baidu.highflip.core.common.InstanceNameList;
-import com.baidu.highflip.core.adaptor.AlgorithmAdaptor;
+import com.baidu.highflip.core.adaptor.OperatorAdaptor;
 import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.adaptor.PartnerAdaptor;
@@ -43,7 +43,7 @@ public class HighFlipContext {
         throw new NotYetImplementedException();
     }
 
-    public AlgorithmAdaptor getFunctionAdaptor(){
+    public OperatorAdaptor getFunctionAdaptor(){
         throw new NotYetImplementedException();
     }
 

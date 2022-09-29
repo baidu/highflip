@@ -4,14 +4,14 @@ import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.Action;
-import com.baidu.highflip.core.entity.runtime.Algorithm;
+import com.baidu.highflip.core.entity.runtime.Operator;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Status;
 import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
-import com.baidu.highflip.server.respository.AlgorithmRepository;
+import com.baidu.highflip.server.respository.OperatorRepository;
 import com.baidu.highflip.server.respository.DataRepository;
 import com.baidu.highflip.server.respository.JobRepository;
 import com.baidu.highflip.server.respository.PartnerRepository;
@@ -50,7 +50,7 @@ public class HighFlipEngine {
     DataRepository dataReps;
 
     @Autowired
-    AlgorithmRepository algorithmReps;
+    OperatorRepository operatorReps;
 
     @Autowired
     PartnerRepository partnerReps;
@@ -268,17 +268,18 @@ public class HighFlipEngine {
     }
 
     /******************************************************************************
-     * ALGORITHM
+     * OPERATOR
      ******************************************************************************/
-    public Iterator<String> listAlgorithm() {
-        return algorithmReps.findAll()
+    public Iterator<String> listOperator() {
+        return operatorReps.findAll()
                 .stream()
-                .map(a -> a.getId())
+                .map(a -> a.getOperatorId())
                 .iterator();
     }
 
-    public Algorithm getAlgorithm(String algid) {
-        return algorithmReps.findById(algid).orElseThrow();
+    public Operator getOperator(String operatorId) {
+        return operatorReps.findById(operatorId)
+                .orElseThrow();
     }
 
     /******************************************************************************

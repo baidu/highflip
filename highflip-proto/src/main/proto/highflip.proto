@@ -239,6 +239,11 @@ message DataId{
     string data_id = 1;
 }
 
+enum DataFormat{
+    RAW = 0;
+    DENSE = 1;
+    SPARSE = 2;
+}
 
 message DataPushRequest{
 
@@ -246,23 +251,56 @@ message DataPushRequest{
 
         DataProto schema = 1;
 
-        optional int32 size = 2;
+        DataFormat format = 2;
 
-        optional bool overwrite = 3;
+        optional int64 size = 3;
+
+        optional bool overwrite = 4;
     }
 
-    message Body{
+    message RawData{
 
         int64 offset = 1;
 
         bytes content = 2;
     }
 
+    message DenseData{
+
+        message Row{
+            repeated string value = 1;
+        }
+
+        int64 row_offset = 1;
+
+        repeated Row rows = 2;
+    }
+
+    message SparseData{
+
+        message Pair{
+            string key = 1;
+            string value = 2;
+        }
+
+        message Row{
+            repeated Pair pairs = 1;
+        }
+
+        int64 row_offset = 1;
+
+        repeated Row rows = 2;
+    }
+
     oneof Data{
 
         Head head = 1;
 
-        Body body = 2;
+        RawData raw = 2;
+
+        DenseData dense = 3;
+
+        SparseData sparse = 4;
     }
 }
 
@@ -324,32 +362,32 @@ message DataPullResponse{
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// FUNCTION
+// OPERATOR
 ////////////////////////////////////////////////////////////////////////////////
-message FunctionId{
+message OperatorId{
 
-    string func_id  = 1;
+    string operater_id  = 1;
 }
 
-message FunctionListRequest{
+message OperatorListRequest{
 
     int32 offset = 1;
 
     int32 limit = 2;
 }
 
-message FunctionListResponse{
+message OperatorListResponse{
 
-    string func_id = 1;
+    string operater_id = 1;
 
     string name = 2;
 }
 
-message FunctionGetReponse{
+message OperatorGetReponse{
 
-    string func_id = 1;
+    string operater_id = 1;
 
-    FunctionProto schema = 2;
+    OperatorProto schema = 2;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -440,9 +478,9 @@ service HighFlip{
     rpc pullData(DataPullRequest) returns(stream DataPullResponse);
     rpc deleteData(DataId) returns(Void);
 
-    //FUNCTION
-    rpc listFunction(FunctionListRequest) returns(stream FunctionListResponse);
-    rpc getFunction(FunctionId) returns(FunctionGetReponse);
+    //OPERATOR
+    rpc listOperator(OperatorListRequest) returns(stream OperatorListResponse);
+    rpc getOperator(OperatorId) returns(OperatorGetReponse);
 
     //PARTY
     rpc createParty(PartyCreateRequest) returns(PartyId);

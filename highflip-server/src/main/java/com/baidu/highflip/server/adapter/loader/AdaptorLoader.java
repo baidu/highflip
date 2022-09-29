@@ -1,4 +1,4 @@
-package com.baidu.highflip.server.engine.loader;
+package com.baidu.highflip.server.adapter.loader;
 
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import lombok.extern.slf4j.Slf4j;

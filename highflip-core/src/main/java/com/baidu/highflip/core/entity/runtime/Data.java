@@ -53,8 +53,8 @@ public class Data {
     @Column(name = "binding")
     Map<String, Object> binding;
 
-    @Column(name = "data_kind")
-    DataKind dataKind;
+    @Column(name = "data_category")
+    DataCategory category;
 
     @Type(type = "json")
     @Column(name = "columns")

@@ -6,9 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Column{
-    enum ColumnType{
-
-    }
 
     int index;
 

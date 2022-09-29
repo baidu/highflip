@@ -22,15 +22,15 @@ import java.util.Map;
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_algorithm")
+@Table(name = "hf_operator")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class Algorithm {
+public class Operator {
 
     @Id
-    @Column(name = "function_id", length = 36)
+    @Column(name = "operator_id", length = 36)
     @GenericGenerator(name = "id_gen", strategy = "uuid2")
     @GeneratedValue(generator = "id_gen")
-    String id;
+    String operatorId;
 
     @Column(name = "name")
     String name;

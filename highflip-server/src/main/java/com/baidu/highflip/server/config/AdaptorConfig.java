@@ -1,10 +1,9 @@
 package com.baidu.highflip.server.config;
 
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
-import com.baidu.highflip.server.engine.loader.AdaptorLoader;
+import com.baidu.highflip.server.adapter.loader.AdaptorLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;

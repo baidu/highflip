@@ -20,9 +20,9 @@ import java.util.Map;
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_permission")
+@Table(name = "hf_right")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class Permission {
+public class Right {
 
     @Id
     @Column(name = "object_id")
@@ -36,6 +36,9 @@ public class Permission {
 
     @Column(name = "action")
     String action;
+
+    @Column(name = "permission")
+    String permission;
 
     @Column(name = "description")
     String description;

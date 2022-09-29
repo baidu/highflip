@@ -1,6 +1,6 @@
 package com.baidu.highflip.core.engine;
 
-import com.baidu.highflip.core.entity.runtime.Algorithm;
+import com.baidu.highflip.core.entity.runtime.Operator;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Partner;
@@ -19,5 +19,5 @@ public interface EngineRuntime {
 
     User getUser(String userId);
 
-    Algorithm getAlgorithm(String algId);
+    Operator getAlgorithm(String algId);
 }
