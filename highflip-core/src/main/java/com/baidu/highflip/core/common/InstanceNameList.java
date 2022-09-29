@@ -15,7 +15,7 @@ public class InstanceNameList {
 
     public static final String HIGHFLIP_ADAPTOR_DATA = "highflip.adaptor.data";
 
-    public static final String HIGHFLIP_ADAPTOR_ALGORITHM = "highflip.adaptor.algorithm";
+    public static final String HIGHFLIP_ADAPTOR_OPERATOR = "highflip.adaptor.operator";
 
     public static final String HIGHFLIP_ADAPTOR_PARTNER = "highflip.adaptor.partner";
 

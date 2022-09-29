@@ -1,4 +1,4 @@
-package com.baidu.highflip.core.entity.runtime;
+package com.baidu.highflip.core.entity.runtime.basic;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

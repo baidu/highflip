@@ -1,6 +1,6 @@
 package com.baidu.highflip.core.entity.codec;
 
-import com.baidu.highflip.core.entity.runtime.Binding;
+import com.baidu.highflip.core.entity.runtime.basic.Binding;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;

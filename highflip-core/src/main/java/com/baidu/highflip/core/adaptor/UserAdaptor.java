@@ -12,7 +12,8 @@ public interface UserAdaptor {
 
     boolean hasUser(User user);
 
-    int getCount();
+    int getUserCount();
 
     User getUserByIndex(int index, User user);
+
 }

@@ -40,7 +40,7 @@ public class FixedSingleUserAdaptor implements UserAdaptor {
     }
 
     @Override
-    public int getCount() {
+    public int getUserCount() {
         return 1;
     }
 

@@ -1,8 +1,8 @@
 package com.baidu.highflip.adaptor.demo;
 
 import com.baidu.highflip.core.adaptor.TaskAdaptor;
-import com.baidu.highflip.core.entity.runtime.Action;
-import com.baidu.highflip.core.entity.runtime.Status;
+import com.baidu.highflip.core.entity.runtime.basic.Action;
+import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.baidu.highflip.core.entity.runtime.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

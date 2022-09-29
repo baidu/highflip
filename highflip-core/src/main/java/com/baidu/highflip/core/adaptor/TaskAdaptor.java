@@ -1,7 +1,7 @@
 package com.baidu.highflip.core.adaptor;
 
-import com.baidu.highflip.core.entity.runtime.Action;
-import com.baidu.highflip.core.entity.runtime.Status;
+import com.baidu.highflip.core.entity.runtime.basic.Action;
+import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.baidu.highflip.core.entity.runtime.Task;
 
 import java.util.Iterator;

@@ -1,6 +1,7 @@
 package com.baidu.highflip.core.entity.runtime;
 
 import com.baidu.highflip.core.entity.dag.Graph;
+import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -26,7 +28,9 @@ import java.util.Map;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_job")
+@Table(name = "hf_job", indexes = {
+    @Index(name = "binding_id_index", columnList = "binding_id", unique = true)
+})
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Job {
 
@@ -66,9 +70,6 @@ public class Job {
     @Column(name = "is_deleted")
     Boolean isDeleted = false;
 
-    // @OneToMany(targetEntity = Task.class, mappedBy = "jobId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // List<Task> task;
-
     @Type(type = "json")
     @Column(name = "inputs")
     List<String> inputTasks = new LinkedList<>();
@@ -76,6 +77,9 @@ public class Job {
     @Type(type = "json")
     @Column(name = "outputs")
     List<String> outputTasks = new LinkedList<>();
+
+    @Column(name = "binding_id")
+    String bingingId;
 
     @Type(type = "json")
     @Column(name = "binding")

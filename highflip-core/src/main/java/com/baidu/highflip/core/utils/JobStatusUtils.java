@@ -1,6 +1,6 @@
 package com.baidu.highflip.core.utils;
 
-import com.baidu.highflip.core.entity.runtime.Status;
+import com.baidu.highflip.core.entity.runtime.basic.Status;
 import highflip.v1.Highflip;
 
 public class JobStatusUtils {

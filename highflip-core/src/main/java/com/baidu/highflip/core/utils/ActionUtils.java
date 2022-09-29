@@ -1,6 +1,6 @@
 package com.baidu.highflip.core.utils;
 
-import com.baidu.highflip.core.entity.runtime.Action;
+import com.baidu.highflip.core.entity.runtime.basic.Action;
 import highflip.v1.Highflip;
 
 public class ActionUtils {

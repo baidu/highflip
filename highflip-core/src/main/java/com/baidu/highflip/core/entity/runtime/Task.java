@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +24,9 @@ import java.util.Map;
 @Data
 @Entity(name = "hf_task")
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_task")
+@Table(name = "hf_task", indexes = {
+        @Index(name = "binding_id_index", columnList = "binding_id", unique = true)
+})
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Task {
 
@@ -72,6 +75,9 @@ public class Task {
     @Type(type = "json")
     @Column(name = "next")
     List<String> next;
+
+    @Column(name = "binding_id")
+    String bingingId;
 
     @Type(type = "json")
     @Column(name = "binding")

@@ -12,6 +12,10 @@ message Void{
 
 }
 
+message Count{
+    int64 count = 1;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // PLATFORM
 ////////////////////////////////////////////////////////////////////////////////
@@ -24,18 +28,51 @@ message PlatformVersion{
     string version = 3;
 }
 
+message CompatibleVersion{
+
+    optional string company = 1;
+
+    string product = 2;
+
+    string version_begin = 3;
+
+    bool included_begin = 4;
+
+    string version_end = 5;
+
+    bool included_end = 6;
+}
+
 message PlatformGetResponse{
 
     PlatformVersion version = 1;
 
-    repeated string compatibility = 2;
+    optional string description = 2;
 
-    optional string description = 3;
+    repeated string compatibility = 3;
 }
+
+message PlatformListRequest{
+
+    int64 offset = 1;
+
+    int64 limit = 2;
+}
+
+message PlatformListResponse{
+
+    PlatformVersion version = 1;
+
+    repeated CompatibleVersion compatibles = 2;
+}
+
 
 message PlatformMatchRequest{
 
     PlatformVersion version = 1;
+
+    string endpoint = 2;
+
 }
 
 message PlatformMatchResponse{
@@ -447,16 +484,60 @@ message PartyControlRequest{
 
     map<string, string> configuration = 3;
 }
+////////////////////////////////////////////////////////////////////////////////
+// CONFIGURATION
+////////////////////////////////////////////////////////////////////////////////
+message ConfigurationSetRequest{
+
+    string key = 1;
+
+    string value = 2;
+}
+
+message ConfigurationGetRequest{
+
+    string key = 1;
+
+}
+
+message ConfigurationGetResponse{
+
+    string key = 1;
+
+    string value = 2;
+
+    string create_time = 3;
+
+    string update_time = 4;
+}
+
+message ConfigurationListRequest{
+
+    string offset = 1;
+}
+
+message ConfigurationListResponse{
+
+    string key = 1;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // SERVICE
 ////////////////////////////////////////////////////////////////////////////////
 service HighFlip{
-    //PLATFORM
+
+    // CONFIGURATION
+    rpc setConfiguration(ConfigurationSetRequest) returns(Void);
+    rpc getConfiguration(ConfigurationGetRequest) returns(ConfigurationGetResponse);
+    rpc listConfiguration(Void) returns(stream ConfigurationListResponse);
+
+    // PLATFORM
     rpc getPlatform(Void) returns(PlatformGetResponse);
+    rpc listPlatform(PlatformListRequest) returns(PlatformListResponse);
     rpc matchPlatform(PlatformMatchRequest) returns(stream PlatformMatchResponse);
 
-    //JOB
+    // JOB
     rpc createJob(JobCreateRequest) returns(JobId);
     rpc getJob(JobId) returns(JobGetResponse);
     rpc checkJob(JobId) returns(JobCheckResponse);
@@ -464,25 +545,25 @@ service HighFlip{
     rpc listJob(JobListRequest) returns(stream JobListResponse);
     rpc controlJob(JobControlRequest) returns(Void);
 
-    //TASK
+    // TASK
     rpc listTask(TaskListRequest) returns(stream TaskListResponse);
     rpc getTask(TaskId) returns(TaskGetResponse);
     rpc checkTask(TaskId) returns(TaskCheckResponse);
     rpc controlTask(TaskControlRequest) returns(Void);
     rpc getTaskLog(LogListReqeust) returns(stream LogListResponse);
 
-    //DATA
+    // DATA
     rpc listData(DataListRequest) returns(stream DataListResponse);
     rpc getData(DataId) returns(DataGetResponse);
     rpc pushData(stream DataPushRequest) returns(DataId);
     rpc pullData(DataPullRequest) returns(stream DataPullResponse);
     rpc deleteData(DataId) returns(Void);
 
-    //OPERATOR
+    // OPERATOR
     rpc listOperator(OperatorListRequest) returns(stream OperatorListResponse);
     rpc getOperator(OperatorId) returns(OperatorGetReponse);
 
-    //PARTY
+    // PARTY
     rpc createParty(PartyCreateRequest) returns(PartyId);
     rpc getParty(PartyId) returns(PartyGetResponse);
     rpc listParty(PartyListRequest) returns(stream PartyListResponse);

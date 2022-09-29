@@ -1,5 +1,6 @@
 package com.baidu.highflip.core.entity.runtime;
 
+import com.baidu.highflip.core.entity.runtime.basic.DataCategory;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -22,7 +24,9 @@ import java.util.Map;
 @lombok.Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hf_data")
+@Table(name = "hf_data", indexes = {
+    @Index(name = "binding_id_index", columnList = "binding_id", unique = true)
+})
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Data {
 
@@ -49,6 +53,9 @@ public class Data {
     @Column(name = "is_deleted")
     Boolean isDeleted = false;
 
+    @Column(name = "binding_id")
+    String bingingId;
+
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, Object> binding;
@@ -58,5 +65,5 @@ public class Data {
 
     @Type(type = "json")
     @Column(name = "columns")
-    List<com.baidu.highflip.core.entity.runtime.Column> columns = new LinkedList<>();
+    List<com.baidu.highflip.core.entity.runtime.basic.Column> columns = new LinkedList<>();
 }
