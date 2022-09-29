@@ -23,6 +23,7 @@
     </parent>
 
     <modules>
+        <module>highflip-proto</module>
         <module>highflip-core</module>
         <module>highflip-vendors</module>
         <module>highflip-server</module>

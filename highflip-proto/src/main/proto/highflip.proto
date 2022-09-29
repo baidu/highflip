@@ -1,0 +1,452 @@
+syntax = "proto3";
+
+package highflip.v1;
+
+import "highflip-meta.proto";
+
+
+////////////////////////////////////////////////////////////////////////////////
+// COMMON
+////////////////////////////////////////////////////////////////////////////////
+message Void{
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// PLATFORM
+////////////////////////////////////////////////////////////////////////////////
+message PlatformVersion{
+
+    optional string company = 1;
+
+    string product = 2;
+
+    string version = 3;
+}
+
+message PlatformGetResponse{
+
+    PlatformVersion version = 1;
+
+    repeated string compatibility = 2;
+
+    optional string description = 3;
+}
+
+message PlatformMatchRequest{
+
+    PlatformVersion version = 1;
+}
+
+message PlatformMatchResponse{
+
+    PlatformVersion version = 1;
+
+    repeated string compatibility = 2;
+
+    string endpoint = 3;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// JOB
+////////////////////////////////////////////////////////////////////////////////
+message JobId{
+
+    string job_id = 1;
+}
+
+message JobCreateRequest{
+
+    string name = 1;
+
+    string description = 2;
+
+    GraphProto dag = 3;
+}
+
+message JobGetResponse{
+
+    string job_id = 1;
+
+    string name = 2;
+
+    string description = 3;
+
+    GraphProto dag = 4;
+
+    string create_time = 5;
+
+    string update_time = 6;
+
+    string finish_time = 7;
+
+    repeated string input_task_ids = 8;
+
+    repeated string output_task_ids = 9;
+}
+
+message JobCheckResponse{
+
+    enum JobStatus{
+        UNKNOWN = 0;
+        CREATED = 1;
+        APPENDING = 2;
+        RUNNING = 3;
+        STOPPED = 5;
+        FAILED = 6;
+        DELETED = 7;
+    }
+
+    string job_id = 1;
+
+    JobStatus status = 2;
+
+    string message = 3;
+}
+
+
+message JobControlRequest{
+
+    enum Action{
+        START = 0;
+        STOP = 1;
+        RESTART = 2;
+    }
+
+    string job_id = 1;
+
+    Action action = 2;
+}
+
+message JobListRequest{
+
+    optional int32 offset = 1;
+    
+    optional int32 limit = 2;
+}
+
+message JobListResponse{
+
+    string job_id = 1;
+
+    string name = 2;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// TASK
+////////////////////////////////////////////////////////////////////////////////
+message TaskId{
+
+    string task_id = 1;
+}
+
+message TaskListRequest{
+
+    string job_id = 1;
+
+    optional int32 offset = 2;
+
+    optional int32 limit = 3;
+}
+
+message TaskListResponse{
+
+    string task_id = 1;
+
+    string name = 2;
+}
+
+message TaskGetResponse{
+
+    string job_id = 1;
+
+    string task_id = 2;
+
+    string name = 3;
+
+    string type = 4;
+
+    string create_time = 5;
+
+    string update_time = 6;
+
+    string finish_time = 7;
+
+    map<string, string> attributes = 8;
+
+    repeated string input_tasks = 9;
+
+    repeated string output_tasks = 10;
+}
+
+
+
+message TaskCheckResponse{
+
+    enum TaskStatus{
+        UNKNOWN = 0;
+        CREATED = 1;
+        APPENDING = 2;
+        RUNNING = 3;
+        STOPPED = 5;
+        FAILED = 6;
+        DELETED = 7;
+    }
+
+    string job_id = 1;
+
+    string task_id = 2;
+
+    TaskStatus status = 3;
+
+    string message = 4;
+}
+
+message TaskControlRequest{
+
+    enum Action{
+        START = 0;
+        STOP = 1;
+        RESTART = 2;
+    }
+
+    string task_id = 1;
+
+    Action action = 2;
+}
+
+message LogListReqeust{
+
+    string task_id = 1;
+
+    optional int64 offset = 2;
+    
+    optional int64 limit = 3;
+}
+
+
+message LogListResponse{
+
+    repeated string lines = 1;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// DATA
+////////////////////////////////////////////////////////////////////////////////
+message DataId{
+    string data_id = 1;
+}
+
+
+message DataPushRequest{
+
+    message Head{
+
+        DataProto schema = 1;
+
+        optional int32 size = 2;
+
+        optional bool overwrite = 3;
+    }
+
+    message Body{
+
+        int64 offset = 1;
+
+        bytes content = 2;
+    }
+
+    oneof Data{
+
+        Head head = 1;
+
+        Body body = 2;
+    }
+}
+
+enum DataType{
+    USER_DATA = 0;
+    INTERMEDIATE_DATA = 1;
+    RESULT_DATA = 2;
+}
+
+message DataListRequest{
+
+    string party_id = 1;
+
+    DataType data_type = 2;
+
+    int32 offset = 3;
+
+    int32 limit = 4;
+}
+
+message DataGetResponse{
+
+    string data_id = 1;
+
+    string party_id = 2;
+
+    DataType data_type = 3;
+
+    DataProto schema = 4;
+
+    string create_time = 5;
+
+    string update_time = 6;
+}
+
+message DataListResponse{
+
+    DataId data_id = 1;
+
+    string name = 2;
+}
+
+message DataPullRequest{
+
+    DataId data_id = 1;
+
+    optional int64 offset = 2;
+
+    optional int64 limit = 3;
+}
+
+message DataPullResponse{
+
+    int64 offset = 1;
+
+    optional int64 total = 2;
+
+    bytes content = 3; 
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// FUNCTION
+////////////////////////////////////////////////////////////////////////////////
+message FunctionId{
+
+    string func_id  = 1;
+}
+
+message FunctionListRequest{
+
+    int32 offset = 1;
+
+    int32 limit = 2;
+}
+
+message FunctionListResponse{
+
+    string func_id = 1;
+
+    string name = 2;
+}
+
+message FunctionGetReponse{
+
+    string func_id = 1;
+
+    FunctionProto schema = 2;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// PARTY
+////////////////////////////////////////////////////////////////////////////////
+message PartyId{
+    string party_id = 1;
+}
+
+message PartyCreateRequest{
+
+    string name = 1;
+
+    string endpoint = 2;
+
+    optional string description = 3;
+
+    map<string, string> context = 4;
+}
+
+message PartyGetResponse{
+
+    string party_id = 1;
+
+    string name = 2;
+
+    optional string description = 3;
+
+    string endpoint = 4;
+
+    map<string, string> context = 5;
+
+    string create_time = 6;
+
+    string update_time = 7;
+}
+
+message PartyListRequest{
+
+    int32 offset = 1;
+
+    int32 limit = 2;
+}
+
+message PartyListResponse{
+
+    string party_id = 1;
+
+    string name = 2;
+}
+
+message PartyControlRequest{
+
+    string party_id = 1;
+
+    string action = 2;
+
+    map<string, string> configuration = 3;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// SERVICE
+////////////////////////////////////////////////////////////////////////////////
+service HighFlip{
+    //PLATFORM
+    rpc getPlatform(Void) returns(PlatformGetResponse);
+    rpc matchPlatform(PlatformMatchRequest) returns(stream PlatformMatchResponse);
+
+    //JOB
+    rpc createJob(JobCreateRequest) returns(JobId);
+    rpc getJob(JobId) returns(JobGetResponse);
+    rpc checkJob(JobId) returns(JobCheckResponse);
+    rpc deleteJob(JobId) returns(Void);
+    rpc listJob(JobListRequest) returns(stream JobListResponse);
+    rpc controlJob(JobControlRequest) returns(Void);
+
+    //TASK
+    rpc listTask(TaskListRequest) returns(stream TaskListResponse);
+    rpc getTask(TaskId) returns(TaskGetResponse);
+    rpc checkTask(TaskId) returns(TaskCheckResponse);
+    rpc controlTask(TaskControlRequest) returns(Void);
+    rpc getTaskLog(LogListReqeust) returns(stream LogListResponse);
+
+    //DATA
+    rpc listData(DataListRequest) returns(stream DataListResponse);
+    rpc getData(DataId) returns(DataGetResponse);
+    rpc pushData(stream DataPushRequest) returns(DataId);
+    rpc pullData(DataPullRequest) returns(stream DataPullResponse);
+    rpc deleteData(DataId) returns(Void);
+
+    //FUNCTION
+    rpc listFunction(FunctionListRequest) returns(stream FunctionListResponse);
+    rpc getFunction(FunctionId) returns(FunctionGetReponse);
+
+    //PARTY
+    rpc createParty(PartyCreateRequest) returns(PartyId);
+    rpc getParty(PartyId) returns(PartyGetResponse);
+    rpc listParty(PartyListRequest) returns(stream PartyListResponse);
+    rpc controlParty(PartyControlRequest) returns(Void);
+}

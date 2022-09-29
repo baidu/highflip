@@ -92,4 +92,12 @@ public class Job {
                 return false;
         }
     }
+
+    public void generateJobId(String original){
+
+    }
+
+    public void generateJobId(){
+
+    }
 }
