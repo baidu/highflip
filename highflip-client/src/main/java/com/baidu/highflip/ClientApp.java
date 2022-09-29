@@ -1,6 +1,6 @@
-package com.baidu.highflip.client;
+package com.baidu.highflip;
 
-public class App {
+public class ClientApp {
     public static void main(String[] args){
 
     }

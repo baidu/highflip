@@ -4,10 +4,30 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.baidu</groupId>
     <artifactId>highflip-client</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <name>highflip-client</name>
 
     <url>http://maven.apache.org</url>
 
+    <parent>
+        <groupId>com.baidu</groupId>
+        <artifactId>highflip</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.baidu</groupId>
+            <artifactId>highflip-proto</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
 </project>
