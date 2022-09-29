@@ -30,7 +30,7 @@ HIGHFLIP项目是用于解决异构的联邦学习平台互通的问题，通过
 - highflip-server
 
   highflip服务端的实现工程，这里使用了java语言实现的highflip协议的服务端，可以支持adaptor的动态扩展能力。
-- 
+
 
 - highflip-client
 
