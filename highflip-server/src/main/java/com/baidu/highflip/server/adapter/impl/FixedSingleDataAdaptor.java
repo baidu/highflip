@@ -1,8 +1,8 @@
 package com.baidu.highflip.server.adapter.impl;
 
 import com.baidu.highflip.core.adaptor.DataAdaptor;
-import com.baidu.highflip.core.entity.runtime.basic.Column;
 import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.basic.Column;
 import com.baidu.highflip.core.entity.runtime.basic.Type;
 
 import java.util.Iterator;

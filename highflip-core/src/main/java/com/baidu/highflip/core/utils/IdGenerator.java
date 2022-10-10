@@ -1,7 +1,5 @@
 package com.baidu.highflip.core.utils;
 
-import org.springframework.util.DigestUtils;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
@@ -12,15 +10,15 @@ public class IdGenerator {
         return toUUID(args);
     }
 
-    protected static String toUUID(String[] args){
+    protected static String toUUID(String[] args) {
         byte[] bytes = encodeMD5(args);
         return UUID.nameUUIDFromBytes(bytes).toString();
     }
 
-    protected static byte[] encodeMD5(String[] args){
+    protected static byte[] encodeMD5(String[] args) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            for(String item: args){
+            for (String item : args) {
                 md.update(item.getBytes());
             }
             return md.digest();

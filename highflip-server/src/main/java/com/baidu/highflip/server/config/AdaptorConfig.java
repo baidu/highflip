@@ -1,8 +1,5 @@
 package com.baidu.highflip.server.config;
 
-import com.baidu.highflip.core.common.AdaptorPropsList;
-import com.baidu.highflip.core.common.InstanceNameList;
-import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.server.adapter.loader.AdaptorLoader;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +11,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.net.URL;
-
-import static com.baidu.highflip.core.common.AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_CLASS;
-import static com.baidu.highflip.core.common.AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_NAME;
 
 @Slf4j
 @Configuration

@@ -5,11 +5,11 @@ import highflip.v1.Highflip;
 
 public class JobStatusUtils {
 
-    public Status fromProto(Highflip.JobCheckResponse.JobStatus proto){
+    public Status fromProto(Highflip.JobCheckResponse.JobStatus proto) {
         return Status.valueOf(proto.name());
     }
 
-    Highflip.JobCheckResponse.JobStatus toProto(Status status){
+    Highflip.JobCheckResponse.JobStatus toProto(Status status) {
         return Highflip.JobCheckResponse.JobStatus.valueOf(status.name());
     }
 }
