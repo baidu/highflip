@@ -33,15 +33,7 @@ public class AdaptorLoader {
         }
     }
 
-    HighFlipAdaptor loadAdaptor() {
-        HighFlipAdaptor adaptor = getInstance(PROPS_HIGHFLIP_ADAPTOR_CLASS);
-        if (adaptor == null) {
-            return null;
-        }
-        return adaptor;
-    }
-
-    public Properties getProperties(){
+    public Properties getProperties() {
         return props;
     }
 
@@ -54,7 +46,7 @@ public class AdaptorLoader {
         return name;
     }
 
-    @SuppressWarnings( " unchecked " )
+    @SuppressWarnings(" unchecked ")
     public <T> T getInstance(String prop) {
         String name = props.getProperty(prop, null);
         if (prop == null) {
@@ -96,8 +88,8 @@ public class AdaptorLoader {
     }
 
 
-    public void unloadAdaptor(InstanceRegister register){
-        HighFlipAdaptor adaptor = (HighFlipAdaptor)register.revoke(InstanceNameList.HIGHFLIP_ADAPTOR);
+    public void unloadAdaptor(InstanceRegister register) {
+        HighFlipAdaptor adaptor = (HighFlipAdaptor) register.revoke(InstanceNameList.HIGHFLIP_ADAPTOR);
 
         if (adaptor == null) {
             return;
