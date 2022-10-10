@@ -2,6 +2,8 @@ package com.baidu.highflip.server.rpc.v1;
 
 import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.Job;
+import com.baidu.highflip.core.entity.runtime.Platform;
+import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
 import highflip.v1.HighFlipGrpc.HighFlipImplBase;
@@ -16,7 +18,6 @@ import highflip.v1.Highflip.JobListResponse;
 import highflip.v1.Highflip.PlatformGetResponse;
 import highflip.v1.Highflip.PlatformMatchRequest;
 import highflip.v1.Highflip.PlatformMatchResponse;
-import highflip.v1.Highflip.PlatformVersion;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Streams;
@@ -44,11 +45,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void getPlatform(Highflip.Void request,
                             StreamObserver<PlatformGetResponse> responseObserver) {
 
-        com.baidu.highflip.core.entity.runtime.version.PlatformVersion version = getEngine()
+        Platform version = getEngine()
                 .getPlatform();
 
         PlatformGetResponse response = PlatformGetResponse.newBuilder()
-                .setVersion(version.toProto())
+                .setVersion(version.toPlatformVersion().toProto())
                 .build();
 
         returnOne(responseObserver, response);
@@ -57,11 +58,16 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void matchPlatform(PlatformMatchRequest request,
                               StreamObserver<PlatformMatchResponse> responseObserver) {
 
-        com.baidu.highflip.core.entity.runtime.version.PlatformVersion version =
-            com.baidu.highflip.core.entity.runtime.version.PlatformVersion.fromProto(request.getVersion());
+        PlatformVersion version = PlatformVersion
+                .fromProto(request.getVersion());
 
-        getEngine().matchPlatform(version);
+        Platform platform = getEngine().matchPlatform(version);
 
+        PlatformMatchResponse response = PlatformMatchResponse.newBuilder()
+                .setVersion(platform.toPlatformVersion().toProto())
+                .build();
+
+        returnOne(responseObserver, response);
     }
 
     public void createJob(JobCreateRequest request,
