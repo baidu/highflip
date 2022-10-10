@@ -5,6 +5,7 @@ import com.baidu.highflip.core.common.AdaptorPropsList;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,12 +47,8 @@ public class PropertyPlatformAdaptor implements PlatformAdaptor {
     }
 
     @Override
-    public List<CompatibleVersion> getCompatibleList() {
-        return List.of();
+    public Iterator<CompatibleVersion> getCompatibleList() {
+        return null;
     }
 
-    @Override
-    public List<String> getFeatures() {
-        return List.of();
-    }
 }

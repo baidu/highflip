@@ -43,23 +43,24 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
     public void getPlatform(Highflip.Void request,
                             StreamObserver<PlatformGetResponse> responseObserver) {
-        log.info("get platform");
 
-        PlatformVersion version = PlatformVersion.newBuilder()
-                .setCompany("baidu")
-                .setProduct("highflip")
-                .setVersion("1.0.0")
+        com.baidu.highflip.core.entity.runtime.version.PlatformVersion version = getEngine()
+                .getPlatform();
+
+        PlatformGetResponse response = PlatformGetResponse.newBuilder()
+                .setVersion(version.toProto())
                 .build();
 
-        PlatformGetResponse get = PlatformGetResponse.newBuilder()
-                .setVersion(version)
-                .build();
-
-        returnOne(responseObserver, get);
+        returnOne(responseObserver, response);
     }
 
     public void matchPlatform(PlatformMatchRequest request,
                               StreamObserver<PlatformMatchResponse> responseObserver) {
+
+        com.baidu.highflip.core.entity.runtime.version.PlatformVersion version =
+            com.baidu.highflip.core.entity.runtime.version.PlatformVersion.fromProto(request.getVersion());
+
+        getEngine().matchPlatform(version);
 
     }
 

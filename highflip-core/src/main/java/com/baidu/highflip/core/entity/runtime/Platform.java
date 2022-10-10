@@ -3,6 +3,9 @@ package com.baidu.highflip.core.entity.runtime;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -19,6 +22,9 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "hf_platform")
@@ -64,7 +70,11 @@ public class Platform {
     @Column(name = "compatibles")
     List<CompatibleVersion> compatibles;
 
-    public PlatformVersion getPlatformVersion(){
-        return null;
+    public PlatformVersion toPlatformVersion(){
+        PlatformVersion result = new PlatformVersion();
+        result.setCompany(company);
+        result.setProduct(product);
+        result.setVersion(version);
+        return result;
     }
 }

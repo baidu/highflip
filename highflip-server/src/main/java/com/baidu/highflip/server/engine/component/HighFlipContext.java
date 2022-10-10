@@ -17,18 +17,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class HighFlipContext {
 
-    AdaptorContext context;
-
     @Autowired
     HighFlipConfiguration configuration;
 
     @Autowired
     InstanceRegister register;
-
-
-    public AdaptorContext getContext(){
-        return context;
-    }
 
     public InstanceRegister getRegister(){
         return register;
@@ -45,15 +38,15 @@ public class HighFlipContext {
     }
 
     public PlatformAdaptor getPlatformAdaptor(){
-        throw new NotYetImplementedException();
+        return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_PLATFORM);
     }
 
     public DataAdaptor getDataAdaptor(){
-        throw new NotYetImplementedException();
+        return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_DATA);
     }
 
-    public OperatorAdaptor getFunctionAdaptor(){
-        throw new NotYetImplementedException();
+    public OperatorAdaptor getOperatorAdaptor(){
+        return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_OPERATOR);
     }
 
     public JobAdaptor getJobAdaptor(){

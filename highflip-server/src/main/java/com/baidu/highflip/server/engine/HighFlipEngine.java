@@ -2,19 +2,25 @@ package com.baidu.highflip.server.engine;
 
 import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.adaptor.JobAdaptor;
+import com.baidu.highflip.core.adaptor.PlatformAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Operator;
 import com.baidu.highflip.core.entity.runtime.Partner;
+import com.baidu.highflip.core.entity.runtime.Platform;
 import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.core.entity.runtime.basic.Action;
 import com.baidu.highflip.core.entity.runtime.basic.Status;
+import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
+import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
+import com.baidu.highflip.core.utils.Foreach;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
 import com.baidu.highflip.server.respository.DataRepository;
 import com.baidu.highflip.server.respository.JobRepository;
 import com.baidu.highflip.server.respository.OperatorRepository;
 import com.baidu.highflip.server.respository.PartnerRepository;
+import com.baidu.highflip.server.respository.PlatformRepository;
 import com.baidu.highflip.server.respository.TaskRepository;
 import com.baidu.highflip.server.respository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
@@ -36,6 +44,9 @@ public class HighFlipEngine {
 
     @Autowired
     HighFlipContext context;
+
+    @Autowired
+    PlatformRepository platformReps;
 
     @Autowired
     UserRepository userReps;
@@ -74,12 +85,37 @@ public class HighFlipEngine {
     /******************************************************************************
      * PLATFORM
      ******************************************************************************/
-    public String getPlatform() {
-        throw new UnsupportedOperationException();
+    protected void initPlatform(){
+        PlatformAdaptor adaptor = getContext().getPlatformAdaptor();
+
+        Platform platform = new Platform();
+        platform.setCompany(adaptor.getCompany());
+        platform.setProduct(adaptor.getProduct());
+        platform.setVersion(adaptor.getVersion());
+        platform.setIsLocal(Boolean.TRUE);
+
+        List<CompatibleVersion> compatibles = StreamSupport
+                .stream(Foreach.from(adaptor.getCompatibleList()).spliterator(),false)
+                .collect(Collectors.toList());
+        platform.setCompatibles(compatibles);
+
+        platformReps.save(platform);
     }
 
-    public List<String> listPlatform() {
-        throw new UnsupportedOperationException();
+    public Platform getPlatform() {
+        Platform platform = platformReps.findLocal();
+        return platform;
+    }
+
+    public Platform matchPlatform(PlatformVersion target) {
+        for(Platform platform: platformReps.findAll()){
+            for(CompatibleVersion comp: platform.getCompatibles()){
+                if(comp.isCompatible(target)){
+                    return platform;
+                }
+            }
+        }
+        return null;
     }
 
     /******************************************************************************

@@ -1,13 +1,16 @@
 package com.baidu.highflip.core.entity.runtime.version;
 
+import highflip.v1.Highflip;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class PlatformVersion implements Comparable<PlatformVersion> {
 
@@ -16,6 +19,23 @@ public class PlatformVersion implements Comparable<PlatformVersion> {
     String product;
 
     String version;
+
+    public Highflip.PlatformVersion toProto(){
+        Highflip.PlatformVersion proto = Highflip.PlatformVersion.newBuilder()
+                .setCompany(this.getCompany())
+                .setProduct(this.getProduct())
+                .setVersion(this.getVersion())
+                .build();
+
+        return proto;
+    }
+
+    public static PlatformVersion fromProto(Highflip.PlatformVersion proto){
+        return new PlatformVersion(
+                proto.getCompany(),
+                proto.getProduct(),
+                proto.getVersion());
+    }
 
     public static List<Integer> parseVersion(String version) {
         List<Integer> vers = Arrays.stream(version.split("\\."))
