@@ -1,8 +1,12 @@
 package com.baidu.highflip.server.config;
 
+import com.baidu.highflip.core.common.AdaptorPropsList;
+import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
+import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.server.adapter.loader.AdaptorLoader;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import static com.baidu.highflip.core.common.AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_CLASS;
+import static com.baidu.highflip.core.common.AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_NAME;
 
 @Slf4j
 @Configuration
@@ -20,52 +25,35 @@ public class AdaptorConfig {
     @Value("${highflip.server.adaptor.path:#{null}}")
     URL adaptorPath;
 
-    AdaptorLoader loader = null;
+    @Autowired
+    InstanceRegister register;
 
-    HighFlipAdaptor adaptor = null;
+    AdaptorLoader loader = null;
 
     @PostConstruct
     void initialize() throws IOException {
 
         initializeLoader();
 
-        loadAdaptor();
+        if(loader != null){
+            loader.loadAdaptor(register);
+        }
     }
 
     @PreDestroy
     void unintialize(){
-        if (adaptor != null) {
-            adaptor.clean(null);
+        if(loader != null){
+            loader.unloadAdaptor(register);
         }
     }
 
     void initializeLoader() throws IOException {
         if (adaptorPath != null) {
             AdaptorLoader loader = new AdaptorLoader();
+            this.loader = loader;
+
             loader.loadJar(adaptorPath);
             log.info("Loaded adaptor jar from path: {}", adaptorPath);
-
-            this.loader = loader;
         }
-    }
-
-    void loadAdaptor() {
-        if (loader == null) {
-            return;
-        }
-
-        this.adaptor = loader.getInstance(PROPS_HIGHFLIP_ADAPTOR_CLASS);
-        if (this.adaptor == null) {
-            return;
-        }
-
-        // adaptor.setup(null);
-    }
-
-    public void reload(){
-
-        unintialize();
-
-        loadAdaptor();
     }
 }

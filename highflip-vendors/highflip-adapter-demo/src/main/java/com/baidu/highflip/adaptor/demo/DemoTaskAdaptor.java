@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 @Slf4j
 @Component
-public class DumbTaskAdaptor implements TaskAdaptor {
+public class DemoTaskAdaptor implements TaskAdaptor {
 
     @Override
     public Task updateTask(Task task) {

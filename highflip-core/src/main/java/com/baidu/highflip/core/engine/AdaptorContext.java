@@ -4,7 +4,7 @@ public interface AdaptorContext {
 
     Configuration getConfiguration();
 
-    HighFlipRegister getRegister();
+    InstanceRegister getRegister();
 
-    EngineRuntime getRuntime();
+    HighFlipRuntime getRuntime();
 }

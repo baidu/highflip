@@ -8,7 +8,7 @@ import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.adaptor.PartnerAdaptor;
 import com.baidu.highflip.core.adaptor.PlatformAdaptor;
 import com.baidu.highflip.core.adaptor.TaskAdaptor;
-import com.baidu.highflip.core.engine.HighFlipRegister;
+import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.core.engine.translator.AbstractTranslator;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,20 @@ public class HighFlipContext {
     HighFlipConfiguration configuration;
 
     @Autowired
-    HighFlipRegister register;
+    InstanceRegister register;
 
 
     public AdaptorContext getContext(){
         return context;
+    }
+
+    public InstanceRegister getRegister(){
+        return register;
+    }
+
+    public <T> T getInstance(String name){
+        return (T) getRegister()
+                .getInstance(name);
     }
 
     public AbstractTranslator getJobTranslator(){
@@ -48,12 +57,11 @@ public class HighFlipContext {
     }
 
     public JobAdaptor getJobAdaptor(){
-        return (JobAdaptor) register
-                .getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_JOB);
+        return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_JOB);
     }
 
     public TaskAdaptor getTaskAdaptor(){
-        throw new NotYetImplementedException();
+        return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_TASK);
     }
 
     public PartnerAdaptor getPartnerAdaptor(){

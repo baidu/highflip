@@ -4,7 +4,7 @@ package com.baidu.highflip.core.entity.runtime.version;
 import lombok.Data;
 
 @Data
-public class CompatibleVersion {
+public class CompatibleVersion implements Comparable<PlatformVersion> {
 
     String company;
 
@@ -18,15 +18,9 @@ public class CompatibleVersion {
 
     boolean includeEnd;
 
-    boolean isCompatible(PlatformVersion version){
-        if (company.compareToIgnoreCase(version.getCompany()) != 0){
-            return false;
-        }
 
-        if (product.compareToIgnoreCase(version.getProduct()) != 0){
-            return false;
-        }
-
-        return true;
+    @Override
+    public int compareTo(PlatformVersion platformVersion) {
+        return 0;
     }
 }

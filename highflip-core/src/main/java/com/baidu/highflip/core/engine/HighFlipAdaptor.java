@@ -2,7 +2,7 @@ package com.baidu.highflip.core.engine;
 
 public interface HighFlipAdaptor {
 
-    void setup(HighFlipRegister register);
+    void setup(InstanceRegister register);
 
-    void clean(HighFlipRegister register);
+    void clean(InstanceRegister register);
 }

@@ -7,7 +7,7 @@ import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.core.entity.runtime.User;
 
-public interface EngineRuntime {
+public interface HighFlipRuntime {
 
     Job getJob(String jobId);
 

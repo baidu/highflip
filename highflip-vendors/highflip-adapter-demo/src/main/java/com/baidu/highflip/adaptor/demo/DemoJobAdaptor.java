@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class DumbJobAdaptor implements JobAdaptor {
+public class DemoJobAdaptor implements JobAdaptor {
 
     @Override
     public Job createJob(Job job) {

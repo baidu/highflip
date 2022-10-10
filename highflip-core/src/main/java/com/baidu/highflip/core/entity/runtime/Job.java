@@ -2,6 +2,7 @@ package com.baidu.highflip.core.entity.runtime;
 
 import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.basic.Status;
+import com.baidu.highflip.core.utils.IdGenerator;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -85,6 +87,9 @@ public class Job {
     @Column(name = "binding")
     Map<String, String> binding;
 
+    public void bindJobId(){
+        this.jobId = IdGenerator.fromStrings(this.getBingingId());
+    }
 
     public boolean isActive() {
         switch (status) {
@@ -95,13 +100,5 @@ public class Job {
             default:
                 return false;
         }
-    }
-
-    public void generateJobId(String original){
-
-    }
-
-    public void generateJobId(){
-
     }
 }

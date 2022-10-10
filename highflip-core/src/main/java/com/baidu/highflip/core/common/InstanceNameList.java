@@ -6,11 +6,16 @@ public class InstanceNameList {
 
     public static final String HIGHFLIP_CONFIGURATION = "highflip.configuration";
 
+    public static final String HIGHFLIP_RUNTIME = "highflip.runtime";
+
     public static final String HIGHFLIP_ADAPTOR = "highflip.adaptor";
+
     public static final String HIGHFLIP_ADAPTOR_TRANSLATOR = "highflip.adaptor.job.translator";
 
-    public static final String HIGHFLIP_ADAPTOR_PLATFORM = "highflip.adptor.platform";
+    public static final String HIGHFLIP_ADAPTOR_PLATFORM = "highflip.adaptor.platform";
+
     public static final String HIGHFLIP_ADAPTOR_JOB = "highflip.adaptor.job";
+
     public static final String HIGHFLIP_ADAPTOR_TASK = "highflip.adaptor.task";
 
     public static final String HIGHFLIP_ADAPTOR_DATA = "highflip.adaptor.data";

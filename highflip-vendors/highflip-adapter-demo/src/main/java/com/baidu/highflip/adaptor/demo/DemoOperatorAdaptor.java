@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Iterator;
 
 @Slf4j
-public class DumbOperatorAdaptor {
+public class DemoOperatorAdaptor {
     public Iterator<Operator> listOperator() {
         return null;
     }

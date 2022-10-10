@@ -2,7 +2,7 @@ package com.baidu.highflip.core.engine;
 
 import java.util.Iterator;
 
-public interface HighFlipRegister {
+public interface InstanceRegister {
 
     Object getInstance(String name);
 
@@ -10,6 +10,6 @@ public interface HighFlipRegister {
 
     Object revoke(String name);
 
-    Iterator<String> listInstance();
+    Iterator<String> listNames();
 }
 

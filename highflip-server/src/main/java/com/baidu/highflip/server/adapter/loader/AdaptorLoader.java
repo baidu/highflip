@@ -1,6 +1,9 @@
 package com.baidu.highflip.server.adapter.loader;
 
+import com.baidu.highflip.core.common.AdaptorPropsList;
+import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
+import com.baidu.highflip.core.engine.InstanceRegister;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -38,11 +41,15 @@ public class AdaptorLoader {
         return adaptor;
     }
 
+    public Properties getProperties(){
+        return props;
+    }
 
-    public String getProperty(String prop) {
+
+    public String getProperty(String prop, String defaultValue) {
         String name = props.getProperty(prop, null);
         if (prop == null) {
-            return null;
+            return defaultValue;
         }
         return name;
     }
@@ -64,5 +71,39 @@ public class AdaptorLoader {
         } catch (ReflectiveOperationException e) {
             return null;
         }
+    }
+
+    public void loadAdaptor(InstanceRegister register) {
+
+        HighFlipAdaptor adaptor = this.getInstance(AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_CLASS);
+        if (adaptor == null) {
+            log.error("Failed to create highflip adaptor instance.");
+            return;
+        }
+
+        String adaptorName = this.getProperty(AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_NAME,
+                AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_NAME_DEFAULT);
+
+        String adaptorVersion = this.getProperty(AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_VERSION,
+                AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_VERSION_DEFAULT);
+
+
+        log.info("Setup highflip adaptor: {}", adaptor.getClass());
+        adaptor.setup(register);
+
+        register.register(InstanceNameList.HIGHFLIP_ADAPTOR, adaptor);
+        log.info("Loaded highfilip adaptor: {}:{}", adaptorName, adaptorVersion);
+    }
+
+
+    public void unloadAdaptor(InstanceRegister register){
+        HighFlipAdaptor adaptor = (HighFlipAdaptor)register.revoke(InstanceNameList.HIGHFLIP_ADAPTOR);
+
+        if (adaptor == null) {
+            return;
+        }
+
+        log.info("Clean up highflip adaptor");
+        adaptor.clean(register);
     }
 }

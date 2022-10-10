@@ -1,15 +1,14 @@
-package com.baidu.highflip.server.engine.component;
+package com.baidu.highflip.server.engine.register;
 
-import org.springframework.stereotype.Component;
+import com.baidu.highflip.core.engine.InstanceRegister;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Component
-public class HighFlipRegister implements com.baidu.highflip.core.engine.HighFlipRegister {
+public class MapRegister implements InstanceRegister {
 
-    Map<String, Object> objects = new TreeMap<>();
+    Map<String, Object> objects = new ConcurrentHashMap<String, Object>();
 
     @Override
     public Object getInstance(String name) {
@@ -27,7 +26,7 @@ public class HighFlipRegister implements com.baidu.highflip.core.engine.HighFlip
     }
 
     @Override
-    public Iterator<String> listInstance() {
+    public Iterator<String> listNames() {
         return objects.keySet().iterator();
     }
 }
