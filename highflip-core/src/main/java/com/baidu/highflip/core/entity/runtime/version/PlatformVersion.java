@@ -16,7 +16,7 @@ public class PlatformVersion implements Comparable<PlatformVersion> {
     String version;
 
     public static List<Integer> parseVersion(String version) {
-        List<Integer> vers = Arrays.stream(version.split("."))
+        List<Integer> vers = Arrays.stream(version.split("\\."))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
         return vers;
