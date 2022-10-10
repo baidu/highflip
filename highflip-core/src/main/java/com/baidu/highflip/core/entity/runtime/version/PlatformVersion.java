@@ -1,5 +1,6 @@
 package com.baidu.highflip.core.entity.runtime.version;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Arrays;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@AllArgsConstructor
 public class PlatformVersion implements Comparable<PlatformVersion> {
 
     String company;
@@ -59,6 +61,6 @@ public class PlatformVersion implements Comparable<PlatformVersion> {
 
     @Override
     public String toString() {
-        return String.format("{}-{}-{}", company, product, version);
+        return String.format("%s-%s-%s", company, product, version);
     }
 }
