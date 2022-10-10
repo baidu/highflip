@@ -29,14 +29,14 @@ public class AdaptorConfig {
 
         initializeLoader();
 
-        if(loader != null){
+        if (loader != null) {
             loader.loadAdaptor(register);
         }
     }
 
     @PreDestroy
-    void unintialize(){
-        if(loader != null){
+    void unintialize() {
+        if (loader != null) {
             loader.unloadAdaptor(register);
         }
     }
