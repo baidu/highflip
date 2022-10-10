@@ -1,6 +1,5 @@
 package com.baidu.highflip.core.utils;
 
-import java.nio.Buffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.StringJoiner;
