@@ -14,8 +14,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-import static com.baidu.highflip.core.common.AdaptorPropsList.HIGHFLIP_PROPERTIES_FILE;
-import static com.baidu.highflip.core.common.AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_CLASS;
 
 @Slf4j
 @Component
@@ -28,8 +26,14 @@ public class AdaptorLoader {
 
         loader = new URLClassLoader(new URL[]{url});
 
-        try (InputStream stream = loader.getResourceAsStream(HIGHFLIP_PROPERTIES_FILE)) {
-            props.load(stream);
+        try (InputStream stream = loader
+                .getResourceAsStream(AdaptorPropsList.HIGHFLIP_PROPERTIES_FILE)) {
+
+            if  ( stream != null) {
+                props.load(stream);
+            } else {
+                log.info("Missed {} property file.", AdaptorPropsList.HIGHFLIP_PROPERTIES_FILE);
+            }
         }
     }
 

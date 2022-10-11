@@ -15,6 +15,8 @@ import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.Foreach;
+import com.baidu.highflip.server.engine.common.ConfigurationList;
+import com.baidu.highflip.server.engine.component.HighFlipConfiguration;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
 import com.baidu.highflip.server.respository.DataRepository;
 import com.baidu.highflip.server.respository.JobRepository;
@@ -30,6 +32,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,6 +47,9 @@ public class HighFlipEngine {
 
     @Autowired
     HighFlipContext context;
+
+    @Autowired
+    HighFlipConfiguration configuration;
 
     @Autowired
     PlatformRepository platformReps;
@@ -77,16 +83,37 @@ public class HighFlipEngine {
         return context;
     }
 
+    public HighFlipConfiguration getConfiguration() {
+        return configuration;
+    }
+
     @PostConstruct
     private void initialize() {
+
+    }
+
+    @PreDestroy
+    private void destroy() {
 
     }
 
     /******************************************************************************
      * PLATFORM
      ******************************************************************************/
-    protected void initPlatform(){
+    protected void initPlatform() {
+        Boolean isInitialized = getConfiguration().getBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED,
+                ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED_DEFAULT);
+
+        if (isInitialized) {
+            return;
+        }
+
+        log.info("Begin to initialize platform information.");
         PlatformAdaptor adaptor = getContext().getPlatformAdaptor();
+        if (adaptor == null) {
+            return;
+        }
 
         Platform platform = new Platform();
         platform.setCompany(adaptor.getCompany());
@@ -95,11 +122,17 @@ public class HighFlipEngine {
         platform.setIsLocal(Boolean.TRUE);
 
         List<CompatibleVersion> compatibles = StreamSupport
-                .stream(Foreach.from(adaptor.getCompatibleList()).spliterator(),false)
+                .stream(Foreach.from(adaptor.getCompatibleList()).spliterator(), false)
                 .collect(Collectors.toList());
         platform.setCompatibles(compatibles);
 
         platformReps.save(platform);
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED,
+                Boolean.TRUE);
+
+        log.info("Finish initialization of platform information.");
     }
 
     public Platform getPlatform() {
@@ -108,9 +141,9 @@ public class HighFlipEngine {
     }
 
     public Platform matchPlatform(PlatformVersion target) {
-        for(Platform platform: platformReps.findAll()){
-            for(CompatibleVersion comp: platform.getCompatibles()){
-                if(comp.isCompatible(target)){
+        for (Platform platform : platformReps.findAll()) {
+            for (CompatibleVersion comp : platform.getCompatibles()) {
+                if (comp.isCompatible(target)) {
                     return platform;
                 }
             }
@@ -123,6 +156,14 @@ public class HighFlipEngine {
      ******************************************************************************/
     @Transactional
     public void initializeJobs() {
+        Boolean isInitialized = getConfiguration().getBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED,
+                ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED_DEFAULT);
+
+        if (isInitialized){
+            return;
+        }
+
         jobReps.deleteAll();
 
         int jobCount = getContext().getJobAdaptor().getJobCount();
@@ -134,6 +175,10 @@ public class HighFlipEngine {
 
             jobReps.save(newJob);
         }
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED,
+                Boolean.TRUE);
     }
 
     @Transactional
@@ -268,6 +313,20 @@ public class HighFlipEngine {
     /******************************************************************************
      * DATA
      ******************************************************************************/
+    protected void initializeData(){
+        Boolean isInitialized = getConfiguration().getBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_DATA_IS_INITIALIZED,
+                ConfigurationList.CONFIG_HIGHFLIP_DATA_IS_INITIALIZED_DEFAULT);
+
+        if (isInitialized){
+            return;
+        }
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_DATA_IS_INITIALIZED,
+                Boolean.TRUE);
+    }
+
     public Iterator<String> listData() {
         return dataReps.findAll()
                 .stream()

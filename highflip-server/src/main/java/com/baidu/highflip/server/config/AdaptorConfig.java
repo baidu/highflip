@@ -25,7 +25,7 @@ public class AdaptorConfig {
     AdaptorLoader loader = null;
 
     @PostConstruct
-    void initialize() throws IOException {
+    void initialize(){
 
         initializeLoader();
 
@@ -41,13 +41,23 @@ public class AdaptorConfig {
         }
     }
 
-    void initializeLoader() throws IOException {
-        if (adaptorPath != null) {
+    void initializeLoader() {
+        if (adaptorPath == null) {
+            log.error("Skipped loading adaptor for vacant of jar path setting.");
+            return;
+        }
+
+        try{
             AdaptorLoader loader = new AdaptorLoader();
-            this.loader = loader;
 
             loader.loadJar(adaptorPath);
             log.info("Loaded adaptor jar from path: {}", adaptorPath);
+
+            this.loader = loader;
+        } catch (IOException e) {
+            log.error("Failed to load adaptor from path: {}", adaptorPath, e);
+            this.loader = null;
         }
+
     }
 }

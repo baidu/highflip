@@ -48,4 +48,16 @@ public class HighFlipConfiguration implements Configuration {
     public void setString(String key, String value){
         setEntry(key, value);
     }
+
+    public Boolean getBoolean(String key, Boolean defaultValue){
+        String value = getString(key, null);
+        if (value == null){
+            return defaultValue;
+        }
+        return Boolean.getBoolean(value);
+    }
+
+    public void setBoolean(String key, Boolean value){
+        setString(key, value.toString());
+    }
 }
