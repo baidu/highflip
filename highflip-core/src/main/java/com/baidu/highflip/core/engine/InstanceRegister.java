@@ -1,5 +1,7 @@
 package com.baidu.highflip.core.engine;
 
+import com.google.common.collect.Iterables;
+
 import java.util.Iterator;
 
 public interface InstanceRegister {

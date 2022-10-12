@@ -1,9 +1,12 @@
 package com.baidu.highflip.server.engine.register;
 
 import com.baidu.highflip.core.engine.InstanceRegister;
+import com.baidu.highflip.core.exception.NotImplementedException;
+import com.google.common.collect.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class BeanRegister implements InstanceRegister {
@@ -29,6 +32,6 @@ public class BeanRegister implements InstanceRegister {
 
     @Override
     public Iterator<String> listNames() {
-        return null;
+        return Arrays.stream(context.getBeanDefinitionNames()).iterator();
     }
 }

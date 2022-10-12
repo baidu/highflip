@@ -110,6 +110,10 @@ public class HighFlipEngine {
         }
 
         log.info("Begin to initialize platform information.");
+
+        platformReps.deleteLocal();
+        log.info("Delete old platform information.");
+
         PlatformAdaptor adaptor = getContext().getPlatformAdaptor();
         if (adaptor == null) {
             return;
@@ -164,6 +168,7 @@ public class HighFlipEngine {
             return;
         }
 
+        log.info("Delete old job information.");
         jobReps.deleteAll();
 
         int jobCount = getContext().getJobAdaptor().getJobCount();

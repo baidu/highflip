@@ -9,12 +9,18 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class HighFlipClient implements AutoCloseable {
+
     ManagedChannel channel;
+
     HighFlipGrpc.HighFlipBlockingStub stub;
 
     protected HighFlipClient(ManagedChannel channel, HighFlipGrpc.HighFlipBlockingStub stub) {
         this.channel = channel;
         this.stub = stub;
+    }
+
+    public HighFlipClient(){
+
     }
 
     public static HighFlipClient connect(String target) {

@@ -8,8 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PlatformRepository extends JpaRepository<Platform, String> {
 
-    @Query("select p from Platform p where p.isLocal = TRUE")
+    @Query("SELECT p FROM Platform p WHERE p.isLocal = TRUE")
     Platform findLocal();
+
+    @Query("DELETE FROM Platform p WHERE p.isLocal = TRUE")
+    void deleteLocal();
 
     Iterable<Platform> findAllByCompanyAndProduct(String company, String product);
 }
