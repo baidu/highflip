@@ -1,8 +1,6 @@
 package com.baidu.highflip.server.engine.register;
 
 import com.baidu.highflip.core.engine.InstanceRegister;
-import com.baidu.highflip.core.exception.NotImplementedException;
-import com.google.common.collect.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
