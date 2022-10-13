@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HighFlipConfig {
 
-    @Value("${highflip.url: null}")
+    @Value("${highflip.server.url:#{null}}")
     String highflipUrl;
 
     @Bean
     HighFlipClient getClient() {
-        if (highflipUrl == null) {
+        if (highflipUrl == null || highflipUrl.isEmpty()) {
             return new HighFlipClient();
         } else {
             log.info("highflip.url={}", highflipUrl);
