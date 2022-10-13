@@ -1,7 +1,6 @@
 package com.baidu.highflip.client;
 
 import com.baidu.highflip.utils.Streams;
-import com.google.common.collect.Iterables;
 import highflip.HighflipMeta;
 import highflip.v1.HighFlipGrpc;
 import highflip.v1.Highflip;
@@ -10,8 +9,6 @@ import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
-import java.util.Spliterators;
-import java.util.stream.StreamSupport;
 
 @Slf4j
 public class HighFlipClient implements AutoCloseable {
@@ -25,7 +22,7 @@ public class HighFlipClient implements AutoCloseable {
         this.stub = stub;
     }
 
-    public HighFlipClient(){
+    public HighFlipClient() {
 
     }
 
@@ -79,7 +76,7 @@ public class HighFlipClient implements AutoCloseable {
         return response.getStatus().toString();
     }
 
-    public Iterator<String> listJob(){
+    public Iterator<String> listJob() {
         Highflip.JobListRequest request = Highflip.JobListRequest
                 .newBuilder()
                 .build();
