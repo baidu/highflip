@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.baidu</groupId>
+    <artifactId>highflip-build</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>highflip-build</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+    </dependencies>
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.40.0</version>
+
+                <configuration>
+                    <images>
+                        <image>
+                            <!--镜像名(含版本号)-->
+                            <name>${project.name}:${project.version}</name>
+                            <!--别名:用于容器命名和在docker-compose.yml文件只能找到对应名字的配置-->
+                            <alias>${project.name}</alias>
+                            <!--镜像build相关配置-->
+                            <build>
+                                <!--使用dockerFile文件-->
+                                <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+                            </build>
+                            <run>
+                                <!--配置运行时容器命名策略为:别名,如果不指定则默认为none,即使用随机分配名称-->
+                                <namingStrategy>alias</namingStrategy>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,11 +1,14 @@
 package com.baidu.highflip.console.commands;
 
 import com.baidu.highflip.client.HighFlipClient;
+import highflip.HighflipMeta;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+@Slf4j
 @ShellComponent
 @ShellCommandGroup("job")
 public class JobCommand {
@@ -14,12 +17,16 @@ public class JobCommand {
     HighFlipClient client;
 
     @ShellMethod(key = "job list", value = "Submit a new job.")
-    public void list() {
-
+    public Iterable<String> list() {
+        return () -> client.listJob();
     }
 
     @ShellMethod(key = "job add", value = "Submit a new job.")
     public String add(String name, String description, String dag) {
+        HighflipMeta.GraphProto graph = HighflipMeta.GraphProto
+                .newBuilder()
+                .build();
+
         return client.createJob(name, description, null);
     }
 

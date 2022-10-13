@@ -7,14 +7,15 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
-@ShellCommandGroup("data")
-public class DataCommand {
+@ShellCommandGroup("platform")
+public class PlatformCommand {
 
     @Autowired
     HighFlipClient client;
 
-    @ShellMethod(key = "data get", value = "Get data basic information")
-    public Iterable<String> get(String dataId) {
+    @ShellMethod(key = "platform get", value = "Get platform information")
+    public String get() {
         throw new UnsupportedOperationException();
     }
+
 }
