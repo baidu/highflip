@@ -28,6 +28,10 @@ public class BasicCommand implements Version.Command {
 
     @PreDestroy
     public void destroy(){
+        if(!client.isConnected()){
+            return;
+        }
+
         log.info("disconnect from HighFlip server.");
         client.close();
     }

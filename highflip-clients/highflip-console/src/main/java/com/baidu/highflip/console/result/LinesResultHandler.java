@@ -19,5 +19,6 @@ public class LinesResultHandler implements ResultHandler<Iterable> {
         for (Object item : result) {
             writer.println(item.toString());
         }
+        writer.flush();
     }
 }

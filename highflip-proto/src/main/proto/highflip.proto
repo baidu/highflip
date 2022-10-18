@@ -75,7 +75,7 @@ message PlatformMatchRequest{
 
 }
 
-message PlatformMatchResponse{
+message  PlatformMatchResponse{
 
     PlatformVersion version = 1;
 
@@ -513,7 +513,9 @@ message ConfigurationGetResponse{
 
 message ConfigurationListRequest{
 
-    string offset = 1;
+    int64 offset = 1;
+
+    int64 limit = 2;
 }
 
 message ConfigurationListResponse{

@@ -24,8 +24,6 @@ public class TestPlatform {
     public void testDatabase(){
         log.info("test list");
 
-        platforms.deleteAllByIsLocalIsTrue();
-
         platforms.deleteLocal();
 
         for(Platform plat: platforms.findAll()){

@@ -99,8 +99,8 @@ public class HighFlipEngine{
 
     @PostConstruct
     public void initialize() {
-        new TransactionTemplate(transactionManager)
-            .execute(new TransactionCallbackWithoutResult() {
+        new TransactionTemplate(transactionManager).execute(
+            new TransactionCallbackWithoutResult() {
                 @Override
                 protected void doInTransactionWithoutResult(TransactionStatus status) {
                     initPlatform();
@@ -133,6 +133,7 @@ public class HighFlipEngine{
 
         PlatformAdaptor adaptor = getContext().getPlatformAdaptor();
         if (adaptor == null) {
+            log.error("Miss platform adaptor in system. Skipped platform initialization.");
             return;
         }
 

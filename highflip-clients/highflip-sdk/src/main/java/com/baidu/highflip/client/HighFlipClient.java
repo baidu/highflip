@@ -15,7 +15,9 @@ public class HighFlipClient implements AutoCloseable {
 
     public static final String HIGHFLIP_PROTO_SCHEMA = "grpc";
 
-    public static final int HIGHFLIP_PORT_DEFAULT = 8751;
+    public static final Integer HIGHFLIP_PORT_DEFAULT = 8751;
+
+    public static final String HIGHFLIP_ADDRESS_DEFAULT = "127.0.0.1";
 
     ManagedChannel channel;
 
@@ -60,13 +62,14 @@ public class HighFlipClient implements AutoCloseable {
         if (channel.isTerminated()) {
             return false;
         }
-
         return true;
     }
 
     protected HighFlipGrpc.HighFlipBlockingStub getStub() {
         return this.stub;
     }
+
+
 
     /**
      *
@@ -78,6 +81,29 @@ public class HighFlipClient implements AutoCloseable {
                 .getPlatform(Highflip.Void.getDefaultInstance());
 
         return response;
+    }
+
+    /**
+     *
+     * @param company
+     * @param product
+     * @param version
+     */
+    public void matchPlatform(String company, String product, String version) {
+        Highflip.PlatformVersion platver = Highflip.PlatformVersion
+                .newBuilder()
+                .setCompany(company)
+                .setProduct(product)
+                .setVersion(version)
+                .build();
+
+        Highflip.PlatformMatchRequest request = Highflip.PlatformMatchRequest
+                .newBuilder()
+                .setVersion(platver)
+                .build();
+
+        Iterator<Highflip.PlatformMatchResponse> response = getStub()
+                .matchPlatform(request);
     }
 
     /*
@@ -98,7 +124,10 @@ public class HighFlipClient implements AutoCloseable {
         return response.getJobId();
     }
 
-    /*
+    /**
+     *
+     * @param jobId
+     * @param action
      */
     public void controlJob(String jobId, String action) {
         Highflip.JobControlRequest request = Highflip.JobControlRequest
