@@ -15,7 +15,7 @@ public class PlatformCommand {
 
     @ShellMethod(key = "platform get", value = "Get platform information")
     public String get() {
-        throw new UnsupportedOperationException();
+        return client.getPlatform().getVersion().toString();
     }
 
 }

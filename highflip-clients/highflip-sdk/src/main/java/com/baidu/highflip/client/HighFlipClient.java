@@ -13,37 +13,79 @@ import java.util.Iterator;
 @Slf4j
 public class HighFlipClient implements AutoCloseable {
 
+    public static final String HIGHFLIP_PROTO_SCHEMA = "grpc";
+
+    public static final int HIGHFLIP_PORT_DEFAULT = 8751;
+
     ManagedChannel channel;
 
     HighFlipGrpc.HighFlipBlockingStub stub;
 
-    protected HighFlipClient(ManagedChannel channel, HighFlipGrpc.HighFlipBlockingStub stub) {
-        this.channel = channel;
-        this.stub = stub;
-    }
-
     public HighFlipClient() {
-
+        this.channel = null;
+        this.stub = null;
     }
 
-    public static HighFlipClient connect(String target) {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
+    public void connect(String target) {
+        close();
+
+        HighFlipURL url = HighFlipURL.from(target);
+
+        ManagedChannel channel = ManagedChannelBuilder
+                .forAddress(url.getHost(), url.getPort())
                 .usePlaintext()
                 .build();
 
         HighFlipGrpc.HighFlipBlockingStub stub = HighFlipGrpc.newBlockingStub(channel);
-        return new HighFlipClient(channel, stub);
+
+        this.channel = channel;
+        this.stub = stub;
     }
 
     @Override
     public void close() {
-        channel.shutdownNow();
+        if (channel != null) {
+            channel.shutdownNow();
+        }
+
+        this.stub = null;
+        this.channel = null;
+    }
+
+    public boolean isConnected() {
+        if (channel == null) {
+            return false;
+        }
+
+        if (channel.isTerminated()) {
+            return false;
+        }
+
+        return true;
     }
 
     protected HighFlipGrpc.HighFlipBlockingStub getStub() {
         return this.stub;
     }
 
+    /**
+     *
+     * @return
+     */
+    public Highflip.PlatformGetResponse getPlatform() {
+
+        Highflip.PlatformGetResponse response = getStub()
+                .getPlatform(Highflip.Void.getDefaultInstance());
+
+        return response;
+    }
+
+    /*
+     * @param name
+     * @param description
+     * @param dag
+     * @return
+     */
     public String createJob(String name, String description, HighflipMeta.GraphProto dag) {
         Highflip.JobCreateRequest request = Highflip.JobCreateRequest
                 .newBuilder()
@@ -56,6 +98,8 @@ public class HighFlipClient implements AutoCloseable {
         return response.getJobId();
     }
 
+    /*
+     */
     public void controlJob(String jobId, String action) {
         Highflip.JobControlRequest request = Highflip.JobControlRequest
                 .newBuilder()

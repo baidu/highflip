@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.URL;
+
 @Slf4j
 @Configuration
 public class HighFlipConfig {
@@ -15,11 +17,13 @@ public class HighFlipConfig {
 
     @Bean
     HighFlipClient getClient() {
-        if (highflipUrl == null || highflipUrl.isEmpty()) {
-            return new HighFlipClient();
-        } else {
+        HighFlipClient client = new HighFlipClient();
+
+        if (highflipUrl != null && !highflipUrl.isEmpty()) {
             log.info("highflip.url={}", highflipUrl);
-            return HighFlipClient.connect(highflipUrl);
+            client.connect(highflipUrl);
         }
+
+        return client;
     }
 }

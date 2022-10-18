@@ -43,7 +43,7 @@ public class AdaptorConfig {
 
     void initializeLoader() {
         if (adaptorPath == null) {
-            log.error("Skipped loading adaptor for vacant of jar path setting.");
+            log.error("Skipped loading adaptor for vacancy of jar path setting.");
             return;
         }
 

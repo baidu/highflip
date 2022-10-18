@@ -17,4 +17,14 @@ public class DataCommand {
     public Iterable<String> get(String dataId) {
         throw new UnsupportedOperationException();
     }
+
+    @ShellMethod(key = "data pull", value = "Get data basic information")
+    public Iterable<String> pull(String dataId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @ShellMethod(key = "data push", value = "Get data basic information")
+    public Iterable<String> push(String dataId) {
+        throw new UnsupportedOperationException();
+    }
 }

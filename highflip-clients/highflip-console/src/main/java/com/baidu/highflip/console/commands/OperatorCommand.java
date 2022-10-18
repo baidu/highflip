@@ -15,8 +15,13 @@ public class OperatorCommand {
     @Autowired
     HighFlipClient client;
 
-    @ShellMethod(key = "operator get", value = "Get operator information")
+    @ShellMethod(key = "operator get", value = "Get operator information.")
     public String get() {
+        throw new UnsupportedOperationException();
+    }
+
+    @ShellMethod(key = "operator list", value = "List all operators.")
+    public Iterable<String> list() {
         throw new UnsupportedOperationException();
     }
 

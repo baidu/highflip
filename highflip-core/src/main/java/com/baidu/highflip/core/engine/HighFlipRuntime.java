@@ -9,6 +9,8 @@ import com.baidu.highflip.core.entity.runtime.User;
 
 public interface HighFlipRuntime {
 
+    Configuration getConfiguration();
+
     Job getJob(String jobId);
 
     Task getTask(String taskId);
@@ -19,5 +21,5 @@ public interface HighFlipRuntime {
 
     User getUser(String userId);
 
-    Operator getAlgorithm(String algId);
+    Operator getOperator(String operatorId);
 }

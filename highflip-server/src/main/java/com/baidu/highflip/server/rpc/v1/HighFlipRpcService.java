@@ -6,6 +6,7 @@ import com.baidu.highflip.core.entity.runtime.Platform;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
+import com.google.common.collect.Streams;
 import highflip.v1.HighFlipGrpc.HighFlipImplBase;
 import highflip.v1.Highflip;
 import highflip.v1.Highflip.JobCheckResponse;
@@ -20,7 +21,6 @@ import highflip.v1.Highflip.PlatformMatchRequest;
 import highflip.v1.Highflip.PlatformMatchResponse;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.Streams;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -89,7 +89,7 @@ public class HighFlipEngine {
 
     @PostConstruct
     private void initialize() {
-
+        initPlatform();
     }
 
     @PreDestroy
@@ -100,6 +100,7 @@ public class HighFlipEngine {
     /******************************************************************************
      * PLATFORM
      ******************************************************************************/
+    @Transactional
     protected void initPlatform() {
         Boolean isInitialized = getConfiguration().getBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED,

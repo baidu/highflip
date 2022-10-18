@@ -16,7 +16,7 @@ public class JobCommand {
     @Autowired
     HighFlipClient client;
 
-    @ShellMethod(key = "job list", value = "Submit a new job.")
+    @ShellMethod(key = "job list", value = "List all jobs.")
     public Iterable<String> list() {
         return () -> client.listJob();
     }
