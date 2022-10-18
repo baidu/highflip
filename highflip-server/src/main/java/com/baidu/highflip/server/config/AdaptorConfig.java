@@ -28,7 +28,7 @@ public class AdaptorConfig {
     AdaptorLoader loader = null;
 
     @PostConstruct
-    void initialize(){
+    void initialize() {
 
         initializeLoader();
 
@@ -50,7 +50,7 @@ public class AdaptorConfig {
             return;
         }
 
-        try{
+        try {
             AdaptorLoader loader = new AdaptorLoader();
 
             loader.loadJar(adaptorPath);
@@ -65,7 +65,7 @@ public class AdaptorConfig {
     }
 
 
-    void initialAdaptor(){
+    void initialAdaptor() {
         if (loader == null) {
             return;
         }
@@ -73,7 +73,7 @@ public class AdaptorConfig {
         loader.loadAdaptor(register);
     }
 
-    void initialDefaultAdaptor(){
+    void initialDefaultAdaptor() {
         if (loader == null) {
             return;
         }

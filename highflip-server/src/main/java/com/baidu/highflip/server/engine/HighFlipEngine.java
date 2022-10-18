@@ -14,7 +14,6 @@ import com.baidu.highflip.core.entity.runtime.basic.Action;
 import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
-import com.baidu.highflip.core.utils.Foreach;
 import com.baidu.highflip.server.engine.common.ConfigurationList;
 import com.baidu.highflip.server.engine.component.HighFlipConfiguration;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
@@ -28,10 +27,8 @@ import com.baidu.highflip.server.respository.UserRepository;
 import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -46,7 +43,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
