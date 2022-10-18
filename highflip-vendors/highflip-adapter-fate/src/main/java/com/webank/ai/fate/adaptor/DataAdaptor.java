@@ -4,7 +4,7 @@ import com.webank.ai.fate.context.FateContext;
 
 public class DataAdaptor {
 
-    public DataAdaptor(FateContext context){
+    public DataAdaptor(FateContext context) {
 
     }
 }

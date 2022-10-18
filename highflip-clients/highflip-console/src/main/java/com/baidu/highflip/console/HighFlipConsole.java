@@ -9,5 +9,4 @@ public class HighFlipConsole {
     public static void main(String[] args) {
         SpringApplication.run(HighFlipConsole.class, args);
     }
-
 }

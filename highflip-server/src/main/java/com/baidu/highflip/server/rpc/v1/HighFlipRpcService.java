@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.Iterator;
 
 import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnMore;
@@ -37,6 +38,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
     @Autowired
     HighFlipEngine engine;
+
+    @PostConstruct
+    public void initialize(){
+        engine.initialize();
+    }
 
     public HighFlipEngine getEngine() {
         return engine;

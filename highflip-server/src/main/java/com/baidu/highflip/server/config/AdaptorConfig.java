@@ -1,6 +1,8 @@
 package com.baidu.highflip.server.config;
 
+import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.InstanceRegister;
+import com.baidu.highflip.server.adapter.impl.PropertyPlatformAdaptor;
 import com.baidu.highflip.server.adapter.loader.AdaptorLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 @Slf4j
 @Configuration
@@ -29,9 +32,9 @@ public class AdaptorConfig {
 
         initializeLoader();
 
-        if (loader != null) {
-            loader.loadAdaptor(register);
-        }
+        initialAdaptor();
+
+        initialDefaultAdaptor();
     }
 
     @PreDestroy
@@ -59,5 +62,25 @@ public class AdaptorConfig {
             this.loader = null;
         }
 
+    }
+
+
+    void initialAdaptor(){
+        if (loader == null) {
+            return;
+        }
+
+        loader.loadAdaptor(register);
+    }
+
+    void initialDefaultAdaptor(){
+        if (loader == null) {
+            return;
+        }
+
+        Properties props = loader.getProperties();
+
+        register.register(InstanceNameList.HIGHFLIP_ADAPTOR_PLATFORM,
+                new PropertyPlatformAdaptor(props));
     }
 }

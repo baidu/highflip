@@ -21,7 +21,13 @@ public class HighFlipConfiguration implements Configuration {
     @Transactional
     protected void setEntry(String key, String value){
         com.baidu.highflip.server.entity.Configuration entity = getEntry(key);
-        entity.setValue(value);
+        if (entity != null){
+            entity.setValue(value);
+        } else {
+            entity = new com.baidu.highflip.server.entity.Configuration();
+            entity.setKey(key);
+            entity.setValue(value);
+        }
         configs.save(entity);
     }
 

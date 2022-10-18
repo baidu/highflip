@@ -25,11 +25,18 @@ import com.baidu.highflip.server.respository.PartnerRepository;
 import com.baidu.highflip.server.respository.PlatformRepository;
 import com.baidu.highflip.server.respository.TaskRepository;
 import com.baidu.highflip.server.respository.UserRepository;
+import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -43,13 +50,16 @@ import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
-public class HighFlipEngine {
+public class HighFlipEngine{
 
     @Autowired
     HighFlipContext context;
 
     @Autowired
     HighFlipConfiguration configuration;
+
+    @Autowired
+    PlatformTransactionManager transactionManager;
 
     @Autowired
     PlatformRepository platformReps;
@@ -88,12 +98,18 @@ public class HighFlipEngine {
     }
 
     @PostConstruct
-    private void initialize() {
-        initPlatform();
+    public void initialize() {
+        new TransactionTemplate(transactionManager)
+            .execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+                    initPlatform();
+                }
+        });
     }
 
     @PreDestroy
-    private void destroy() {
+    public void destroy() {
 
     }
 
@@ -101,7 +117,7 @@ public class HighFlipEngine {
      * PLATFORM
      ******************************************************************************/
     @Transactional
-    protected void initPlatform() {
+    public void initPlatform() {
         Boolean isInitialized = getConfiguration().getBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED,
                 ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED_DEFAULT);
@@ -126,11 +142,13 @@ public class HighFlipEngine {
         platform.setVersion(adaptor.getVersion());
         platform.setIsLocal(Boolean.TRUE);
 
-        List<CompatibleVersion> compatibles = StreamSupport
-                .stream(Foreach.from(adaptor.getCompatibleList()).spliterator(), false)
-                .collect(Collectors.toList());
-        platform.setCompatibles(compatibles);
-
+        Iterator<CompatibleVersion> iters = adaptor.getCompatibleList();
+        if (iters != null){
+            List<CompatibleVersion> compatibles = Streams
+                    .stream(iters)
+                    .collect(Collectors.toList());
+            platform.setCompatibles(compatibles);
+        }
         platformReps.save(platform);
 
         getConfiguration().setBoolean(

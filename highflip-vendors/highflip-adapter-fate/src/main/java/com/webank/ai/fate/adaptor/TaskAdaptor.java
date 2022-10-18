@@ -4,7 +4,7 @@ import com.webank.ai.fate.context.FateContext;
 
 public class TaskAdaptor {
 
-    public TaskAdaptor(FateContext context){
+    public TaskAdaptor(FateContext context) {
 
     }
 }

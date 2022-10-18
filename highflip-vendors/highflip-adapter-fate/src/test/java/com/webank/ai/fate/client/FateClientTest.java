@@ -8,8 +8,8 @@ import org.junit.Test;
 public class FateClientTest {
 
     @Test
-    public void testConnect(){
-        FateClient  client = FateClient.connect("http://www.sina.com");
+    public void testConnect() {
+        FateClient client = FateClient.connect("http://www.sina.com");
         log.info("fate_client = {}", client);
     }
 }

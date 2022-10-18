@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FateContext{
+public class FateContext {
 
     Configuration config;
 
@@ -22,10 +22,10 @@ public class FateContext{
 
     DSLTranslator translator = new DSLTranslator();
 
-    public static FateContext from(InstanceRegister register){
+    public static FateContext from(InstanceRegister register) {
         FateContext context = new FateContext();
 
-        Configuration config = (Configuration)register.getInstance(InstanceNameList.HIGHFLIP_CONFIGURATION);
+        Configuration config = (Configuration) register.getInstance(InstanceNameList.HIGHFLIP_CONFIGURATION);
         context.setConfig(config);
 
         return context;

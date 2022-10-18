@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, String> {
-    @Query("select jobId from Job")
+
+    @Query("SELECT j.jobId FROM Job j")
     Iterator<String> findAllJobId();
 }

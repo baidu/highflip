@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public interface FateClient {
 
-    static FateClient connect(String url){
+    static FateClient connect(String url) {
         return Feign.builder()
                 .decoder(new JacksonDecoder())
                 .encoder(new JacksonEncoder())

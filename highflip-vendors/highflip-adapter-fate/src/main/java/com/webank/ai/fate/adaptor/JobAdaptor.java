@@ -4,7 +4,7 @@ import com.webank.ai.fate.context.FateContext;
 
 public class JobAdaptor {
 
-    public JobAdaptor(FateContext context){
+    public JobAdaptor(FateContext context) {
 
     }
 }

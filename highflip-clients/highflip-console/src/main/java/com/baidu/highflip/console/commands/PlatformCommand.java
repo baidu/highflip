@@ -18,4 +18,9 @@ public class PlatformCommand {
         return client.getPlatform().getVersion().toString();
     }
 
+    @ShellMethod(key = "platform match", value = "Match platform information")
+    public void match(String company, String product, String version){
+
+    }
+
 }
