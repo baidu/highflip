@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class ProtoUtilsTest {
 
     @Test
-    public void testToJson(){
+    public void testToJson() {
         Highflip.PlatformVersion version = Highflip.PlatformVersion
                 .newBuilder()
                 .setCompany("baidu")

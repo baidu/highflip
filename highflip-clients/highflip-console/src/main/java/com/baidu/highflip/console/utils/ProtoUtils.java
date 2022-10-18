@@ -6,7 +6,7 @@ import com.google.protobuf.util.JsonFormat;
 
 public class ProtoUtils {
 
-    public static String toJsonLine(Message msg){
+    public static String toJsonLine(Message msg) {
         try {
             return JsonFormat.printer()
                     .omittingInsignificantWhitespace()
@@ -16,7 +16,7 @@ public class ProtoUtils {
         }
     }
 
-    public static String toJson(Message msg){
+    public static String toJson(Message msg) {
         try {
             return JsonFormat.printer()
                     .print(msg);
@@ -25,7 +25,7 @@ public class ProtoUtils {
         }
     }
 
-    public static <T extends Message> T fromJson(String json, Message.Builder builder){
+    public static <T extends Message> T fromJson(String json, Message.Builder builder) {
         try {
             JsonFormat.parser().merge(json, builder);
         } catch (InvalidProtocolBufferException e) {

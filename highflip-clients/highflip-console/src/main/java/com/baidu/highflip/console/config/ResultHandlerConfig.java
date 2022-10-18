@@ -5,7 +5,6 @@ import com.baidu.highflip.console.result.MessageResultHandler;
 import org.jline.terminal.Terminal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class ResultHandlerConfig {

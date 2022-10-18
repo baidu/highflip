@@ -20,7 +20,7 @@ public class PlatformCommand {
     }
 
     @ShellMethod(key = "platform match", value = "Match platform information")
-    public void match(String company, String product, String version){
+    public void match(String company, String product, String version) {
 
     }
 

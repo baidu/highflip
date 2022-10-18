@@ -27,8 +27,8 @@ public class BasicCommand implements Version.Command {
     String serverUrl = null;
 
     @PreDestroy
-    public void destroy(){
-        if(!client.isConnected()){
+    public void destroy() {
+        if (!client.isConnected()) {
             return;
         }
 
@@ -53,7 +53,7 @@ public class BasicCommand implements Version.Command {
 
     @ShellMethod(key = "reconnect", value = "reconnect from HighFlip server.")
     public void reconnect() {
-        if (Strings.isNullOrEmpty(this.serverUrl)){
+        if (Strings.isNullOrEmpty(this.serverUrl)) {
             return;
         }
 
