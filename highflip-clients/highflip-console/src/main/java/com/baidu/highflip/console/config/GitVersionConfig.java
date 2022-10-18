@@ -2,11 +2,7 @@ package com.baidu.highflip.console.config;
 
 
 import lombok.Data;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.info.GitProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 

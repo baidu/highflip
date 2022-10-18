@@ -35,7 +35,7 @@ public class BasicCommand implements Version.Command {
     }
 
     @ShellMethod(key = "version", value = "Show client version information.")
-    public GitVersionConfig version(){
+    public GitVersionConfig version() {
         return gitVersion;
     }
 }

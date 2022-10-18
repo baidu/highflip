@@ -1,11 +1,10 @@
 HIGHFLIP CONSOLE
 ====================================================
 
-
 # Tutorial
 
-
 ## Non-interactively Mode
+
 ```shell
 
 java -jar -Dhighflip.server.url=grpc://user:pass@127.0.0.1:8571 highflip-console-*.jar job add --name=test --dag={} 
@@ -13,6 +12,7 @@ java -jar -Dhighflip.server.url=grpc://user:pass@127.0.0.1:8571 highflip-console
 ```
 
 ## Interactively Mode
+
 ```shell
 java -jar highflip-console-*.jar
 shell:> connect grpc://user:pass@127.0.0.1:8571
@@ -22,43 +22,42 @@ shell:> exit
 
 # Commands
 
-
 - basic
-  + version
-  + connect
-  + disconnect
+    + version
+    + connect
+    + disconnect
 
 - dag
-  + tojson
-  + fromjson
+    + tojson
+    + fromjson
 
 - job
-  + create
-  + info
-  + control
-  + status
-  + delete
-  + list
+    + create
+    + info
+    + control
+    + status
+    + delete
+    + list
 
 - task
-  + control
-  + info
-  + status
-  + list
+    + control
+    + info
+    + status
+    + list
 
 - data
-  + create
-  + upload
-  + download
-  + list
-  + schema
+    + create
+    + upload
+    + download
+    + list
+    + schema
 
 - operator
-  + list
-  + get
+    + list
+    + get
 
 - partner
-  + create
-  + list
-  + info
+    + create
+    + list
+    + info
 
