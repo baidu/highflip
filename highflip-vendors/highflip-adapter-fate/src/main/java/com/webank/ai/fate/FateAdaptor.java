@@ -3,6 +3,7 @@ package com.webank.ai.fate;
 import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import com.baidu.highflip.core.engine.InstanceRegister;
+import com.webank.ai.fate.adaptor.DataAdaptor;
 import com.webank.ai.fate.adaptor.JobAdaptor;
 import com.webank.ai.fate.adaptor.TaskAdaptor;
 import com.webank.ai.fate.context.FateContext;
@@ -21,6 +22,7 @@ public class FateAdaptor implements HighFlipAdaptor {
 
         register.register(InstanceNameList.HIGHFLIP_ADAPTOR_JOB, new JobAdaptor(getContext()));
         register.register(InstanceNameList.HIGHFLIP_ADAPTOR_TASK, new TaskAdaptor(getContext()));
+        register.register(InstanceNameList.HIGHFLIP_ADAPTOR_DATA, new DataAdaptor(getContext()));
     }
 
     @Override

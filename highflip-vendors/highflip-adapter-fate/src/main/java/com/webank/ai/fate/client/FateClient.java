@@ -1,5 +1,7 @@
 package com.webank.ai.fate.client;
 
+import com.webank.ai.fate.client.form.JobQueryResponseForm;
+import com.webank.ai.fate.client.form.ResultForm;
 import feign.Feign;
 import feign.Param;
 import feign.Request;
@@ -24,12 +26,15 @@ public interface FateClient {
     }
 
     @RequestLine("POST /job/submit")
-    void jobSumbit(@Param("job_dsl") String dsl,
+    String jobSumbit(@Param("job_dsl") String dsl,
                    @Param("job_runtime_conf") String conf);
 
     @RequestLine("POST /job/list/job")
     List<String> jobList(@Param("limit") Integer limit);
 
     @RequestLine("POST /job/stop")
-    void jobStop(@Param("job_id") Integer jobId);
+    void jobStop(@Param("job_id") String jobId);
+
+    @RequestLine("POST /job/query")
+    ResultForm<JobQueryResponseForm> jobQuery(@Param("job_id") String jobId);
 }

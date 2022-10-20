@@ -60,7 +60,7 @@ public class HighFlipConfiguration implements Configuration {
         if (value == null){
             return defaultValue;
         }
-        return Boolean.getBoolean(value);
+        return Boolean.parseBoolean(value);
     }
 
     public void setBoolean(String key, Boolean value){

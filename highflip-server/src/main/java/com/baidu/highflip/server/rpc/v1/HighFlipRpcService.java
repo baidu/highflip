@@ -6,6 +6,7 @@ import com.baidu.highflip.core.entity.runtime.Platform;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
+import com.baidu.highflip.server.exception.HighFlipEngineException;
 import com.google.common.collect.Streams;
 import highflip.v1.HighFlipGrpc.HighFlipImplBase;
 import highflip.v1.Highflip;
@@ -19,9 +20,12 @@ import highflip.v1.Highflip.JobListResponse;
 import highflip.v1.Highflip.PlatformGetResponse;
 import highflip.v1.Highflip.PlatformMatchRequest;
 import highflip.v1.Highflip.PlatformMatchResponse;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
+import org.lognet.springboot.grpc.recovery.GRpcExceptionHandler;
+import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -39,13 +43,14 @@ public class HighFlipRpcService extends HighFlipImplBase {
     @Autowired
     HighFlipEngine engine;
 
-    @PostConstruct
-    public void initialize(){
-        engine.initialize();
-    }
 
     public HighFlipEngine getEngine() {
         return engine;
+    }
+
+    // @GRpcExceptionHandler
+    public Status handle (HighFlipEngineException exc, GRpcExceptionScope scope){
+        return Status.ABORTED;
     }
 
     public void getPlatform(Highflip.Void request,
@@ -76,6 +81,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
         returnOne(responseObserver, response);
     }
 
+    /**
+     *
+     * @param request
+     * @param responseObserver
+     */
     public void createJob(JobCreateRequest request,
                           StreamObserver<JobId> responseObserver) {
 
