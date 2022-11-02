@@ -1,4 +1,4 @@
-package com.baidu.highflip.core.entity.dag;
+package com.baidu.highflip.core.entity.dag.codec;
 
 import highflip.HighflipMeta;
 import org.hibernate.cfg.NotYetImplementedException;

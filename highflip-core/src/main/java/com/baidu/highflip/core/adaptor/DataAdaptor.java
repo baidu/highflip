@@ -14,7 +14,7 @@ public interface DataAdaptor {
         ROW,
     }
 
-    Data getData(Data data);
+    Data updateData(Data data);
 
     int getDataCount();
 

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@Entity(name = "hf_task")
+@Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "hf_task", indexes = {
         @Index(name = "binding_id_index", columnList = "binding_id", unique = true)

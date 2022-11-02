@@ -5,6 +5,7 @@ import com.baidu.highflip.core.entity.runtime.basic.Action;
 import com.baidu.highflip.core.entity.runtime.basic.Status;
 
 import java.util.Iterator;
+import java.util.Map;
 
 public interface TaskAdaptor {
 
@@ -16,7 +17,7 @@ public interface TaskAdaptor {
 
     Status getTaskStatus(Task task);
 
-    Task controlTask(Task task, Action action);
+    Task controlTask(Task task, Action action, Map<String, String> config);
 
     int getTaskCount();
 

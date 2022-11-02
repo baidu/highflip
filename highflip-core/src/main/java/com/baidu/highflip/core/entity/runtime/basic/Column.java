@@ -2,8 +2,10 @@ package com.baidu.highflip.core.entity.runtime.basic;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Column{
 

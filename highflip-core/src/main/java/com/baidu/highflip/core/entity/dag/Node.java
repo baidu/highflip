@@ -1,5 +1,7 @@
 package com.baidu.highflip.core.entity.dag;
 
+import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
+import com.baidu.highflip.core.entity.dag.common.AttributeObject;
 import highflip.HighflipMeta;
 import lombok.Data;
 import org.hibernate.cfg.NotYetImplementedException;
@@ -8,7 +10,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 @Data
-public class Node implements Serializable {
+public class Node extends AttributeObject implements Serializable {
 
     private static final long serialVersionUID = 0x85710002L;
 
@@ -17,8 +19,6 @@ public class Node implements Serializable {
     String type;
 
     String description;
-
-    Map<String, Object> attributes;
 
     Map<String, String> inputs;
 

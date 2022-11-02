@@ -13,9 +13,13 @@ public interface HighFlipRuntime {
 
     Job getJob(String jobId);
 
+    Boolean hasJobByBindId(String bindId);
+
     Task getTask(String taskId);
 
     Data getData(String dataId);
+
+    Boolean hasDataByBindId(String bindId);
 
     Partner getPartner(String partnerId);
 

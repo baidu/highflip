@@ -75,7 +75,7 @@ message NodeProto{
 enum PartyRole{
     HOST = 0;
     GUEST = 1;
-    ARBITOR = 2;
+    ARBITER = 2;
 }
 
 message PartyProto{

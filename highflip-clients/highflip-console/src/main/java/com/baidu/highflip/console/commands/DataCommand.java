@@ -13,6 +13,11 @@ public class DataCommand {
     @Autowired
     HighFlipClient client;
 
+    @ShellMethod(key = "data list", value = "List data ids")
+    public Iterable<String> list() {
+        throw new UnsupportedOperationException();
+    }
+
     @ShellMethod(key = "data get", value = "Get data basic information")
     public Iterable<String> get(String dataId) {
         throw new UnsupportedOperationException();

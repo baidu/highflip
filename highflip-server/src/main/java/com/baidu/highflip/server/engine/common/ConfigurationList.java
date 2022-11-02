@@ -13,4 +13,12 @@ public class ConfigurationList {
     public static final String CONFIG_HIGHFLIP_DATA_IS_INITIALIZED = "highflip.data.is.initialized";
 
     public static final Boolean CONFIG_HIGHFLIP_DATA_IS_INITIALIZED_DEFAULT = Boolean.FALSE;
+
+    public static final String CONFIG_HIGHFLIP_OPERATOR_IS_INITIALIZED = "highflip.operator.is.initialized";
+
+    public static final Boolean CONFIG_HIGHFLIP_OPERATOR_IS_INITIALIZED_DEFAULT = Boolean.FALSE;
+
+    public static final String CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED = "highflip.partner.is.initialized";
+
+    public static final Boolean CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED_DEFAULT = Boolean.FALSE;
 }

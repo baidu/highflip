@@ -1,5 +1,7 @@
 package com.baidu.highflip.core.entity.dag;
 
+import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
+import com.baidu.highflip.core.entity.dag.common.AttributeObject;
 import highflip.HighflipMeta;
 import lombok.Data;
 import org.hibernate.cfg.NotYetImplementedException;
@@ -10,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
-public class Party implements Serializable {
+public class Party extends AttributeObject implements Serializable {
 
     private static final long serialVersionUID = 0x85710003L;
 
@@ -31,6 +33,7 @@ public class Party implements Serializable {
         p.setNodes(proto.getNodesList()
                 .stream()
                 .map(PartyNode::fromProto)
+                .map(n -> {n.setParent(p); return n;})
                 .collect(Collectors.toList()));
         return p;
     }

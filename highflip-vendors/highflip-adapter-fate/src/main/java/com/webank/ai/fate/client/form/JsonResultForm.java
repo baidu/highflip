@@ -4,5 +4,5 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 @Data
-public class JsonForm extends ResultForm<JsonNode>{
+public class JsonResultForm extends ResultForm<JsonNode>{
 }

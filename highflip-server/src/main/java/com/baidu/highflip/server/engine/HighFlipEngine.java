@@ -11,24 +11,20 @@ import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Platform;
 import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.core.entity.runtime.basic.Action;
+import com.baidu.highflip.core.entity.runtime.basic.Column;
 import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.server.engine.common.ConfigurationList;
 import com.baidu.highflip.server.engine.component.HighFlipConfiguration;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
-import com.baidu.highflip.server.respository.DataRepository;
-import com.baidu.highflip.server.respository.JobRepository;
-import com.baidu.highflip.server.respository.OperatorRepository;
-import com.baidu.highflip.server.respository.PartnerRepository;
-import com.baidu.highflip.server.respository.PlatformRepository;
-import com.baidu.highflip.server.respository.TaskRepository;
-import com.baidu.highflip.server.respository.UserRepository;
+import com.baidu.highflip.server.engine.component.HighFlipRuntime;
 import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -41,6 +37,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -55,29 +53,10 @@ public class HighFlipEngine{
     HighFlipConfiguration configuration;
 
     @Autowired
+    HighFlipRuntime runtime;
+
+    @Autowired
     PlatformTransactionManager transactionManager;
-
-    @Autowired
-    PlatformRepository platformReps;
-
-    @Autowired
-    UserRepository userReps;
-
-    @Autowired
-    JobRepository jobReps;
-
-    @Autowired
-    TaskRepository taskReps;
-
-    @Autowired
-    DataRepository dataReps;
-
-    @Autowired
-    OperatorRepository operatorReps;
-
-    @Autowired
-    PartnerRepository partnerReps;
-
 
     ConcurrentMap<String, Job> activeJobs;
 
@@ -110,6 +89,11 @@ public class HighFlipEngine{
     }
 
     /******************************************************************************
+     * CONFIG
+     ******************************************************************************/
+
+
+    /******************************************************************************
      * PLATFORM
      ******************************************************************************/
     @Transactional
@@ -124,7 +108,8 @@ public class HighFlipEngine{
 
         log.info("Begin to initialize platform information.");
 
-        platformReps.deleteLocal();
+        getContext().getPlatformRepository()
+                .deleteLocal();
         log.info("Delete old platform information.");
 
         PlatformAdaptor adaptor = getContext().getPlatformAdaptor();
@@ -146,7 +131,7 @@ public class HighFlipEngine{
                     .collect(Collectors.toList());
             platform.setCompatibles(compatibles);
         }
-        platformReps.save(platform);
+        getContext().getPlatformRepository().save(platform);
 
         getConfiguration().setBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED,
@@ -156,12 +141,12 @@ public class HighFlipEngine{
     }
 
     public Platform getPlatform() {
-        Platform platform = platformReps.findLocal();
+        Platform platform = getContext().getPlatformRepository().findLocal();
         return platform;
     }
 
     public Platform matchPlatform(PlatformVersion target) {
-        for (Platform platform : platformReps.findAll()) {
+        for (Platform platform : getContext().getPlatformRepository().findAll()) {
             for (CompatibleVersion comp : platform.getCompatibles()) {
                 if (comp.isCompatible(target)) {
                     return platform;
@@ -185,21 +170,58 @@ public class HighFlipEngine{
         }
 
         log.info("Delete old job information.");
-        jobReps.deleteAll();
+        getContext().getJobRepository()
+                .deleteAll();
 
-        int jobCount = getContext().getJobAdaptor().getJobCount();
+        int jobCount = getContext()
+                .getJobAdaptor()
+                .getJobCount();
+
         for (int i = 0; i < jobCount; i++) {
             Job job = new Job();
 
             Job newJob = getContext().getJobAdaptor()
                     .getJobByIndex(i, job);
 
-            jobReps.save(newJob);
+            getContext().getJobRepository()
+                    .save(newJob);
         }
 
         getConfiguration().setBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED,
                 Boolean.TRUE);
+    }
+
+    @Transactional
+    public Job synchronizeJob(){
+        Job job = new Job();
+        Optional<Job> optJob = getContext().getJobAdaptor().moreJob(job, runtime);
+
+        if (optJob == null || optJob.isEmpty()) {
+            return null;
+        }
+
+        if (runtime.hasJobByBindId(job.getBingingId())) {
+            log.error("Detected and skipped duplicated Binding Id {} in jobs synchronization.",
+                    job.getBingingId());
+        }
+
+        Job savedJob = getContext().getJobRepository()
+                .save(job);
+        log.info("Found new job, jobId = {}", savedJob.getJobId());
+        return savedJob;
+    }
+
+    @Scheduled(fixedDelayString = "10s")
+    public void synchronizeJobs(){
+        try{
+            Job job = null;
+            do{
+                job = synchronizeJob();
+            } while(job != null);
+        } catch (Exception e) {
+
+        }
     }
 
     @Transactional
@@ -213,7 +235,7 @@ public class HighFlipEngine{
         getContext()
                 .getJobAdaptor()
                 .createJob(job);
-        jobReps.save(job);
+        getContext().getJobRepository().save(job);
 
         int taskCount = getContext()
                 .getJobAdaptor()
@@ -222,7 +244,8 @@ public class HighFlipEngine{
         ArrayList<Task> tasks = new ArrayList<>(taskCount);
         for (int i = 0; i < taskCount; i++) {
             Task task = new Task();
-            taskReps.save(task);
+            getContext().getTaskRepository()
+                    .save(task);
             tasks.add(task);
         }
 
@@ -230,7 +253,8 @@ public class HighFlipEngine{
                 .getJobAdaptor()
                 .getTaskList(job, tasks);
 
-        taskReps.saveAll(news);
+        getContext().getTaskRepository()
+                .saveAll(news);
         return job;
     }
 
@@ -244,41 +268,66 @@ public class HighFlipEngine{
             Status status = adaptor.getJobStatus(job);
             if (status != job.getStatus()) {
                 job.setStatus(status);
-                jobReps.save(job);
+                getContext().getJobRepository().save(job);
             }
         });
     }
 
     @Cacheable("jobs")
     public Job getJob(String jobid) {
-        Job job = jobReps.findById(jobid)
+        Job job = getContext().getJobRepository().findById(jobid)
                 .orElseThrow();
 
         return job;
     }
 
     public Iterator<String> listJobIds() {
-        return jobReps.findAll()
+        return getContext().getJobRepository().findAll()
                 .stream()
                 .map(job -> job.getJobId())
                 .iterator();
     }
 
     @Transactional
-    public void deleteJob(String jobid) {
-        Job job = getJob(jobid);
+    public void deleteJob(String jobId) {
+        Job job = getJob(jobId);
 
         getContext().getJobAdaptor()
                 .deleteJob(job);
 
-        jobReps.delete(job);
+        getContext().getJobRepository().delete(job);
     }
 
-    public void controlJob(String jobid, Action action) {
-        Job job = getJob(jobid);
+    public void controlJob(String jobId, Action action, Map<String, String> config) {
+        Job job = getJob(jobId);
 
         getContext().getJobAdaptor()
                 .controlJob(job, action);
+    }
+
+    public Iterable<String> getJobLog(String jobId){
+        Job job = getJob(jobId);
+
+        int count = getContext().getJobAdaptor()
+                .getJobLogCount(job);
+
+        new Iterator<String>(){
+
+            int current = 0;
+
+            @Override
+            public boolean hasNext() {
+                return current < count;
+            }
+
+            @Override
+            public String next() {
+                getContext().getJobAdaptor()
+                        .getJobLog(job, 0, 0);
+                return null;
+            }
+        };
+        return null;
     }
 
     /******************************************************************************
@@ -287,7 +336,8 @@ public class HighFlipEngine{
 
     @Transactional
     public void initializeTasks() {
-        taskReps.deleteAll();
+        getContext().getTaskRepository()
+                .deleteAll();
 
         int taskCount = getContext()
                 .getTaskAdaptor()
@@ -299,7 +349,8 @@ public class HighFlipEngine{
             Task newTask = getContext().getTaskAdaptor()
                     .getTaskByIndex(i, task);
 
-            taskReps.save(newTask);
+            getContext().getTaskRepository()
+                    .save(newTask);
         }
     }
 
@@ -308,16 +359,26 @@ public class HighFlipEngine{
 
     }
 
-    public List<Task> listTask(String jobid) {
+    public Iterable<Task> listTask(String jobid) {
 
-        return taskReps.findAllByJobid(jobid);
+        return getContext().getTaskRepository()
+                .findAllByJobid(jobid);
     }
 
     @Cacheable(value = "tasks")
-    public Task getTask(String taskid) {
+    public Task getTask(String taskId) {
 
-        return taskReps.findById(taskid)
+        return getContext()
+                .getTaskRepository()
+                .findById(taskId)
                 .orElseThrow();
+    }
+
+    public void controlTask(String taskId, Action action, Map<String, String> config) {
+        Task task = getTask(taskId);
+
+        getContext().getTaskAdaptor()
+                .controlTask(task, action, config);
     }
 
     public Iterator<String> getTaskLog(String taskid) {
@@ -334,6 +395,7 @@ public class HighFlipEngine{
     /******************************************************************************
      * DATA
      ******************************************************************************/
+    @Transactional
     protected void initializeData(){
         Boolean isInitialized = getConfiguration().getBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_DATA_IS_INITIALIZED,
@@ -343,21 +405,48 @@ public class HighFlipEngine{
             return;
         }
 
+        int count = getContext().getDataAdaptor()
+                .getDataCount();
+
+        for(int i = 0; i < count; i++){
+            Data data = new Data();
+            Data retData = getContext().getDataAdaptor()
+                    .getDataByIndex(i, data);
+
+            Data saveData = getContext().getDataRepository()
+                    .save(retData);
+
+            log.info("Initialize a data {}", saveData.getDataId());
+        }
+
         getConfiguration().setBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_DATA_IS_INITIALIZED,
                 Boolean.TRUE);
     }
 
-    public Iterator<String> listData() {
-        return dataReps.findAll()
+    /**
+     *
+     * @return
+     */
+    public Iterable<String> listData() {
+        return () -> getContext()
+                .getDataRepository()
+                .findAll()
                 .stream()
                 .map(d -> d.getDataId())
                 .iterator();
     }
 
+    /**
+     *
+     * @param dataid
+     * @return
+     */
     @Cacheable("data")
     public Data getData(String dataid) {
-        return dataReps.findById(dataid)
+        return getContext()
+                .getDataRepository()
+                .findById(dataid)
                 .orElseThrow();
     }
 
@@ -368,46 +457,127 @@ public class HighFlipEngine{
         getContext().getDataAdaptor()
                 .deleteData(data);
 
-        dataReps.delete(data);
+        getContext()
+            .getDataRepository()
+            .delete(data);
     }
 
-    public Iterator<List<Object>> fetchData(String dataid, long offset, long size) {
+    public Iterator<List<Object>> pullData(String dataid, long offset, long size) {
         Data data = getData(dataid);
 
         return getContext().getDataAdaptor()
                 .readData(data, DataAdaptor.PositionType.ROW, offset, size);
     }
 
-    public void provideData(String dataid) {
+    public Data createData(String name, String description, List<Column> columns){
+        Data data = new Data();
+        data.setName(name);
+        data.setDescription(description);
+        data.setColumns(columns);
+        return getContext()
+                .getDataRepository()
+                .save(data);
+    }
+
+    public void pushData(String dataid, long offset, Iterator<List<Object>> body) {
         Data data = getData(dataid);
 
+        getContext().getDataAdaptor()
+                .writeData(data, DataAdaptor.PositionType.ROW, body);
     }
 
     /******************************************************************************
      * OPERATOR
      ******************************************************************************/
+    @Transactional
+    protected void initializeOperator(){
+        Boolean isInitialized = getConfiguration().getBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_OPERATOR_IS_INITIALIZED,
+                ConfigurationList.CONFIG_HIGHFLIP_OPERATOR_IS_INITIALIZED_DEFAULT);
+
+        if (isInitialized){
+            return;
+        }
+
+        int count = getContext().getOperatorAdaptor()
+                .getOperatorCount();
+
+        for(int i = 0; i < count; i++){
+            Operator oper = new Operator();
+            Operator retOper = getContext().getOperatorAdaptor()
+                    .getOperatorByIndex(i, oper);
+
+            Operator saveOper = getContext().getOperatorRepository()
+                    .save(retOper);
+
+            log.info("Initialize an operator {}", saveOper.getOperatorId());
+        }
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_OPERATOR_IS_INITIALIZED,
+                Boolean.TRUE);
+    }
+
     public Iterator<String> listOperator() {
-        return operatorReps.findAll()
+        return getContext()
+                .getOperatorRepository()
+                .findAll()
                 .stream()
                 .map(a -> a.getOperatorId())
                 .iterator();
     }
 
     public Operator getOperator(String operatorId) {
-        return operatorReps.findById(operatorId)
+        return getContext()
+                .getOperatorRepository()
+                .findById(operatorId)
                 .orElseThrow();
     }
 
     /******************************************************************************
      * PARTNER
      ******************************************************************************/
-    public Partner getPartner(String partnerid) {
-        return partnerReps.findById(partnerid)
+    @Transactional
+    protected void initializeParterners(){
+        Boolean isInitialized = getConfiguration().getBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED,
+                ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED_DEFAULT);
+
+        if (isInitialized){
+            return;
+        }
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED,
+                Boolean.TRUE);
+    }
+
+    @Transactional
+    public String createPartner(String name, String description){
+        Partner partner = new Partner();
+        partner.setName(name);
+        partner.setDescription(description);
+
+        Partner retPartner = getContext().getPartnerAdaptor()
+                .createPartner(partner);
+
+        return getContext().getPartnerRepository()
+                .save(retPartner)
+                .getPartnerId();
+    }
+
+
+    public Partner getPartner(String partnerId) {
+        return getContext()
+                .getPartnerRepository()
+                .findById(partnerId)
                 .orElseThrow();
     }
 
-    public Iterator<String> listPartner(int offset, int limit) {
-        return partnerReps.findAll()
+    public Iterable<String> listPartner(int offset, int limit) {
+        return () -> getContext()
+                .getPartnerRepository()
+                .findAll()
                 .stream()
                 .map(p -> p.getPartnerId())
                 .iterator();

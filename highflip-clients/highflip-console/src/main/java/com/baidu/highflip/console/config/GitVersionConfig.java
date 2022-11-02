@@ -23,5 +23,4 @@ public class GitVersionConfig {
 
     @Value("${git.commit.id.full}")
     String commitId;
-
 }

@@ -94,7 +94,7 @@ public class Job {
         switch (status) {
             case APPENDING:
             case RUNNING:
-            case STOPPED:
+            case SUCCEEDED:
                 return true;
             default:
                 return false;

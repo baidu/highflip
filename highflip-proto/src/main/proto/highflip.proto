@@ -154,6 +154,8 @@ message JobControlRequest{
     string job_id = 1;
 
     Action action = 2;
+
+    map<string, string> configuration = 3;
 }
 
 message JobListRequest{
@@ -170,6 +172,19 @@ message JobListResponse{
     string name = 2;
 }
 
+message JobLogRequest{
+
+    string job_id = 1;
+
+    optional int64 offset = 2;
+
+    optional int64 limit = 3;
+}
+
+message JobLogResponse{
+
+    repeated string lines = 1;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // TASK
@@ -201,9 +216,9 @@ message TaskGetResponse{
 
     string task_id = 2;
 
-    string name = 3;
+    string node_name = 3;
 
-    string type = 4;
+    string node_type = 4;
 
     string create_time = 5;
 
@@ -219,7 +234,6 @@ message TaskGetResponse{
 }
 
 
-
 message TaskCheckResponse{
 
     enum TaskStatus{
@@ -227,9 +241,8 @@ message TaskCheckResponse{
         CREATED = 1;
         APPENDING = 2;
         RUNNING = 3;
-        STOPPED = 5;
+        SUCCEEDED = 5;
         FAILED = 6;
-        DELETED = 7;
     }
 
     string job_id = 1;
@@ -252,9 +265,11 @@ message TaskControlRequest{
     string task_id = 1;
 
     Action action = 2;
+
+    map<string, string> configuration = 3;
 }
 
-message LogListReqeust{
+message TaskLogRequest{
 
     string task_id = 1;
 
@@ -264,7 +279,7 @@ message LogListReqeust{
 }
 
 
-message LogListResponse{
+message TaskLogResponse{
 
     repeated string lines = 1;
 }
@@ -349,7 +364,7 @@ enum DataType{
 
 message DataListRequest{
 
-    string party_id = 1;
+    string partner_id = 1;
 
     DataType data_type = 2;
 
@@ -375,14 +390,14 @@ message DataGetResponse{
 
 message DataListResponse{
 
-    DataId data_id = 1;
+    string data_id = 1;
 
     string name = 2;
 }
 
 message DataPullRequest{
 
-    DataId data_id = 1;
+    string data_id = 1;
 
     optional int64 offset = 2;
 
@@ -430,11 +445,11 @@ message OperatorGetReponse{
 ////////////////////////////////////////////////////////////////////////////////
 // PARTY
 ////////////////////////////////////////////////////////////////////////////////
-message PartyId{
-    string party_id = 1;
+message PartnerId{
+    string partner_id = 1;
 }
 
-message PartyCreateRequest{
+message PartnerCreateRequest{
 
     string name = 1;
 
@@ -445,9 +460,9 @@ message PartyCreateRequest{
     map<string, string> context = 4;
 }
 
-message PartyGetResponse{
+message PartnerGetResponse{
 
-    string party_id = 1;
+    string partner_id = 1;
 
     string name = 2;
 
@@ -462,23 +477,23 @@ message PartyGetResponse{
     string update_time = 7;
 }
 
-message PartyListRequest{
+message PartnerListRequest{
 
     int32 offset = 1;
 
     int32 limit = 2;
 }
 
-message PartyListResponse{
+message PartnerListResponse{
 
-    string party_id = 1;
+    string partner_id = 1;
 
     string name = 2;
 }
 
-message PartyControlRequest{
+message PartnerControlRequest{
 
-    string party_id = 1;
+    string partner_id = 1;
 
     string action = 2;
 
@@ -487,20 +502,20 @@ message PartyControlRequest{
 ////////////////////////////////////////////////////////////////////////////////
 // CONFIGURATION
 ////////////////////////////////////////////////////////////////////////////////
-message ConfigurationSetRequest{
+message ConfigSetRequest{
 
     string key = 1;
 
     string value = 2;
 }
 
-message ConfigurationGetRequest{
+message ConfigGetRequest{
 
     string key = 1;
 
 }
 
-message ConfigurationGetResponse{
+message ConfigGetResponse{
 
     string key = 1;
 
@@ -511,14 +526,14 @@ message ConfigurationGetResponse{
     string update_time = 4;
 }
 
-message ConfigurationListRequest{
+message ConfigListRequest{
 
     int64 offset = 1;
 
     int64 limit = 2;
 }
 
-message ConfigurationListResponse{
+message ConfigListResponse{
 
     string key = 1;
 }
@@ -530,9 +545,9 @@ message ConfigurationListResponse{
 service HighFlip{
 
     // CONFIGURATION
-    rpc setConfiguration(ConfigurationSetRequest) returns(Void);
-    rpc getConfiguration(ConfigurationGetRequest) returns(ConfigurationGetResponse);
-    rpc listConfiguration(Void) returns(stream ConfigurationListResponse);
+    rpc setConfig(ConfigSetRequest) returns(Void);
+    rpc getConfig(ConfigGetRequest) returns(ConfigGetResponse);
+    rpc listConfig(ConfigListRequest) returns(stream ConfigListResponse);
 
     // PLATFORM
     rpc getPlatform(Void) returns(PlatformGetResponse);
@@ -546,13 +561,14 @@ service HighFlip{
     rpc deleteJob(JobId) returns(Void);
     rpc listJob(JobListRequest) returns(stream JobListResponse);
     rpc controlJob(JobControlRequest) returns(Void);
+    rpc getJobLog(JobLogRequest) returns(stream JobLogResponse);
 
     // TASK
     rpc listTask(TaskListRequest) returns(stream TaskListResponse);
     rpc getTask(TaskId) returns(TaskGetResponse);
     rpc checkTask(TaskId) returns(TaskCheckResponse);
     rpc controlTask(TaskControlRequest) returns(Void);
-    rpc getTaskLog(LogListReqeust) returns(stream LogListResponse);
+    rpc getTaskLog(TaskLogRequest) returns(stream TaskLogResponse);
 
     // DATA
     rpc listData(DataListRequest) returns(stream DataListResponse);
@@ -565,9 +581,9 @@ service HighFlip{
     rpc listOperator(OperatorListRequest) returns(stream OperatorListResponse);
     rpc getOperator(OperatorId) returns(OperatorGetReponse);
 
-    // PARTY
-    rpc createParty(PartyCreateRequest) returns(PartyId);
-    rpc getParty(PartyId) returns(PartyGetResponse);
-    rpc listParty(PartyListRequest) returns(stream PartyListResponse);
-    rpc controlParty(PartyControlRequest) returns(Void);
+    // PARTNER
+    rpc createPartner(PartnerCreateRequest) returns(PartnerId);
+    rpc getPartner(PartnerId) returns(PartnerGetResponse);
+    rpc listPartner(PartnerListRequest) returns(stream PartnerListResponse);
+    rpc controlPartner(PartnerControlRequest) returns(Void);
 }

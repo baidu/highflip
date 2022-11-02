@@ -1,5 +1,6 @@
 package com.webank.ai.fate.adaptor;
 
+import com.baidu.highflip.core.engine.HighFlipRuntime;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.core.entity.runtime.basic.Action;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Getter
@@ -22,6 +24,11 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
 
     public JobAdaptor(FateContext context) {
         this.context = context;
+    }
+
+    @Override
+    public List<String> getFeatures() {
+        return null;
     }
 
     @Override
@@ -52,11 +59,12 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
     @Override
     public Status getJobStatus(Job job) {
         String bindId = job.getBingingId();
-        ResultForm<JobQueryResponseForm> result = getContext()
+        ResultForm<List<JobQueryResponseForm>> result = getContext()
                 .getClient()
                 .jobQuery(bindId);
 
         String status = result.getData()
+                .get(0)
                 .getF_status();
 
         return Status.valueOf(status);
@@ -85,6 +93,11 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
     @Override
     public Job getJobByIndex(int index, Job job) {
         return null;
+    }
+
+    @Override
+    public Optional<Job> moreJob(Job job, HighFlipRuntime runtime) {
+        return Optional.empty();
     }
 
     @Override

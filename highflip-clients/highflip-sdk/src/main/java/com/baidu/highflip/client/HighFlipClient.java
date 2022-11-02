@@ -69,6 +69,44 @@ public class HighFlipClient implements AutoCloseable {
         return this.stub;
     }
 
+    public Iterable<String> listConfig() {
+        Highflip.ConfigListRequest request = Highflip.ConfigListRequest
+                .newBuilder()
+                .build();
+
+        Iterator<Highflip.ConfigListResponse> response = getStub()
+                .listConfig(Highflip.ConfigListRequest
+                        .newBuilder()
+                        .build());
+
+        return () -> Streams.of(response)
+                .map(r -> r.getKey())
+                .iterator();
+    }
+
+
+    public Highflip.ConfigGetResponse getConfig(String key) {
+        Highflip.ConfigGetRequest request = Highflip.ConfigGetRequest
+                .newBuilder()
+                .setKey(key)
+                .build();
+
+        Highflip.ConfigGetResponse response = getStub()
+                .getConfig(request);
+
+        return response;
+    }
+
+    public  void setConfig(String key, String value) {
+        Highflip.ConfigSetRequest request = Highflip.ConfigSetRequest
+                .newBuilder()
+                .setKey(key)
+                .setValue(value)
+                .build();
+
+        getStub().setConfig(request);
+    }
+
 
 
     /**

@@ -14,12 +14,12 @@ public class HighFlipConfiguration implements Configuration {
     @Autowired
     ConfigurationRepository configs;
 
-    protected com.baidu.highflip.server.entity.Configuration getEntry(String key){
+    public com.baidu.highflip.server.entity.Configuration getEntry(String key){
         return configs.findById(key).orElse(null);
     }
 
     @Transactional
-    protected void setEntry(String key, String value){
+    public void setEntry(String key, String value){
         com.baidu.highflip.server.entity.Configuration entity = getEntry(key);
         if (entity != null){
             entity.setValue(value);
@@ -35,9 +35,10 @@ public class HighFlipConfiguration implements Configuration {
         return configs.findAll().stream().iterator();
     }
 
-    public Iterator<String>  listKeys(){
-        return configs.findAll()
-                .stream().map(c -> c.getKey())
+    public Iterable<String>  listKeys(){
+        return () ->configs.findAll()
+                .stream()
+                .map(c -> c.getKey())
                 .iterator();
     }
 

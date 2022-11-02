@@ -25,7 +25,7 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
     );
 
     @Override
-    public Data getData(Data data) {
+    public Data updateData(Data data) {
         data.setName(data.getName());
         data.setColumns(DATA_COLUMNS);
         return null;

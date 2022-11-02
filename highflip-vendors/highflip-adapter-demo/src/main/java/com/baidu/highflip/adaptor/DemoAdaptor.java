@@ -4,8 +4,8 @@ import com.baidu.highflip.adaptor.demo.DemoDataAdaptor;
 import com.baidu.highflip.adaptor.demo.DemoJobAdaptor;
 import com.baidu.highflip.adaptor.demo.DemoOperatorAdaptor;
 import com.baidu.highflip.adaptor.demo.DemoTaskAdaptor;
-import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import com.baidu.highflip.core.common.InstanceNameList;
+import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import lombok.extern.slf4j.Slf4j;
 
