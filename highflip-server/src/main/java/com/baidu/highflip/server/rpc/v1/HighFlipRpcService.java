@@ -400,7 +400,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
             @Override
             public void onNext(Highflip.DataPushRequest request) {
-                if (data != null) {
+                if (data == null) {
                     Highflip.DataPushRequest.Head head = request.getHead();
                     HighflipMeta.DataProto schema = head.getSchema();
                     List<Column> columns = schema.getColumnsList()
