@@ -20,7 +20,6 @@ import java.net.SocketAddress;
 public class HighflipServer {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(HighflipServer.class);
-        //app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
     }
 

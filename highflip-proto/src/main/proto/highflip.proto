@@ -544,7 +544,7 @@ message ConfigListResponse{
 ////////////////////////////////////////////////////////////////////////////////
 service HighFlip{
 
-  // CONFIGURATION
+  // CONFIG
   rpc setConfig(ConfigSetRequest) returns(Void);
   rpc getConfig(ConfigGetRequest) returns(ConfigGetResponse);
   rpc listConfig(ConfigListRequest) returns(stream ConfigListResponse);

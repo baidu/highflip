@@ -14,7 +14,7 @@ public interface JobAdaptor {
 
     List<String> getFeatures();
 
-    //Job Basic
+    // Job Basic
     Job createJob(Job job);
 
     Job updateJob(Job job);

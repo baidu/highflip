@@ -1,6 +1,7 @@
 package com.baidu.highflip.adaptor.demo;
 
 import com.baidu.highflip.core.adaptor.JobAdaptor;
+import com.baidu.highflip.core.engine.HighFlipRuntime;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.core.entity.runtime.basic.Action;
@@ -10,10 +11,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
 public class DemoJobAdaptor implements JobAdaptor {
+
+    @Override
+    public List<String> getFeatures() {
+        return null;
+    }
 
     @Override
     public Job createJob(Job job) {
@@ -53,6 +60,11 @@ public class DemoJobAdaptor implements JobAdaptor {
     @Override
     public Job getJobByIndex(int index, Job job) {
         return null;
+    }
+
+    @Override
+    public Optional<Job> moreJob(Job job, HighFlipRuntime runtime) {
+        return Optional.empty();
     }
 
     @Override

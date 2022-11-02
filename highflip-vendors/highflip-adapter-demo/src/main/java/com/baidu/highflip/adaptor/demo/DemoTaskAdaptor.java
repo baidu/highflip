@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -34,17 +35,17 @@ public class DemoTaskAdaptor implements TaskAdaptor {
     }
 
     @Override
+    public Task controlTask(Task task, Action action, Map<String, String> config) {
+        return null;
+    }
+
+    @Override
     public int getTaskLogCount(Task task) {
         return 0;
     }
 
     @Override
     public Iterator<String> getTaskLog(Task task, int offset, int limit) {
-        return null;
-    }
-
-    @Override
-    public Task controlTask(Task task, Action action) {
         return null;
     }
 
