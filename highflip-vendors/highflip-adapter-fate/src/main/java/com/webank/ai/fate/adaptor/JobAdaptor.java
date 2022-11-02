@@ -65,7 +65,7 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
 
         String status = result.getData()
                 .get(0)
-                .getF_status();
+                .getStatus();
 
         return Status.valueOf(status);
     }
