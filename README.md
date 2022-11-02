@@ -8,7 +8,7 @@ layer **F**ederated **L**earning **I**ntercommunication **P**rotocol的缩写.
 HIGHFLIP项目是用于解决异构的联邦学习平台互通的问题，通过统一不同平台使用方式的方法，
 达到在使用的层面实现无差异访问，使用可适配的客户端与对方进行互通。
 
-![img.png](highflip-doc/doc/images/sence.png)
+![img.png](highflip-doc/doc/images/scenario.png)
 
 # 框架介绍
 

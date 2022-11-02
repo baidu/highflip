@@ -7,11 +7,13 @@ HIGHFLIP is named by capital letters of **HIGH** layer **F**ederated **L**earnin
 HIGHFLIP means to use the simplest way to build connection between heterogeneous
 federated learning platform at high hierarchy.
 
-![img.png](highflip-doc/doc/images/sence.png)
+![img.png](highflip-doc/doc/images/scenario.png)
 
 # Architecture
 
 # Directory
+
+![img.png](highflip-doc/doc/images/directories.png)
 
 - highflip-core
 
