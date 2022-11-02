@@ -29,7 +29,7 @@ public class AdaptorLoader {
         try (InputStream stream = loader
                 .getResourceAsStream(AdaptorPropsList.HIGHFLIP_PROPERTIES_FILE)) {
 
-            if  ( stream != null) {
+            if (stream != null) {
                 props.load(stream);
             } else {
                 log.info("Missed {} property file.", AdaptorPropsList.HIGHFLIP_PROPERTIES_FILE);

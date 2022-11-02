@@ -30,7 +30,7 @@ import java.util.Map;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "hf_job", indexes = {
-    @Index(name = "binding_id_index", columnList = "binding_id", unique = true)
+        @Index(name = "binding_id_index", columnList = "binding_id", unique = true)
 })
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Job {
@@ -86,7 +86,7 @@ public class Job {
     @Column(name = "binding")
     Map<String, String> binding;
 
-    public void bindJobId(){
+    public void bindJobId() {
         this.jobId = IdGenerator.fromStrings(this.getBingingId());
     }
 

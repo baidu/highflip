@@ -26,19 +26,22 @@ public class Party extends AttributeObject implements Serializable {
 
     List<PartyNode> nodes;
 
-    public static Party fromProto(HighflipMeta.PartyProto proto){
+    public static Party fromProto(HighflipMeta.PartyProto proto) {
         Party p = new Party();
         p.setName(proto.getName());
         p.setAttributes(AttributeMap.fromProto(proto.getAttributesMap()));
         p.setNodes(proto.getNodesList()
                 .stream()
                 .map(PartyNode::fromProto)
-                .map(n -> {n.setParent(p); return n;})
+                .map(n -> {
+                    n.setParent(p);
+                    return n;
+                })
                 .collect(Collectors.toList()));
         return p;
     }
 
-    public static HighflipMeta.PartyProto toProto(Party party){
+    public static HighflipMeta.PartyProto toProto(Party party) {
         throw new NotYetImplementedException();
     }
 }

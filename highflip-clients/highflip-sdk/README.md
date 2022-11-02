@@ -1,9 +1,7 @@
 HIGHFLIP CLIENT
 ======================================
 
-
 # highflip-client
-
 
 ```java
 

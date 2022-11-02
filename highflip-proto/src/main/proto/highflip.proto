@@ -13,7 +13,7 @@ message Void{
 }
 
 message Count{
-    int64 count = 1;
+  int64 count = 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -21,67 +21,67 @@ message Count{
 ////////////////////////////////////////////////////////////////////////////////
 message PlatformVersion{
 
-    optional string company = 1;
+  optional string company = 1;
 
-    string product = 2;
+  string product = 2;
 
-    string version = 3;
+  string version = 3;
 }
 
 message CompatibleVersion{
 
-    optional string company = 1;
+  optional string company = 1;
 
-    string product = 2;
+  string product = 2;
 
-    string version_begin = 3;
+  string version_begin = 3;
 
-    bool included_begin = 4;
+  bool included_begin = 4;
 
-    string version_end = 5;
+  string version_end = 5;
 
-    bool included_end = 6;
+  bool included_end = 6;
 }
 
 message PlatformGetResponse{
 
-    PlatformVersion version = 1;
+  PlatformVersion version = 1;
 
-    optional string description = 2;
+  optional string description = 2;
 
-    repeated string compatibility = 3;
+  repeated string compatibility = 3;
 }
 
 message PlatformListRequest{
 
-    int64 offset = 1;
+  int64 offset = 1;
 
-    int64 limit = 2;
+  int64 limit = 2;
 }
 
 message PlatformListResponse{
 
-    PlatformVersion version = 1;
+  PlatformVersion version = 1;
 
-    repeated CompatibleVersion compatibles = 2;
+  repeated CompatibleVersion compatibles = 2;
 }
 
 
 message PlatformMatchRequest{
 
-    PlatformVersion version = 1;
+  PlatformVersion version = 1;
 
-    string endpoint = 2;
+  string endpoint = 2;
 
 }
 
 message  PlatformMatchResponse{
 
-    PlatformVersion version = 1;
+  PlatformVersion version = 1;
 
-    repeated string compatibility = 2;
+  repeated string compatibility = 2;
 
-    string endpoint = 3;
+  string endpoint = 3;
 }
 
 
@@ -90,100 +90,100 @@ message  PlatformMatchResponse{
 ////////////////////////////////////////////////////////////////////////////////
 message JobId{
 
-    string job_id = 1;
+  string job_id = 1;
 }
 
 message JobCreateRequest{
 
-    string name = 1;
+  string name = 1;
 
-    string description = 2;
+  string description = 2;
 
-    GraphProto dag = 3;
+  GraphProto dag = 3;
 }
 
 message JobGetResponse{
 
-    string job_id = 1;
+  string job_id = 1;
 
-    string name = 2;
+  string name = 2;
 
-    string description = 3;
+  string description = 3;
 
-    GraphProto dag = 4;
+  GraphProto dag = 4;
 
-    string create_time = 5;
+  string create_time = 5;
 
-    string update_time = 6;
+  string update_time = 6;
 
-    string finish_time = 7;
+  string finish_time = 7;
 
-    repeated string input_task_ids = 8;
+  repeated string input_task_ids = 8;
 
-    repeated string output_task_ids = 9;
+  repeated string output_task_ids = 9;
 }
 
 message JobCheckResponse{
 
-    enum JobStatus{
-        UNKNOWN = 0;
-        CREATED = 1;
-        APPENDING = 2;
-        RUNNING = 3;
-        STOPPED = 5;
-        FAILED = 6;
-        DELETED = 7;
-    }
+  enum JobStatus{
+    UNKNOWN = 0;
+    CREATED = 1;
+    APPENDING = 2;
+    RUNNING = 3;
+    STOPPED = 5;
+    FAILED = 6;
+    DELETED = 7;
+  }
 
-    string job_id = 1;
+  string job_id = 1;
 
-    JobStatus status = 2;
+  JobStatus status = 2;
 
-    string message = 3;
+  string message = 3;
 }
 
 
 message JobControlRequest{
 
-    enum Action{
-        START = 0;
-        STOP = 1;
-        RESTART = 2;
-    }
+  enum Action{
+    START = 0;
+    STOP = 1;
+    RESTART = 2;
+  }
 
-    string job_id = 1;
+  string job_id = 1;
 
-    Action action = 2;
+  Action action = 2;
 
-    map<string, string> configuration = 3;
+  map<string, string> configuration = 3;
 }
 
 message JobListRequest{
 
-    optional int32 offset = 1;
-    
-    optional int32 limit = 2;
+  optional int32 offset = 1;
+
+  optional int32 limit = 2;
 }
 
 message JobListResponse{
 
-    string job_id = 1;
+  string job_id = 1;
 
-    string name = 2;
+  string name = 2;
 }
 
 message JobLogRequest{
 
-    string job_id = 1;
+  string job_id = 1;
 
-    optional int64 offset = 2;
+  optional int64 offset = 2;
 
-    optional int64 limit = 3;
+  optional int64 limit = 3;
 }
 
 message JobLogResponse{
 
-    repeated string lines = 1;
+  repeated string lines = 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -191,226 +191,226 @@ message JobLogResponse{
 ////////////////////////////////////////////////////////////////////////////////
 message TaskId{
 
-    string task_id = 1;
+  string task_id = 1;
 }
 
 message TaskListRequest{
 
-    string job_id = 1;
+  string job_id = 1;
 
-    optional int32 offset = 2;
+  optional int32 offset = 2;
 
-    optional int32 limit = 3;
+  optional int32 limit = 3;
 }
 
 message TaskListResponse{
 
-    string task_id = 1;
+  string task_id = 1;
 
-    string name = 2;
+  string name = 2;
 }
 
 message TaskGetResponse{
 
-    string job_id = 1;
+  string job_id = 1;
 
-    string task_id = 2;
+  string task_id = 2;
 
-    string node_name = 3;
+  string node_name = 3;
 
-    string node_type = 4;
+  string node_type = 4;
 
-    string create_time = 5;
+  string create_time = 5;
 
-    string update_time = 6;
+  string update_time = 6;
 
-    string finish_time = 7;
+  string finish_time = 7;
 
-    map<string, string> attributes = 8;
+  map<string, string> attributes = 8;
 
-    repeated string input_tasks = 9;
+  repeated string input_tasks = 9;
 
-    repeated string output_tasks = 10;
+  repeated string output_tasks = 10;
 }
 
 
 message TaskCheckResponse{
 
-    enum TaskStatus{
-        UNKNOWN = 0;
-        CREATED = 1;
-        APPENDING = 2;
-        RUNNING = 3;
-        SUCCEEDED = 5;
-        FAILED = 6;
-    }
+  enum TaskStatus{
+    UNKNOWN = 0;
+    CREATED = 1;
+    APPENDING = 2;
+    RUNNING = 3;
+    SUCCEEDED = 5;
+    FAILED = 6;
+  }
 
-    string job_id = 1;
+  string job_id = 1;
 
-    string task_id = 2;
+  string task_id = 2;
 
-    TaskStatus status = 3;
+  TaskStatus status = 3;
 
-    string message = 4;
+  string message = 4;
 }
 
 message TaskControlRequest{
 
-    enum Action{
-        START = 0;
-        STOP = 1;
-        RESTART = 2;
-    }
+  enum Action{
+    START = 0;
+    STOP = 1;
+    RESTART = 2;
+  }
 
-    string task_id = 1;
+  string task_id = 1;
 
-    Action action = 2;
+  Action action = 2;
 
-    map<string, string> configuration = 3;
+  map<string, string> configuration = 3;
 }
 
 message TaskLogRequest{
 
-    string task_id = 1;
+  string task_id = 1;
 
-    optional int64 offset = 2;
-    
-    optional int64 limit = 3;
+  optional int64 offset = 2;
+
+  optional int64 limit = 3;
 }
 
 
 message TaskLogResponse{
 
-    repeated string lines = 1;
+  repeated string lines = 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // DATA
 ////////////////////////////////////////////////////////////////////////////////
 message DataId{
-    string data_id = 1;
+  string data_id = 1;
 }
 
 enum DataFormat{
-    RAW = 0;
-    DENSE = 1;
-    SPARSE = 2;
+  RAW = 0;
+  DENSE = 1;
+  SPARSE = 2;
 }
 
 message DataPushRequest{
 
-    message Head{
+  message Head{
 
-        DataProto schema = 1;
+    DataProto schema = 1;
 
-        DataFormat format = 2;
+    DataFormat format = 2;
 
-        optional int64 size = 3;
+    optional int64 size = 3;
 
-        optional bool overwrite = 4;
+    optional bool overwrite = 4;
+  }
+
+  message RawData{
+
+    int64 offset = 1;
+
+    bytes content = 2;
+  }
+
+  message DenseData{
+
+    message Row{
+      repeated string value = 1;
     }
 
-    message RawData{
+    int64 row_offset = 1;
 
-        int64 offset = 1;
+    repeated Row rows = 2;
+  }
 
-        bytes content = 2;
+  message SparseData{
+
+    message Pair{
+      string key = 1;
+      string value = 2;
     }
 
-    message DenseData{
-
-        message Row{
-            repeated string value = 1;
-        }
-
-        int64 row_offset = 1;
-
-        repeated Row rows = 2;
+    message Row{
+      repeated Pair pairs = 1;
     }
 
-    message SparseData{
+    int64 row_offset = 1;
 
-        message Pair{
-            string key = 1;
-            string value = 2;
-        }
+    repeated Row rows = 2;
+  }
 
-        message Row{
-            repeated Pair pairs = 1;
-        }
+  oneof Data{
 
-        int64 row_offset = 1;
+    Head head = 1;
 
-        repeated Row rows = 2;
-    }
+    RawData raw = 2;
 
-    oneof Data{
+    DenseData dense = 3;
 
-        Head head = 1;
-
-        RawData raw = 2;
-
-        DenseData dense = 3;
-
-        SparseData sparse = 4;
-    }
+    SparseData sparse = 4;
+  }
 }
 
 enum DataType{
-    USER_DATA = 0;
-    INTERMEDIATE_DATA = 1;
-    RESULT_DATA = 2;
+  USER_DATA = 0;
+  INTERMEDIATE_DATA = 1;
+  RESULT_DATA = 2;
 }
 
 message DataListRequest{
 
-    string partner_id = 1;
+  string partner_id = 1;
 
-    DataType data_type = 2;
+  DataType data_type = 2;
 
-    int32 offset = 3;
+  int32 offset = 3;
 
-    int32 limit = 4;
+  int32 limit = 4;
 }
 
 message DataGetResponse{
 
-    string data_id = 1;
+  string data_id = 1;
 
-    string party_id = 2;
+  string party_id = 2;
 
-    DataType data_type = 3;
+  DataType data_type = 3;
 
-    DataProto schema = 4;
+  DataProto schema = 4;
 
-    string create_time = 5;
+  string create_time = 5;
 
-    string update_time = 6;
+  string update_time = 6;
 }
 
 message DataListResponse{
 
-    string data_id = 1;
+  string data_id = 1;
 
-    string name = 2;
+  string name = 2;
 }
 
 message DataPullRequest{
 
-    string data_id = 1;
+  string data_id = 1;
 
-    optional int64 offset = 2;
+  optional int64 offset = 2;
 
-    optional int64 limit = 3;
+  optional int64 limit = 3;
 }
 
 message DataPullResponse{
 
-    int64 offset = 1;
+  int64 offset = 1;
 
-    optional int64 total = 2;
+  optional int64 total = 2;
 
-    bytes content = 3; 
+  bytes content = 3;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -418,124 +418,124 @@ message DataPullResponse{
 ////////////////////////////////////////////////////////////////////////////////
 message OperatorId{
 
-    string operater_id  = 1;
+  string operater_id = 1;
 }
 
 message OperatorListRequest{
 
-    int32 offset = 1;
+  int32 offset = 1;
 
-    int32 limit = 2;
+  int32 limit = 2;
 }
 
 message OperatorListResponse{
 
-    string operater_id = 1;
+  string operater_id = 1;
 
-    string name = 2;
+  string name = 2;
 }
 
 message OperatorGetReponse{
 
-    string operater_id = 1;
+  string operater_id = 1;
 
-    OperatorProto schema = 2;
+  OperatorProto schema = 2;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // PARTY
 ////////////////////////////////////////////////////////////////////////////////
 message PartnerId{
-    string partner_id = 1;
+  string partner_id = 1;
 }
 
 message PartnerCreateRequest{
 
-    string name = 1;
+  string name = 1;
 
-    string endpoint = 2;
+  string endpoint = 2;
 
-    optional string description = 3;
+  optional string description = 3;
 
-    map<string, string> context = 4;
+  map<string, string> context = 4;
 }
 
 message PartnerGetResponse{
 
-    string partner_id = 1;
+  string partner_id = 1;
 
-    string name = 2;
+  string name = 2;
 
-    optional string description = 3;
+  optional string description = 3;
 
-    string endpoint = 4;
+  string endpoint = 4;
 
-    map<string, string> context = 5;
+  map<string, string> context = 5;
 
-    string create_time = 6;
+  string create_time = 6;
 
-    string update_time = 7;
+  string update_time = 7;
 }
 
 message PartnerListRequest{
 
-    int32 offset = 1;
+  int32 offset = 1;
 
-    int32 limit = 2;
+  int32 limit = 2;
 }
 
 message PartnerListResponse{
 
-    string partner_id = 1;
+  string partner_id = 1;
 
-    string name = 2;
+  string name = 2;
 }
 
 message PartnerControlRequest{
 
-    string partner_id = 1;
+  string partner_id = 1;
 
-    string action = 2;
+  string action = 2;
 
-    map<string, string> configuration = 3;
+  map<string, string> configuration = 3;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // CONFIGURATION
 ////////////////////////////////////////////////////////////////////////////////
 message ConfigSetRequest{
 
-    string key = 1;
+  string key = 1;
 
-    string value = 2;
+  string value = 2;
 }
 
 message ConfigGetRequest{
 
-    string key = 1;
+  string key = 1;
 
 }
 
 message ConfigGetResponse{
 
-    string key = 1;
+  string key = 1;
 
-    string value = 2;
+  string value = 2;
 
-    string create_time = 3;
+  string create_time = 3;
 
-    string update_time = 4;
+  string update_time = 4;
 }
 
 message ConfigListRequest{
 
-    int64 offset = 1;
+  int64 offset = 1;
 
-    int64 limit = 2;
+  int64 limit = 2;
 }
 
 message ConfigListResponse{
 
-    string key = 1;
+  string key = 1;
 }
 
 
@@ -544,46 +544,46 @@ message ConfigListResponse{
 ////////////////////////////////////////////////////////////////////////////////
 service HighFlip{
 
-    // CONFIGURATION
-    rpc setConfig(ConfigSetRequest) returns(Void);
-    rpc getConfig(ConfigGetRequest) returns(ConfigGetResponse);
-    rpc listConfig(ConfigListRequest) returns(stream ConfigListResponse);
+  // CONFIGURATION
+  rpc setConfig(ConfigSetRequest) returns(Void);
+  rpc getConfig(ConfigGetRequest) returns(ConfigGetResponse);
+  rpc listConfig(ConfigListRequest) returns(stream ConfigListResponse);
 
-    // PLATFORM
-    rpc getPlatform(Void) returns(PlatformGetResponse);
-    rpc listPlatform(PlatformListRequest) returns(PlatformListResponse);
-    rpc matchPlatform(PlatformMatchRequest) returns(stream PlatformMatchResponse);
+  // PLATFORM
+  rpc getPlatform(Void) returns(PlatformGetResponse);
+  rpc listPlatform(PlatformListRequest) returns(PlatformListResponse);
+  rpc matchPlatform(PlatformMatchRequest) returns(stream PlatformMatchResponse);
 
-    // JOB
-    rpc createJob(JobCreateRequest) returns(JobId);
-    rpc getJob(JobId) returns(JobGetResponse);
-    rpc checkJob(JobId) returns(JobCheckResponse);
-    rpc deleteJob(JobId) returns(Void);
-    rpc listJob(JobListRequest) returns(stream JobListResponse);
-    rpc controlJob(JobControlRequest) returns(Void);
-    rpc getJobLog(JobLogRequest) returns(stream JobLogResponse);
+  // JOB
+  rpc createJob(JobCreateRequest) returns(JobId);
+  rpc getJob(JobId) returns(JobGetResponse);
+  rpc checkJob(JobId) returns(JobCheckResponse);
+  rpc deleteJob(JobId) returns(Void);
+  rpc listJob(JobListRequest) returns(stream JobListResponse);
+  rpc controlJob(JobControlRequest) returns(Void);
+  rpc getJobLog(JobLogRequest) returns(stream JobLogResponse);
 
-    // TASK
-    rpc listTask(TaskListRequest) returns(stream TaskListResponse);
-    rpc getTask(TaskId) returns(TaskGetResponse);
-    rpc checkTask(TaskId) returns(TaskCheckResponse);
-    rpc controlTask(TaskControlRequest) returns(Void);
-    rpc getTaskLog(TaskLogRequest) returns(stream TaskLogResponse);
+  // TASK
+  rpc listTask(TaskListRequest) returns(stream TaskListResponse);
+  rpc getTask(TaskId) returns(TaskGetResponse);
+  rpc checkTask(TaskId) returns(TaskCheckResponse);
+  rpc controlTask(TaskControlRequest) returns(Void);
+  rpc getTaskLog(TaskLogRequest) returns(stream TaskLogResponse);
 
-    // DATA
-    rpc listData(DataListRequest) returns(stream DataListResponse);
-    rpc getData(DataId) returns(DataGetResponse);
-    rpc pushData(stream DataPushRequest) returns(DataId);
-    rpc pullData(DataPullRequest) returns(stream DataPullResponse);
-    rpc deleteData(DataId) returns(Void);
+  // DATA
+  rpc listData(DataListRequest) returns(stream DataListResponse);
+  rpc getData(DataId) returns(DataGetResponse);
+  rpc pushData(stream DataPushRequest) returns(DataId);
+  rpc pullData(DataPullRequest) returns(stream DataPullResponse);
+  rpc deleteData(DataId) returns(Void);
 
-    // OPERATOR
-    rpc listOperator(OperatorListRequest) returns(stream OperatorListResponse);
-    rpc getOperator(OperatorId) returns(OperatorGetReponse);
+  // OPERATOR
+  rpc listOperator(OperatorListRequest) returns(stream OperatorListResponse);
+  rpc getOperator(OperatorId) returns(OperatorGetReponse);
 
-    // PARTNER
-    rpc createPartner(PartnerCreateRequest) returns(PartnerId);
-    rpc getPartner(PartnerId) returns(PartnerGetResponse);
-    rpc listPartner(PartnerListRequest) returns(stream PartnerListResponse);
-    rpc controlPartner(PartnerControlRequest) returns(Void);
+  // PARTNER
+  rpc createPartner(PartnerCreateRequest) returns(PartnerId);
+  rpc getPartner(PartnerId) returns(PartnerGetResponse);
+  rpc listPartner(PartnerListRequest) returns(stream PartnerListResponse);
+  rpc controlPartner(PartnerControlRequest) returns(Void);
 }

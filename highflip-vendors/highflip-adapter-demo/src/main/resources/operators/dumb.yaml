@@ -1,35 +1,35 @@
 highflip.component:
-- name: test
-  version:
-  description: test
-  inputs:
-      - name: input_file1
-        description:
-  outputs:
-      - name: output_file1
-        description:
-  parameters:
-      - name: param1
-        description: switch parameter1
-        type: switch
-        required: true
-        default: false
-      - name: param2
-        description: text parameter2
-        type: text
-        required: false
-        limit: 100
-        default: "test"
-      - name: param3
-        description:
-        type: choice
-        default:
-        choices:
-      - name: param4
-        description:
-        type: range
-        default: 90
-        min: 0
-        max: 100
-        max_included: false
-        step: 1
+    -   name: test
+        version:
+        description: test
+        inputs:
+            -   name: input_file1
+                description:
+        outputs:
+            -   name: output_file1
+                description:
+        parameters:
+            -   name: param1
+                description: switch parameter1
+                type: switch
+                required: true
+                default: false
+            -   name: param2
+                description: text parameter2
+                type: text
+                required: false
+                limit: 100
+                default: "test"
+            -   name: param3
+                description:
+                type: choice
+                default:
+                choices:
+            -   name: param4
+                description:
+                type: range
+                default: 90
+                min: 0
+                max: 100
+                max_included: false
+                step: 1

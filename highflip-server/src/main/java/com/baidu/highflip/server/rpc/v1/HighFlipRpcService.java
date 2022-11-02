@@ -48,7 +48,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     // @GRpcExceptionHandler
-    public Status handle (HighFlipEngineException exc, GRpcExceptionScope scope){
+    public Status handle(HighFlipEngineException exc, GRpcExceptionScope scope) {
         return Status.ABORTED;
     }
 
@@ -57,7 +57,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
      ******************************************************************************/
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -77,12 +76,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
     public void getConfig(Highflip.ConfigGetRequest request,
-                            StreamObserver<Highflip.ConfigGetResponse> responseObserver) {
+                          StreamObserver<Highflip.ConfigGetResponse> responseObserver) {
 
         Configuration entry = getEngine()
                 .getConfiguration()
@@ -100,12 +98,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
     public void setConfig(Highflip.ConfigSetRequest request,
-                                 StreamObserver<Highflip.Void> responseObserver) {
+                          StreamObserver<Highflip.Void> responseObserver) {
 
         getEngine().getConfiguration()
                 .setString(request.getKey(), request.getValue());
@@ -118,7 +115,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
      ******************************************************************************/
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -137,7 +133,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -158,7 +153,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -181,7 +175,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
      ******************************************************************************/
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -203,7 +196,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -221,7 +213,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -234,7 +225,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -255,7 +245,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -271,7 +260,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     public void getJobLog(Highflip.JobLogRequest request,
-                           StreamObserver<Highflip.JobLogResponse> responseObserver) {
+                          StreamObserver<Highflip.JobLogResponse> responseObserver) {
 
     }
 
@@ -279,7 +268,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * TASK
      ******************************************************************************/
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -298,7 +286,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -319,7 +306,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -340,7 +326,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -356,7 +341,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -370,7 +354,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
      ******************************************************************************/
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -386,7 +369,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -406,20 +388,19 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param responseObserver
      * @return
      */
     public StreamObserver<Highflip.DataPushRequest> pushData(
             StreamObserver<Highflip.DataId> responseObserver) {
 
-        return new StreamObserver<Highflip.DataPushRequest>(){
+        return new StreamObserver<Highflip.DataPushRequest>() {
 
             Data data = null;
 
             @Override
             public void onNext(Highflip.DataPushRequest request) {
-                if(data != null){
+                if (data != null) {
                     Highflip.DataPushRequest.Head head = request.getHead();
                     HighflipMeta.DataProto schema = head.getSchema();
                     List<Column> columns = schema.getColumnsList()
@@ -460,7 +441,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -471,7 +451,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -487,7 +466,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * OPERATOR
      ******************************************************************************/
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -505,7 +483,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -530,17 +507,16 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * PARTNER
      ******************************************************************************/
     /**
-     *
      * @param request
      * @param responseObserver
      */
     public void createPartner(Highflip.PartnerCreateRequest request,
-                           StreamObserver<Highflip.PartnerId> responseObserver) {
+                              StreamObserver<Highflip.PartnerId> responseObserver) {
 
         String partnerId = getEngine()
                 .createPartner(
-                    request.getName(),
-                    request.getDescription());
+                        request.getName(),
+                        request.getDescription());
 
         Highflip.PartnerId response = Highflip.PartnerId
                 .newBuilder()
@@ -551,7 +527,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -573,7 +548,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */
@@ -592,7 +566,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     /**
-     *
      * @param request
      * @param responseObserver
      */

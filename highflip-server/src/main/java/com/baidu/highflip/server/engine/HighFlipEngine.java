@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class HighFlipEngine{
+public class HighFlipEngine {
 
     @Autowired
     HighFlipContext context;
@@ -75,12 +75,12 @@ public class HighFlipEngine{
     @PostConstruct
     public void initialize() {
         new TransactionTemplate(transactionManager).execute(
-            new TransactionCallbackWithoutResult() {
-                @Override
-                protected void doInTransactionWithoutResult(TransactionStatus status) {
-                    initPlatform();
-                }
-        });
+                new TransactionCallbackWithoutResult() {
+                    @Override
+                    protected void doInTransactionWithoutResult(TransactionStatus status) {
+                        initPlatform();
+                    }
+                });
     }
 
     @PreDestroy
@@ -125,7 +125,7 @@ public class HighFlipEngine{
         platform.setIsLocal(Boolean.TRUE);
 
         Iterator<CompatibleVersion> iters = adaptor.getCompatibleList();
-        if (iters != null){
+        if (iters != null) {
             List<CompatibleVersion> compatibles = Streams
                     .stream(iters)
                     .collect(Collectors.toList());
@@ -165,7 +165,7 @@ public class HighFlipEngine{
                 ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED,
                 ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED_DEFAULT);
 
-        if (isInitialized){
+        if (isInitialized) {
             return;
         }
 
@@ -193,7 +193,7 @@ public class HighFlipEngine{
     }
 
     @Transactional
-    public Job synchronizeJob(){
+    public Job synchronizeJob() {
         Job job = new Job();
         Optional<Job> optJob = getContext().getJobAdaptor().moreJob(job, runtime);
 
@@ -213,12 +213,12 @@ public class HighFlipEngine{
     }
 
     @Scheduled(fixedDelayString = "10s")
-    public void synchronizeJobs(){
-        try{
+    public void synchronizeJobs() {
+        try {
             Job job = null;
-            do{
+            do {
                 job = synchronizeJob();
-            } while(job != null);
+            } while (job != null);
         } catch (Exception e) {
 
         }
@@ -305,13 +305,13 @@ public class HighFlipEngine{
                 .controlJob(job, action);
     }
 
-    public Iterable<String> getJobLog(String jobId){
+    public Iterable<String> getJobLog(String jobId) {
         Job job = getJob(jobId);
 
         int count = getContext().getJobAdaptor()
                 .getJobLogCount(job);
 
-        new Iterator<String>(){
+        new Iterator<String>() {
 
             int current = 0;
 
@@ -396,19 +396,19 @@ public class HighFlipEngine{
      * DATA
      ******************************************************************************/
     @Transactional
-    protected void initializeData(){
+    protected void initializeData() {
         Boolean isInitialized = getConfiguration().getBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_DATA_IS_INITIALIZED,
                 ConfigurationList.CONFIG_HIGHFLIP_DATA_IS_INITIALIZED_DEFAULT);
 
-        if (isInitialized){
+        if (isInitialized) {
             return;
         }
 
         int count = getContext().getDataAdaptor()
                 .getDataCount();
 
-        for(int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             Data data = new Data();
             Data retData = getContext().getDataAdaptor()
                     .getDataByIndex(i, data);
@@ -425,7 +425,6 @@ public class HighFlipEngine{
     }
 
     /**
-     *
      * @return
      */
     public Iterable<String> listData() {
@@ -438,7 +437,6 @@ public class HighFlipEngine{
     }
 
     /**
-     *
      * @param dataid
      * @return
      */
@@ -458,8 +456,8 @@ public class HighFlipEngine{
                 .deleteData(data);
 
         getContext()
-            .getDataRepository()
-            .delete(data);
+                .getDataRepository()
+                .delete(data);
     }
 
     public Iterator<List<Object>> pullData(String dataid, long offset, long size) {
@@ -469,7 +467,7 @@ public class HighFlipEngine{
                 .readData(data, DataAdaptor.PositionType.ROW, offset, size);
     }
 
-    public Data createData(String name, String description, List<Column> columns){
+    public Data createData(String name, String description, List<Column> columns) {
         Data data = new Data();
         data.setName(name);
         data.setDescription(description);
@@ -490,19 +488,19 @@ public class HighFlipEngine{
      * OPERATOR
      ******************************************************************************/
     @Transactional
-    protected void initializeOperator(){
+    protected void initializeOperator() {
         Boolean isInitialized = getConfiguration().getBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_OPERATOR_IS_INITIALIZED,
                 ConfigurationList.CONFIG_HIGHFLIP_OPERATOR_IS_INITIALIZED_DEFAULT);
 
-        if (isInitialized){
+        if (isInitialized) {
             return;
         }
 
         int count = getContext().getOperatorAdaptor()
                 .getOperatorCount();
 
-        for(int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             Operator oper = new Operator();
             Operator retOper = getContext().getOperatorAdaptor()
                     .getOperatorByIndex(i, oper);
@@ -538,12 +536,12 @@ public class HighFlipEngine{
      * PARTNER
      ******************************************************************************/
     @Transactional
-    protected void initializeParterners(){
+    protected void initializeParterners() {
         Boolean isInitialized = getConfiguration().getBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED,
                 ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED_DEFAULT);
 
-        if (isInitialized){
+        if (isInitialized) {
             return;
         }
 
@@ -553,7 +551,7 @@ public class HighFlipEngine{
     }
 
     @Transactional
-    public String createPartner(String name, String description){
+    public String createPartner(String name, String description) {
         Partner partner = new Partner();
         partner.setName(name);
         partner.setDescription(description);

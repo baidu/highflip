@@ -10,17 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 public class DSLTranslator {
 
+    public FateDAG translate(Graph dag) {
+        return new FateDAG();
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class FateDAG{
+    public static class FateDAG {
 
         String dsl;
 
         String conf;
-    }
-
-    public FateDAG translate(Graph dag){
-        return new FateDAG();
     }
 }

@@ -24,7 +24,7 @@ public class Node extends AttributeObject implements Serializable {
 
     Map<String, String> outputs;
 
-    public static Node fromProto(HighflipMeta.NodeProto proto){
+    public static Node fromProto(HighflipMeta.NodeProto proto) {
         Node n = new Node();
         n.setName(proto.getName());
         n.setDescription(proto.getDescription());
@@ -32,7 +32,7 @@ public class Node extends AttributeObject implements Serializable {
         return n;
     }
 
-    public static HighflipMeta.NodeProto toProto(Node node){
+    public static HighflipMeta.NodeProto toProto(Node node) {
         throw new NotYetImplementedException();
     }
 

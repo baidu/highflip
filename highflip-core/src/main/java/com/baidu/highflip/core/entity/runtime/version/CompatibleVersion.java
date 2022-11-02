@@ -18,7 +18,7 @@ public class CompatibleVersion {
 
     boolean includeEnd;
 
-    public boolean isCompatible(PlatformVersion platformVersion){
+    public boolean isCompatible(PlatformVersion platformVersion) {
         return false;
     }
 }

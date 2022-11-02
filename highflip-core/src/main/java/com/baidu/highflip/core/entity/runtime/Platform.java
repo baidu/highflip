@@ -70,7 +70,7 @@ public class Platform {
     @Column(name = "compatibles")
     List<CompatibleVersion> compatibles;
 
-    public PlatformVersion toPlatformVersion(){
+    public PlatformVersion toPlatformVersion() {
         PlatformVersion result = new PlatformVersion();
         result.setCompany(company);
         result.setProduct(product);

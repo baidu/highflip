@@ -36,7 +36,7 @@ public interface FateClient {
 
     @RequestLine("POST /v1/job/submit")
     String jobSumbit(@Param("job_dsl") String dsl,
-                   @Param("job_runtime_conf") String conf);
+                     @Param("job_runtime_conf") String conf);
 
 
     @RequestLine("POST /v1/job/list/job")

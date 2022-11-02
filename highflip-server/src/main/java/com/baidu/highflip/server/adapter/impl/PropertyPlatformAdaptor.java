@@ -18,7 +18,7 @@ public class PropertyPlatformAdaptor implements PlatformAdaptor {
     String version;
 
 
-    public PropertyPlatformAdaptor(Properties props){
+    public PropertyPlatformAdaptor(Properties props) {
 
         this.company = props.getProperty(AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_PLATFORM_COMPANY,
                 AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_PLATFORM_COMPANY_DEFAULT);

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Assertions;
 public class TestVersion {
 
     @Test
-    public void testCompare(){
+    public void testCompare() {
         PlatformVersion ver1 = new PlatformVersion("baidu", "highflip", "1.1.1");
 
         PlatformVersion ver2 = new PlatformVersion("baidu", "highflip", "1.2.0");
@@ -22,7 +22,7 @@ public class TestVersion {
     }
 
     @Test
-    public void testEqual(){
+    public void testEqual() {
         PlatformVersion ver1 = new PlatformVersion("baidu", "highflip", "1.1");
 
         PlatformVersion ver2 = new PlatformVersion("baidu", "highflip", "1.1.0");

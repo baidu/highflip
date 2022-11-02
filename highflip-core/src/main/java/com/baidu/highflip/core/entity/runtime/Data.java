@@ -25,7 +25,7 @@ import java.util.Map;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "hf_data", indexes = {
-    @Index(name = "binding_id_index", columnList = "binding_id", unique = true)
+        @Index(name = "binding_id_index", columnList = "binding_id", unique = true)
 })
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Data {

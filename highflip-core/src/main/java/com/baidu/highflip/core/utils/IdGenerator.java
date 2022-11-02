@@ -16,14 +16,14 @@ public class IdGenerator {
 
     protected static String toUUID(String[] args) {
         StringJoiner joiner = new StringJoiner("");
-        for(String item: args){
+        for (String item : args) {
             joiner.add(item);
         }
         byte[] bytes = joiner.toString().getBytes();
         return UUID.nameUUIDFromBytes(bytes).toString();
     }
 
-    public static String toHex(String[] args){
+    public static String toHex(String[] args) {
         byte[] bytes = encodeMD5(args);
         return toHexString(bytes);
     }

@@ -35,12 +35,12 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
     public Job createJob(Job job) {
 
         DSLTranslator.FateDAG dag = getContext()
-            .getTranslator()
-            .translate(job.getGraph());
+                .getTranslator()
+                .translate(job.getGraph());
 
         String bindId = getContext()
-            .getClient()
-            .jobSumbit(dag.getDsl(), dag.getDsl());
+                .getClient()
+                .jobSumbit(dag.getDsl(), dag.getDsl());
 
         job.setBingingId(bindId);
         return job;
@@ -77,7 +77,7 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
 
     @Override
     public Job controlJob(Job job, Action action) {
-        switch (action){
+        switch (action) {
             case STOP:
                 getContext().getClient().jobStop(job.getBingingId());
                 break;

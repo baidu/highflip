@@ -8,7 +8,7 @@ import org.junit.Test;
 public class TestIdGenerator {
 
     @Test
-    public void testUUID(){
+    public void testUUID() {
         String result1 = IdGenerator.fromStrings("123", "456");
         log.info("uuid(123, 456) => {}", result1);
 
@@ -19,7 +19,7 @@ public class TestIdGenerator {
     }
 
     @Test
-    public void testMd5(){
+    public void testMd5() {
         String md5 = IdGenerator.toHex(new String[]{"123456"});
         log.info("md5(123456) => {}", md5);
 

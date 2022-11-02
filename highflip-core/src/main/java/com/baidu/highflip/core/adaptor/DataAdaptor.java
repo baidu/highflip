@@ -6,14 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public interface DataAdaptor {
-    enum PositionType{
-        BEGIN,
-        END,
-        BYTE,
-        CELL,
-        ROW,
-    }
-
     Data updateData(Data data);
 
     int getDataCount();
@@ -29,4 +21,12 @@ public interface DataAdaptor {
     long writeData(Data data, PositionType type, Iterator<List<Object>> body);
 
     void deleteData(Data data);
+
+    enum PositionType {
+        BEGIN,
+        END,
+        BYTE,
+        CELL,
+        ROW,
+    }
 }

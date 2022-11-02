@@ -25,15 +25,7 @@ public class Graph extends AttributeObject implements Serializable {
 
     List<Party> parties;
 
-    public Node getNodeByName(String name){
-        throw new NotYetImplementedException();
-    }
-
-    public Party getPartyByName(String name){
-        throw new NotYetImplementedException();
-    }
-
-    public static Graph fromProto(HighflipMeta.GraphProto proto){
+    public static Graph fromProto(HighflipMeta.GraphProto proto) {
         Graph g = new Graph();
         g.setName(proto.getName());
         g.setDescription(proto.getDescription());
@@ -41,17 +33,31 @@ public class Graph extends AttributeObject implements Serializable {
         g.setNodes(proto.getNodesList()
                 .stream()
                 .map(Node::fromProto)
-                .map(n -> {n.setParent(g); return n;})
+                .map(n -> {
+                    n.setParent(g);
+                    return n;
+                })
                 .collect(Collectors.toList()));
         g.setParties(proto.getPartiesList()
                 .stream()
                 .map(Party::fromProto)
-                .map(n -> {n.setParent(g); return n;})
+                .map(n -> {
+                    n.setParent(g);
+                    return n;
+                })
                 .collect(Collectors.toList()));
         return g;
     }
 
-    public static HighflipMeta.GraphProto toProto(Graph graph){
+    public static HighflipMeta.GraphProto toProto(Graph graph) {
+        throw new NotYetImplementedException();
+    }
+
+    public Node getNodeByName(String name) {
+        throw new NotYetImplementedException();
+    }
+
+    public Party getPartyByName(String name) {
         throw new NotYetImplementedException();
     }
 }

@@ -3,11 +3,11 @@ package com.webank.ai.fate.client.form;
 import lombok.Data;
 
 @Data
-public class ResultForm<T>  {
+public class ResultForm<T> {
 
-     Integer retcode;
+    Integer retcode;
 
-     String retmsg;
+    String retmsg;
 
-     T data;
+    T data;
 }

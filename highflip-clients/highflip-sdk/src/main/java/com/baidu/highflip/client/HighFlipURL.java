@@ -26,7 +26,7 @@ public class HighFlipURL {
 
     String token;
 
-    public static HighFlipURL from(String url){
+    public static HighFlipURL from(String url) {
 
         Matcher match = Pattern.compile(URL_REGEX_PATTERN)
                 .matcher(url);
@@ -38,7 +38,7 @@ public class HighFlipURL {
         String sPort = match.group("port");
 
         int nPort = URL_DEFAULT_PORT;
-        if ( sPort != null ){
+        if (sPort != null) {
             nPort = Integer.valueOf(sPort);
         }
 

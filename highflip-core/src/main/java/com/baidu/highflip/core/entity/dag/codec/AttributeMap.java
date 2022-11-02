@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 public class AttributeMap {
 
-    public static Map<String, Object> fromProto(Map<String, HighflipMeta.TypedValueProto> proto){
+    public static Map<String, Object> fromProto(Map<String, HighflipMeta.TypedValueProto> proto) {
         Map<String, Object> attributes = proto.entrySet()
                 .stream()
-                .map( attr -> {
+                .map(attr -> {
                     String key = attr.getKey();
                     Object value = TypeValue.fromProto(attr.getValue());
                     return Map.entry(key, value);
@@ -19,7 +19,7 @@ public class AttributeMap {
         return attributes;
     }
 
-    public static Map<String, HighflipMeta.TypedValueProto> toProto(Map<String, Object> map){
+    public static Map<String, HighflipMeta.TypedValueProto> toProto(Map<String, Object> map) {
         throw new NotYetImplementedException();
     }
 }

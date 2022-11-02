@@ -21,12 +21,12 @@ public class TestPlatform {
 
     @Test
     @Transactional
-    public void testDatabase(){
+    public void testDatabase() {
         log.info("test list");
 
         platforms.deleteLocal();
 
-        for(Platform plat: platforms.findAll()){
+        for (Platform plat : platforms.findAll()) {
             log.info("platform: {}", plat);
         }
     }

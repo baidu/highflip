@@ -8,7 +8,7 @@ import java.util.stream.StreamSupport;
 
 public class Streams {
 
-    public static  <T> Stream<T> of(Iterator<T> itorator){
+    public static <T> Stream<T> of(Iterator<T> itorator) {
         return StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(itorator, Spliterator.ORDERED),
                 false);

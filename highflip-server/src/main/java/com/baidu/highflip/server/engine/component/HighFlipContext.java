@@ -50,71 +50,71 @@ public class HighFlipContext {
     @Autowired
     PartnerRepository partnerReps;
 
-    public InstanceRegister getRegister(){
+    public InstanceRegister getRegister() {
         return register;
     }
 
-    public <T> T getInstance(String name){
+    public <T> T getInstance(String name) {
         return (T) getRegister()
                 .getInstance(name);
     }
 
     // PLATFORM
-    public PlatformAdaptor getPlatformAdaptor(){
+    public PlatformAdaptor getPlatformAdaptor() {
         return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_PLATFORM);
     }
 
-    public PlatformRepository getPlatformRepository(){
+    public PlatformRepository getPlatformRepository() {
         return platformReps;
     }
 
     // JOB
-    public AbstractTranslator getJobTranslator(){
+    public AbstractTranslator getJobTranslator() {
         return (AbstractTranslator) register
                 .getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_TRANSLATOR);
     }
 
-    public JobAdaptor getJobAdaptor(){
+    public JobAdaptor getJobAdaptor() {
         return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_JOB);
     }
 
-    public JobRepository getJobRepository(){
+    public JobRepository getJobRepository() {
         return jobReps;
     }
 
     // ADAPTOR
-    public DataAdaptor getDataAdaptor(){
+    public DataAdaptor getDataAdaptor() {
         return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_DATA);
     }
 
-    public DataRepository getDataRepository(){
+    public DataRepository getDataRepository() {
         return dataReps;
     }
 
     // OPERATOR
-    public OperatorAdaptor getOperatorAdaptor(){
+    public OperatorAdaptor getOperatorAdaptor() {
         return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_OPERATOR);
     }
 
-    public OperatorRepository getOperatorRepository(){
+    public OperatorRepository getOperatorRepository() {
         return operatorReps;
     }
 
     // TASK
-    public TaskAdaptor getTaskAdaptor(){
+    public TaskAdaptor getTaskAdaptor() {
         return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_TASK);
     }
 
-    public TaskRepository getTaskRepository(){
+    public TaskRepository getTaskRepository() {
         return taskReps;
     }
 
     // PARTNER
-    public PartnerAdaptor getPartnerAdaptor(){
+    public PartnerAdaptor getPartnerAdaptor() {
         throw new NotYetImplementedException();
     }
 
-    public PartnerRepository getPartnerRepository(){
+    public PartnerRepository getPartnerRepository() {
         return partnerReps;
     }
 }

@@ -1,20 +1,20 @@
 Global:
-  version: 2.0
+    version: 2.0
 
 Default:
-  profile: [develop]
+    profile: [ develop ]
 
 Profiles:
-  - profile:
-    name: develop
-    mode: AGENT
-    environment:
-      cluster: DECK_CENTOS7U5_K3
-      tools:
-        - maven: 3.6.3
-        - oraclejdk: 11.0.7
-    build:
-      command: mvn package
-    artifacts:
-      release: false
+    -   profile:
+        name: develop
+        mode: AGENT
+        environment:
+            cluster: DECK_CENTOS7U5_K3
+            tools:
+                -   maven: 3.6.3
+                -   oraclejdk: 11.0.7
+        build:
+            command: mvn package
+        artifacts:
+            release: false
 

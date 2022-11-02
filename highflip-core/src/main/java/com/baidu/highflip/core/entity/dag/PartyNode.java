@@ -22,14 +22,14 @@ public class PartyNode extends AttributeObject implements Serializable {
 
     Map<String, Object> attributes;
 
-    public static PartyNode fromProto(HighflipMeta.PartyProto.PartyNode proto){
+    public static PartyNode fromProto(HighflipMeta.PartyProto.PartyNode proto) {
         PartyNode n = new PartyNode();
         n.setName(proto.getName());
         n.setAttributes(AttributeMap.fromProto(proto.getAttributesMap()));
         return n;
     }
 
-    public static HighflipMeta.PartyProto toProto(PartyNode node){
+    public static HighflipMeta.PartyProto toProto(PartyNode node) {
         throw new NotYetImplementedException();
     }
 }

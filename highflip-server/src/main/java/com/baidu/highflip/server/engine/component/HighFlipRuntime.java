@@ -18,7 +18,7 @@ public class HighFlipRuntime implements com.baidu.highflip.core.engine.HighFlipR
     @Autowired
     HighFlipContext context;
 
-    HighFlipContext getContext(){
+    HighFlipContext getContext() {
         return context;
     }
 

@@ -97,7 +97,7 @@ public class HighFlipClient implements AutoCloseable {
         return response;
     }
 
-    public  void setConfig(String key, String value) {
+    public void setConfig(String key, String value) {
         Highflip.ConfigSetRequest request = Highflip.ConfigSetRequest
                 .newBuilder()
                 .setKey(key)
@@ -108,9 +108,7 @@ public class HighFlipClient implements AutoCloseable {
     }
 
 
-
     /**
-     *
      * @return
      */
     public Highflip.PlatformGetResponse getPlatform() {
@@ -122,7 +120,6 @@ public class HighFlipClient implements AutoCloseable {
     }
 
     /**
-     *
      * @param company
      * @param product
      * @param version
@@ -163,7 +160,6 @@ public class HighFlipClient implements AutoCloseable {
     }
 
     /**
-     *
      * @param jobId
      * @param action
      */

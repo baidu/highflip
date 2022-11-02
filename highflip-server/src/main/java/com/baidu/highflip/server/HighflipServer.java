@@ -18,7 +18,7 @@ import java.net.SocketAddress;
 @EnableJpaAuditing
 @EntityScan(basePackages = {"com.baidu.highflip"})
 public class HighflipServer {
-    public static void main( String[] args ){
+    public static void main(String[] args) {
         SpringApplication app = new SpringApplication(HighflipServer.class);
         //app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
@@ -32,8 +32,8 @@ public class HighflipServer {
         log.info("Database located at {}", env.getProperty("spring.datasource.url"));
 
         Server server = event.getServer();
-        for(SocketAddress socks: server.getListenSockets()){
-            InetSocketAddress address = (InetSocketAddress)socks;
+        for (SocketAddress socks : server.getListenSockets()) {
+            InetSocketAddress address = (InetSocketAddress) socks;
             log.info("Listening on grpc://{}:{}",
                     address.getAddress().getHostAddress(),
                     address.getPort());

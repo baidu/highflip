@@ -22,6 +22,7 @@ public class DemoTaskAdaptor implements TaskAdaptor {
     public void deleteTask(Task task) {
 
     }
+
     @Override
     public boolean hasTask(Task task) {
         return false;

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class TestUrl {
 
     @Test
-    public void testUrl(){
+    public void testUrl() {
 
     }
 }

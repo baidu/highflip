@@ -9,35 +9,35 @@ public class AttributeObject {
 
     Map<String, Object> attributes = new TreeMap<String, Object>();
 
-    public void setParent(AttributeObject parent){
-        this.parent = parent;
-    }
-
-    public AttributeObject getParent(){
+    public AttributeObject getParent() {
         return parent;
     }
 
-    public Object getAttribute(String name, Object defaultValue){
+    public void setParent(AttributeObject parent) {
+        this.parent = parent;
+    }
+
+    public Object getAttribute(String name, Object defaultValue) {
         return attributes.getOrDefault(name, defaultValue);
     }
 
-    public void setAttribute(String name, Object attr){
+    public void setAttribute(String name, Object attr) {
         attributes.put(name, attr);
     }
 
-    public void setAttributes(Map<String, Object> attrs){
+    public void setAttributes(Map<String, Object> attrs) {
         attributes.putAll(attrs);
     }
 
-    public Object getForward(String name, Object defaultValue){
+    public Object getForward(String name, Object defaultValue) {
 
         Object current = getAttribute(name, null);
-        if (current != null){
+        if (current != null) {
             return current;
         }
 
         AttributeObject parent = getParent();
-        if (parent != null){
+        if (parent != null) {
             return parent.getForward(name, defaultValue);
         }
 

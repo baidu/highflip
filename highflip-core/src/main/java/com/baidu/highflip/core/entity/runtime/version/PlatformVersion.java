@@ -20,17 +20,7 @@ public class PlatformVersion implements Comparable<PlatformVersion> {
 
     String version;
 
-    public Highflip.PlatformVersion toProto(){
-        Highflip.PlatformVersion proto = Highflip.PlatformVersion.newBuilder()
-                .setCompany(this.getCompany())
-                .setProduct(this.getProduct())
-                .setVersion(this.getVersion())
-                .build();
-
-        return proto;
-    }
-
-    public static PlatformVersion fromProto(Highflip.PlatformVersion proto){
+    public static PlatformVersion fromProto(Highflip.PlatformVersion proto) {
         return new PlatformVersion(
                 proto.getCompany(),
                 proto.getProduct(),
@@ -62,6 +52,16 @@ public class PlatformVersion implements Comparable<PlatformVersion> {
             }
         }
         return 0;
+    }
+
+    public Highflip.PlatformVersion toProto() {
+        Highflip.PlatformVersion proto = Highflip.PlatformVersion.newBuilder()
+                .setCompany(this.getCompany())
+                .setProduct(this.getProduct())
+                .setVersion(this.getVersion())
+                .build();
+
+        return proto;
     }
 
     @Override

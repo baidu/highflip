@@ -1,4 +1,4 @@
 package com.baidu.highflip.core.exception;
 
-public class HighFlipException extends Exception{
+public class HighFlipException extends Exception {
 }

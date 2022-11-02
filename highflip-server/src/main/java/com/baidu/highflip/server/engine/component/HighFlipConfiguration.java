@@ -14,14 +14,14 @@ public class HighFlipConfiguration implements Configuration {
     @Autowired
     ConfigurationRepository configs;
 
-    public com.baidu.highflip.server.entity.Configuration getEntry(String key){
+    public com.baidu.highflip.server.entity.Configuration getEntry(String key) {
         return configs.findById(key).orElse(null);
     }
 
     @Transactional
-    public void setEntry(String key, String value){
+    public void setEntry(String key, String value) {
         com.baidu.highflip.server.entity.Configuration entity = getEntry(key);
-        if (entity != null){
+        if (entity != null) {
             entity.setValue(value);
         } else {
             entity = new com.baidu.highflip.server.entity.Configuration();
@@ -31,40 +31,40 @@ public class HighFlipConfiguration implements Configuration {
         configs.save(entity);
     }
 
-    protected Iterator<com.baidu.highflip.server.entity.Configuration> listEntry(){
+    protected Iterator<com.baidu.highflip.server.entity.Configuration> listEntry() {
         return configs.findAll().stream().iterator();
     }
 
-    public Iterable<String>  listKeys(){
-        return () ->configs.findAll()
+    public Iterable<String> listKeys() {
+        return () -> configs.findAll()
                 .stream()
                 .map(c -> c.getKey())
                 .iterator();
     }
 
     @Override
-    public String getString(String key, String defaultValue){
+    public String getString(String key, String defaultValue) {
         com.baidu.highflip.server.entity.Configuration entry = getEntry(key);
-        if (entry == null){
+        if (entry == null) {
             return defaultValue;
         }
         return entry.getValue();
     }
 
     @Override
-    public void setString(String key, String value){
+    public void setString(String key, String value) {
         setEntry(key, value);
     }
 
-    public Boolean getBoolean(String key, Boolean defaultValue){
+    public Boolean getBoolean(String key, Boolean defaultValue) {
         String value = getString(key, null);
-        if (value == null){
+        if (value == null) {
             return defaultValue;
         }
         return Boolean.parseBoolean(value);
     }
 
-    public void setBoolean(String key, Boolean value){
+    public void setBoolean(String key, Boolean value) {
         setString(key, value.toString());
     }
 }
