@@ -11,6 +11,7 @@ import feign.RequestLine;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -47,4 +48,38 @@ public interface FateClient {
 
     @RequestLine("POST /v1/job/query")
     ResultForm<List<JobQueryResponseForm>> jobQuery(@Param("job_id") String jobId);
+
+
+    /**
+     *
+     * @param head
+     * @param id_delimiter
+     * @param partition
+     * @param table_name
+     * @param namespace
+     * @param storage_engine
+     * @param destory
+     * @param extend_sid
+     * @return
+     */
+    @Headers("Content-Type: application/octet-stream")
+    @RequestLine("POST /data/upload")
+    JsonResultForm dataUpload(
+            @Param("file") File file,
+            Integer head,
+            String id_delimiter,
+            Integer partition,
+            String table_name,
+            String namespace,
+            String storage_engine,
+            Integer destory,
+            Integer extend_sid);
+
+
+    @RequestLine("POST /data/download")
+    JsonResultForm dataDownload(
+            String table_name,
+            String namespace,
+            String output_path,
+            String delimiter);
 }
