@@ -66,20 +66,20 @@ public interface FateClient {
     @RequestLine("POST /data/upload")
     JsonResultForm dataUpload(
             @Param("file") File file,
-            Integer head,
-            String id_delimiter,
-            Integer partition,
-            String table_name,
-            String namespace,
-            String storage_engine,
-            Integer destory,
-            Integer extend_sid);
+            @Param("head") Integer head,
+            @Param("id_delimiter") String idDelimiter,
+            @Param("partition") Integer partition,
+            @Param("table_name") String tableName,
+            @Param("namespace") String namespace,
+            @Param("storage_engine") String storageEngine,
+            @Param("destory") Integer destory,
+            @Param("extend_sid") Integer extendSid);
 
 
     @RequestLine("POST /data/download")
     JsonResultForm dataDownload(
-            String table_name,
-            String namespace,
-            String output_path,
-            String delimiter);
+            @Param("table_name") String tableName,
+            @Param("namespace") String namespace,
+            @Param("output_path") String outputPath,
+            @Param("delimiter") String delimiter);
 }
