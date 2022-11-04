@@ -501,6 +501,11 @@ message PartnerControlRequest{
 ////////////////////////////////////////////////////////////////////////////////
 // CONFIGURATION
 ////////////////////////////////////////////////////////////////////////////////
+message ConfigId{
+
+  string key = 1;
+}
+
 message ConfigSetRequest{
 
   string key = 1;
@@ -545,8 +550,9 @@ service HighFlip{
 
   // CONFIG
   rpc setConfig(ConfigSetRequest) returns(Void);
-  rpc getConfig(ConfigGetRequest) returns(ConfigGetResponse);
+  rpc getConfig(ConfigId) returns(ConfigGetResponse);
   rpc listConfig(ConfigListRequest) returns(stream ConfigListResponse);
+  rpc deleteConfig(ConfigId) returns(Void);
 
   // PLATFORM
   rpc getPlatform(Void) returns(PlatformGetResponse);

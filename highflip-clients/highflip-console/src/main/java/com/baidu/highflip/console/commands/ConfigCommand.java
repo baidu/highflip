@@ -30,4 +30,9 @@ public class ConfigCommand {
     public Iterable<String> list() {
         return client.listConfig();
     }
+
+    @ShellMethod(key = "config delete", value = "Delete config entry")
+    public void delete(String key) {
+        client.deleteConfig(key);
+    }
 }

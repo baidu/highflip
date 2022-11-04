@@ -79,7 +79,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
-    public void getConfig(Highflip.ConfigGetRequest request,
+    public void getConfig(Highflip.ConfigId request,
                           StreamObserver<Highflip.ConfigGetResponse> responseObserver) {
 
         Configuration entry = getEngine()
@@ -106,6 +106,15 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
         getEngine().getConfiguration()
                 .setString(request.getKey(), request.getValue());
+
+        returnVoid(responseObserver);
+    }
+
+    public void deleteConfig(Highflip.ConfigId request,
+                          StreamObserver<Highflip.Void> responseObserver) {
+
+        getEngine().getConfiguration()
+                .delete(request.getKey());
 
         returnVoid(responseObserver);
     }
