@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 @Slf4j
 @ShellComponent
@@ -16,7 +17,10 @@ public class TaskCommand {
     HighFlipClient client;
 
     @ShellMethod(key = "task list", value = "List all task ids")
-    public void list() {
+    public void list(
+            @ShellOption(defaultValue = "0") Integer offset,
+            @ShellOption(defaultValue = "0") Integer limit) {
+
         throw new UnsupportedOperationException();
     }
 
@@ -31,7 +35,7 @@ public class TaskCommand {
     }
 
     @ShellMethod(key = "task control", value = "Control task with action")
-    public void control(String taskId) {
+    public void control(String taskId, String action) {
         throw new UnsupportedOperationException();
     }
 
