@@ -15,7 +15,8 @@ public class HighFlipConfiguration implements Configuration {
     ConfigurationRepository configs;
 
     public com.baidu.highflip.server.entity.Configuration getEntry(String key) {
-        return configs.findById(key).orElse(null);
+        return configs.findById(key)
+                .orElse(null);
     }
 
     @Transactional
@@ -32,9 +33,15 @@ public class HighFlipConfiguration implements Configuration {
     }
 
     protected Iterator<com.baidu.highflip.server.entity.Configuration> listEntry() {
-        return configs.findAll().stream().iterator();
+        return configs.findAll()
+                .stream()
+                .iterator();
     }
 
+    /**
+     *
+     * @return
+     */
     public Iterable<String> listKeys() {
         return () -> configs.findAll()
                 .stream()
@@ -42,6 +49,20 @@ public class HighFlipConfiguration implements Configuration {
                 .iterator();
     }
 
+    /**
+     *
+     * @param key
+     */
+    public void delete(String key){
+        configs.deleteById(key);
+    }
+
+    /**
+     *
+     * @param key
+     * @param defaultValue
+     * @return
+     */
     @Override
     public String getString(String key, String defaultValue) {
         com.baidu.highflip.server.entity.Configuration entry = getEntry(key);

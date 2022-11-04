@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 @Slf4j
 @ShellComponent
@@ -17,17 +18,19 @@ public class PartnerCommand {
     HighFlipClient client;
 
     @ShellMethod(key = "partner add", value = "Create a partner.")
-    public String create(String name) {
-        throw new UnsupportedOperationException();
+    public String create(String name, String description) {
+        return client.createPartner(name, description);
     }
 
-    @ShellMethod(key = "partner get", value = "Get partner information")
+    @ShellMethod(key = "partner get", value = "Get a partner information.")
     public Highflip.PartnerGetResponse get(String partnerId) {
-        throw new UnsupportedOperationException();
+        return client.getPartner(partnerId);
     }
 
-    @ShellMethod(key = "partner list", value = "List partner ids")
-    public Iterable<String> list() {
-        throw new UnsupportedOperationException();
+    @ShellMethod(key = "partner list", value = "List partner ids.")
+    public Iterable<String> list(
+            @ShellOption(defaultValue = "0") Integer offset,
+            @ShellOption(defaultValue = "0") Integer limit) {
+        return client.listPartners(offset, limit);
     }
 }

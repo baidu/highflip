@@ -434,7 +434,7 @@ message OperatorListResponse{
   string name = 2;
 }
 
-message OperatorGetReponse{
+message OperatorGetResponse{
 
   string operater_id = 1;
 
@@ -578,7 +578,7 @@ service HighFlip{
 
   // OPERATOR
   rpc listOperator(OperatorListRequest) returns(stream OperatorListResponse);
-  rpc getOperator(OperatorId) returns(OperatorGetReponse);
+  rpc getOperator(OperatorId) returns(OperatorGetResponse);
 
   // PARTNER
   rpc createPartner(PartnerCreateRequest) returns(PartnerId);

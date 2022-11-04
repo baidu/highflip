@@ -487,11 +487,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param responseObserver
      */
     public void getOperator(Highflip.OperatorId request,
-                            StreamObserver<Highflip.OperatorGetReponse> responseObserver) {
+                            StreamObserver<Highflip.OperatorGetResponse> responseObserver) {
 
         Operator oper = getEngine().getOperator(request.getOperaterId());
 
-        Highflip.OperatorGetReponse response = Highflip.OperatorGetReponse
+        Highflip.OperatorGetResponse response = Highflip.OperatorGetResponse
                 .newBuilder()
                 .setOperaterId(oper.getOperatorId())
                 .setSchema(HighflipMeta.OperatorProto

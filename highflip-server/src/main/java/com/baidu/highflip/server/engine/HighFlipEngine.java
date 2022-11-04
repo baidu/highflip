@@ -79,6 +79,8 @@ public class HighFlipEngine {
                     @Override
                     protected void doInTransactionWithoutResult(TransactionStatus status) {
                         initPlatform();
+
+                        initializePartners();
                     }
                 });
     }
@@ -502,18 +504,22 @@ public class HighFlipEngine {
             return;
         }
 
-        int count = getContext().getOperatorAdaptor()
+        int count = getContext()
+                .getOperatorAdaptor()
                 .getOperatorCount();
 
         for (int i = 0; i < count; i++) {
             Operator oper = new Operator();
-            Operator retOper = getContext().getOperatorAdaptor()
+
+            oper = getContext()
+                    .getOperatorAdaptor()
                     .getOperatorByIndex(i, oper);
 
-            Operator saveOper = getContext().getOperatorRepository()
-                    .save(retOper);
+            oper = getContext()
+                    .getOperatorRepository()
+                    .save(oper);
 
-            log.info("Initialize an operator {}", saveOper.getOperatorId());
+            log.info("Initialize an operator {}", oper.getOperatorId());
         }
 
         getConfiguration().setBoolean(
@@ -541,13 +547,31 @@ public class HighFlipEngine {
      * PARTNER
      ******************************************************************************/
     @Transactional
-    protected void initializeParterners() {
+    protected void initializePartners() {
         Boolean isInitialized = getConfiguration().getBoolean(
                 ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED,
                 ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED_DEFAULT);
 
         if (isInitialized) {
             return;
+        }
+
+        int count = getContext()
+                .getPartnerAdaptor()
+                .getPartnerCount();
+
+        for (int i = 0; i < count; i++) {
+            Partner partner = new Partner();
+
+            partner = getContext()
+                    .getPartnerAdaptor()
+                    .getPartnerByIndex(i, partner);
+
+            partner = getContext()
+                    .getPartnerRepository()
+                    .save(partner);
+
+            log.info("Initialize a partner {}", partner.getPartnerId());
         }
 
         getConfiguration().setBoolean(

@@ -253,8 +253,18 @@ public class HighFlipClient implements AutoCloseable {
                 .setDataId(dataId)
                 .build();
 
-        Highflip.DataGetResponse response = getStub().getData(request);
+        Highflip.DataGetResponse response = getStub()
+                .getData(request);
         return response;
+    }
+
+    public void deleteData(String dataId) {
+        Highflip.DataId request = Highflip.DataId
+                .newBuilder()
+                .setDataId(dataId)
+                .build();
+
+        Highflip.Void response = getStub().deleteData(request);
     }
 
     public String pushDataRaw(String name, String description, InputStream body) {
@@ -263,5 +273,89 @@ public class HighFlipClient implements AutoCloseable {
 
     public OutputStream pullDataRaw(String dataId) {
         throw new UnsupportedOperationException();
+    }
+
+    public Iterable<String> listOperators(int offset, int limit){
+        Highflip.OperatorListRequest request = Highflip.OperatorListRequest
+                .newBuilder()
+                .setOffset(offset)
+                .setLimit(limit)
+                .build();
+
+        Iterator<Highflip.OperatorListResponse> response = getStub()
+                .listOperator(request);
+
+        return () -> Streams.of(response)
+                .map(Highflip.OperatorListResponse::getOperaterId)
+                .iterator();
+    }
+
+    public Highflip.OperatorGetResponse getOperator(String operatorId){
+        Highflip.OperatorId request = Highflip.OperatorId
+                .newBuilder()
+                .setOperaterId(operatorId)
+                .build();
+
+        Highflip.OperatorGetResponse response = getStub()
+                .getOperator(request);
+
+        return response;
+    }
+
+    /**
+     *
+     * @param offset
+     * @param limit
+     * @return
+     */
+    public Iterable<String> listPartners(int offset, int limit){
+        Highflip.PartnerListRequest request = Highflip.PartnerListRequest
+                .newBuilder()
+                .setOffset(offset)
+                .setLimit(limit)
+                .build();
+
+        Iterator<Highflip.PartnerListResponse> response = getStub()
+                .listPartner(request);
+
+        return () -> Streams.of(response)
+                .map(Highflip.PartnerListResponse::getPartnerId)
+                .iterator();
+    }
+
+    /**
+     *
+     * @param partnerId
+     * @return
+     */
+    public Highflip.PartnerGetResponse getPartner(String partnerId){
+        Highflip.PartnerId request = Highflip.PartnerId
+                .newBuilder()
+                .setPartnerId(partnerId)
+                .build();
+
+        Highflip.PartnerGetResponse response = getStub()
+                .getPartner(request);
+
+        return response;
+    }
+
+    /**
+     *
+     * @param name
+     * @param description
+     * @return
+     */
+    public String createPartner(String name, String description){
+        Highflip.PartnerCreateRequest request = Highflip.PartnerCreateRequest
+                .newBuilder()
+                .setName(name)
+                .setDescription(description)
+                .build();
+
+        Highflip.PartnerId response = getStub()
+                .createPartner(request);
+
+        return response.getPartnerId();
     }
 }
