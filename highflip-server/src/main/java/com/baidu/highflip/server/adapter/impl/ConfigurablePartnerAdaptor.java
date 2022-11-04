@@ -18,7 +18,7 @@ public class ConfigurablePartnerAdaptor implements PartnerAdaptor {
     public ConfigurablePartnerAdaptor(Properties props) {
         properties = props;
 
-        partners = LoadPartnerList();
+        partners = loadPartnerList();
     }
 
     public List<Partner> getPartners() {
@@ -30,7 +30,7 @@ public class ConfigurablePartnerAdaptor implements PartnerAdaptor {
         return properties.getProperty(key, defaultValue);
     }
 
-    Partner LoadPartner(int index) {
+    Partner loadPartner(int index) {
         Partner partner = new Partner();
 
         String name = getProperty(index, "name", null);
@@ -43,10 +43,10 @@ public class ConfigurablePartnerAdaptor implements PartnerAdaptor {
         return partner;
     }
 
-    List<Partner> LoadPartnerList() {
+    List<Partner> loadPartnerList() {
         List<Partner> partners = new LinkedList<>();
         for (int i = 0; true; i++) {
-            Partner partner = LoadPartner(i);
+            Partner partner = loadPartner(i);
             if (partner == null) {
                 break;
             }
