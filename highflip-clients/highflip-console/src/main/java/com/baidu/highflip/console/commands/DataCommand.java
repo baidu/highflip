@@ -18,17 +18,22 @@ public class DataCommand {
         throw new UnsupportedOperationException();
     }
 
-    @ShellMethod(key = "data get", value = "Get data basic information")
+    @ShellMethod(key = "data get", value = "Get a data basic information")
     public Iterable<String> get(String dataId) {
         throw new UnsupportedOperationException();
     }
 
-    @ShellMethod(key = "data pull", value = "Get data basic information")
+    @ShellMethod(key = "data delete", value = "Delete a remote data")
+    public void delete(String dataId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @ShellMethod(key = "data pull", value = "Pull a data to local")
     public Iterable<String> pull(String dataId) {
         throw new UnsupportedOperationException();
     }
 
-    @ShellMethod(key = "data push", value = "Get data basic information")
+    @ShellMethod(key = "data push", value = "Push a data to remote")
     public Iterable<String> push(String dataId) {
         throw new UnsupportedOperationException();
     }

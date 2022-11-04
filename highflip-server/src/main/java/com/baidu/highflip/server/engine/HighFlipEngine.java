@@ -232,29 +232,34 @@ public class HighFlipEngine {
         job.setDescription(description);
         job.setGraph(graph);
 
-        getContext()
-                .getJobAdaptor()
+        JobAdaptor adpt = getContext().getJobAdaptor();
+
+        job = getContext().getJobAdaptor()
                 .createJob(job);
-        getContext().getJobRepository().save(job);
+
+        job = getContext().getJobRepository()
+                .save(job);
 
         int taskCount = getContext()
                 .getJobAdaptor()
                 .getTaskCount(job);
 
-        ArrayList<Task> tasks = new ArrayList<>(taskCount);
-        for (int i = 0; i < taskCount; i++) {
-            Task task = new Task();
+        if (taskCount > 0){
+            ArrayList<Task> tasks = new ArrayList<>(taskCount);
+            for (int i = 0; i < taskCount; i++) {
+                Task task = new Task();
+                getContext().getTaskRepository()
+                        .save(task);
+                tasks.add(task);
+            }
+
+            List<Task> news = getContext()
+                    .getJobAdaptor()
+                    .getTaskList(job, tasks);
+
             getContext().getTaskRepository()
-                    .save(task);
-            tasks.add(task);
+                    .saveAll(news);
         }
-
-        List<Task> news = getContext()
-                .getJobAdaptor()
-                .getTaskList(job, tasks);
-
-        getContext().getTaskRepository()
-                .saveAll(news);
         return job;
     }
 

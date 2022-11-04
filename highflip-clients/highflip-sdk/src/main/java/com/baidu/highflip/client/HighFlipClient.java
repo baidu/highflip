@@ -8,6 +8,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 
 @Slf4j
@@ -69,6 +71,9 @@ public class HighFlipClient implements AutoCloseable {
         return this.stub;
     }
 
+    /**
+     * @return
+     */
     public Iterable<String> listConfig() {
         Highflip.ConfigListRequest request = Highflip.ConfigListRequest
                 .newBuilder()
@@ -141,7 +146,7 @@ public class HighFlipClient implements AutoCloseable {
                 .matchPlatform(request);
     }
 
-    /*
+    /**
      * @param name
      * @param description
      * @param dag
@@ -157,6 +162,18 @@ public class HighFlipClient implements AutoCloseable {
 
         Highflip.JobId response = getStub().createJob(request);
         return response.getJobId();
+    }
+
+    /**
+     * @param jobId
+     */
+    public void deleteJob(String jobId) {
+        Highflip.JobId request = Highflip.JobId
+                .newBuilder()
+                .setJobId(jobId)
+                .build();
+
+        getStub().deleteJob(request);
     }
 
     /**
@@ -183,16 +200,68 @@ public class HighFlipClient implements AutoCloseable {
         return response.getStatus().toString();
     }
 
-    public Iterator<String> listJob() {
+    public Iterable<String> listJob(int offset, int limit) {
         Highflip.JobListRequest request = Highflip.JobListRequest
                 .newBuilder()
+                .setOffset(offset)
+                .setLimit(limit)
                 .build();
 
         Iterator<Highflip.JobListResponse> response = getStub()
                 .listJob(request);
 
-        return Streams.of(response)
+        return () -> Streams.of(response)
                 .map(Highflip.JobListResponse::getJobId)
                 .iterator();
+    }
+
+    public Highflip.JobGetResponse getJob(String jobId) {
+        Highflip.JobId request = Highflip.JobId
+                .newBuilder()
+                .setJobId(jobId)
+                .build();
+
+        Highflip.JobGetResponse response = getStub()
+                .getJob(request);
+
+        return response;
+    }
+
+    /**
+     * @param offset
+     * @param limit
+     * @return
+     */
+    public Iterable<String> listData(int offset, int limit) {
+        Highflip.DataListRequest request = Highflip.DataListRequest
+                .newBuilder()
+                .setOffset(offset)
+                .setLimit(limit)
+                .build();
+
+        Iterator<Highflip.DataListResponse> response = getStub()
+                .listData(request);
+
+        return () -> Streams.of(response)
+                .map(Highflip.DataListResponse::getDataId)
+                .iterator();
+    }
+
+    public Highflip.DataGetResponse getData(String dataId) {
+        Highflip.DataId request = Highflip.DataId
+                .newBuilder()
+                .setDataId(dataId)
+                .build();
+
+        Highflip.DataGetResponse response = getStub().getData(request);
+        return response;
+    }
+
+    public String pushDataRaw(String name, String description, InputStream body) {
+        throw new UnsupportedOperationException();
+    }
+
+    public OutputStream pullDataRaw(String dataId) {
+        throw new UnsupportedOperationException();
     }
 }

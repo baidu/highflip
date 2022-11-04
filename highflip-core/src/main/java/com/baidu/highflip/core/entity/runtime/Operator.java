@@ -58,6 +58,9 @@ public class Operator {
     @Column(name = "parameters")
     List<Parameter> parameters;
 
+    @Column(name = "binding_id")
+    String bindingId;
+
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, Object> binding;

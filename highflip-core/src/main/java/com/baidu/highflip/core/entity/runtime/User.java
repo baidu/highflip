@@ -42,6 +42,9 @@ public class User {
     @Column(name = "update_time")
     LocalDateTime updateTime;
 
+    @Column(name = "binding_id")
+    String bindingId;
+
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, Object> binding = new TreeMap<>();

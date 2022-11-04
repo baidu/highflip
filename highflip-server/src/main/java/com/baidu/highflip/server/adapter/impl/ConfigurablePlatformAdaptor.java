@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 @Slf4j
-public class PropertyPlatformAdaptor implements PlatformAdaptor {
+public class ConfigurablePlatformAdaptor implements PlatformAdaptor {
 
     String company;
 
@@ -18,7 +18,7 @@ public class PropertyPlatformAdaptor implements PlatformAdaptor {
     String version;
 
 
-    public PropertyPlatformAdaptor(Properties props) {
+    public ConfigurablePlatformAdaptor(Properties props) {
 
         this.company = props.getProperty(AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_PLATFORM_COMPANY,
                 AdaptorPropsList.PROPS_HIGHFLIP_ADAPTOR_PLATFORM_COMPANY_DEFAULT);

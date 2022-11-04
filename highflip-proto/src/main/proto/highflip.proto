@@ -130,9 +130,8 @@ message JobCheckResponse{
     CREATED = 1;
     APPENDING = 2;
     RUNNING = 3;
-    STOPPED = 5;
-    FAILED = 6;
-    DELETED = 7;
+    SUCCEEDED = 4;
+    FAILED = 5;
   }
 
   string job_id = 1;
@@ -241,8 +240,8 @@ message TaskCheckResponse{
     CREATED = 1;
     APPENDING = 2;
     RUNNING = 3;
-    SUCCEEDED = 5;
-    FAILED = 6;
+    SUCCEEDED = 4;
+    FAILED = 5;
   }
 
   string job_id = 1;
@@ -443,7 +442,7 @@ message OperatorGetReponse{
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// PARTY
+// PARTNER
 ////////////////////////////////////////////////////////////////////////////////
 message PartnerId{
   string partner_id = 1;

@@ -2,7 +2,8 @@ package com.baidu.highflip.server.config;
 
 import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.InstanceRegister;
-import com.baidu.highflip.server.adapter.impl.PropertyPlatformAdaptor;
+import com.baidu.highflip.server.adapter.DefaultAdaptor;
+import com.baidu.highflip.server.adapter.impl.ConfigurablePlatformAdaptor;
 import com.baidu.highflip.server.adapter.loader.AdaptorLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,9 @@ public class AdaptorConfig {
 
         initializeLoader();
 
-        initialAdaptor();
-
         initialDefaultAdaptor();
+
+        initialAdaptor();
     }
 
     @PreDestroy
@@ -64,7 +65,6 @@ public class AdaptorConfig {
 
     }
 
-
     void initialAdaptor() {
         if (loader == null) {
             return;
@@ -74,13 +74,7 @@ public class AdaptorConfig {
     }
 
     void initialDefaultAdaptor() {
-        if (loader == null) {
-            return;
-        }
-
-        Properties props = loader.getProperties();
-
-        register.register(InstanceNameList.HIGHFLIP_ADAPTOR_PLATFORM,
-                new PropertyPlatformAdaptor(props));
+        DefaultAdaptor adaptor = new DefaultAdaptor();
+        adaptor.setup(register);
     }
 }

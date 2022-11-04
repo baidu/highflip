@@ -55,8 +55,8 @@ public class HighFlipContext {
     }
 
     public <T> T getInstance(String name) {
-        return (T) getRegister()
-                .getInstance(name);
+        Object obj = getRegister().getInstance(name);
+        return (T)obj;
     }
 
     // PLATFORM
@@ -111,7 +111,7 @@ public class HighFlipContext {
 
     // PARTNER
     public PartnerAdaptor getPartnerAdaptor() {
-        throw new NotYetImplementedException();
+        return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_PARTNER);
     }
 
     public PartnerRepository getPartnerRepository() {

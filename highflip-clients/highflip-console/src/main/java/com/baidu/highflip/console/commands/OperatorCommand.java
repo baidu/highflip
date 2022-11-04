@@ -16,11 +16,11 @@ public class OperatorCommand {
     HighFlipClient client;
 
     @ShellMethod(key = "operator get", value = "Get operator information.")
-    public String get() {
+    public String get(String operatorId) {
         throw new UnsupportedOperationException();
     }
 
-    @ShellMethod(key = "operator list", value = "List all operators.")
+    @ShellMethod(key = "operator list", value = "List all operator ids.")
     public Iterable<String> list() {
         throw new UnsupportedOperationException();
     }

@@ -21,7 +21,6 @@ public class PlatformCommand {
 
     @ShellMethod(key = "platform match", value = "Match platform information")
     public void match(String company, String product, String version) {
-
+        throw new UnsupportedOperationException();
     }
-
 }

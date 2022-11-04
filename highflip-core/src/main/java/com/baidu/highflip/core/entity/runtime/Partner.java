@@ -48,6 +48,9 @@ public class Partner {
     @Column(name = "is_deleted")
     Boolean isDeleted = false;
 
+    @Column(name = "binding_id")
+    String bindingId;
+
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, Object> binding;

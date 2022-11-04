@@ -15,7 +15,7 @@ public class TaskCommand {
     @Autowired
     HighFlipClient client;
 
-    @ShellMethod(key = "task list", value = "List task")
+    @ShellMethod(key = "task list", value = "List all task ids")
     public void list() {
         throw new UnsupportedOperationException();
     }
@@ -30,7 +30,7 @@ public class TaskCommand {
         throw new UnsupportedOperationException();
     }
 
-    @ShellMethod(key = "task control", value = "Control task")
+    @ShellMethod(key = "task control", value = "Control task with action")
     public void control(String taskId) {
         throw new UnsupportedOperationException();
     }

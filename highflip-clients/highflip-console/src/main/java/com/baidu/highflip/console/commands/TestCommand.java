@@ -4,14 +4,13 @@ package com.baidu.highflip.console.commands;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@ShellComponent
+//@ShellComponent
 @ShellCommandGroup("test")
 public class TestCommand {
 

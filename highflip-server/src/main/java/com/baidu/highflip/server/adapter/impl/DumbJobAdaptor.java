@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Slf4j
 public class DumbJobAdaptor implements JobAdaptor {
+
     @Override
     public List<String> getFeatures() {
         return null;
