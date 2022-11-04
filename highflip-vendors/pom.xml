@@ -17,8 +17,8 @@
 
 
     <modules>
-        <module>highflip-adapter-demo</module>
-        <module>highflip-adapter-fate</module>
+        <module>highflip-adaptor-demo</module>
+        <module>highflip-adaptor-fate</module>
     </modules>
 
 </project>
