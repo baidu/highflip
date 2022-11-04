@@ -16,7 +16,6 @@ import com.baidu.highflip.server.respository.PartnerRepository;
 import com.baidu.highflip.server.respository.PlatformRepository;
 import com.baidu.highflip.server.respository.TaskRepository;
 import com.baidu.highflip.server.respository.UserRepository;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,7 +55,7 @@ public class HighFlipContext {
 
     public <T> T getInstance(String name) {
         Object obj = getRegister().getInstance(name);
-        return (T)obj;
+        return (T) obj;
     }
 
     // PLATFORM

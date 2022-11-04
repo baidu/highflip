@@ -14,8 +14,8 @@ public class HighFlipUtils {
                 .build();
     }
 
-    public static Properties getProperty(String filename){
-        try(InputStream stream = HighFlipUtils.class.getResourceAsStream(filename)){
+    public static Properties getProperty(String filename) {
+        try (InputStream stream = HighFlipUtils.class.getResourceAsStream(filename)) {
             Properties props = new Properties();
             props.load(stream);
             return props;

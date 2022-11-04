@@ -1,9 +1,7 @@
 package com.baidu.highflip.server.config;
 
-import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.server.adapter.DefaultAdaptor;
-import com.baidu.highflip.server.adapter.impl.ConfigurablePlatformAdaptor;
 import com.baidu.highflip.server.adapter.loader.AdaptorLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 
 @Slf4j
 @Configuration

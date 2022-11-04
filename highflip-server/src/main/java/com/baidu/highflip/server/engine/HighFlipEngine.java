@@ -244,7 +244,7 @@ public class HighFlipEngine {
                 .getJobAdaptor()
                 .getTaskCount(job);
 
-        if (taskCount > 0){
+        if (taskCount > 0) {
             ArrayList<Task> tasks = new ArrayList<>(taskCount);
             for (int i = 0; i < taskCount; i++) {
                 Task task = new Task();
