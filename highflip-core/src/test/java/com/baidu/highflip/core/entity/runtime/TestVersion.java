@@ -2,8 +2,8 @@ package com.baidu.highflip.core.entity.runtime;
 
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 
 @Slf4j

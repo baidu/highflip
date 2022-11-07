@@ -5,12 +5,13 @@ import com.webank.ai.fate.client.form.JsonResultForm;
 import com.webank.ai.fate.client.form.ResultForm;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 
 @Slf4j
 @Data
-@Ignore
+@Disabled
 public class FateClientTest {
 
     public static final String TEST_FLOW_URL = "http://127.0.0.1:9380";

@@ -1,8 +1,9 @@
 package com.baidu.highflip.core.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 
 @Slf4j
 public class TestIdGenerator {
@@ -15,7 +16,7 @@ public class TestIdGenerator {
         String result2 = IdGenerator.fromStrings("123456");
         log.info("uuid(123456) => {}", result2);
 
-        Assert.assertEquals(result1, result2);
+        Assertions.assertEquals(result1, result2);
     }
 
     @Test
@@ -26,6 +27,6 @@ public class TestIdGenerator {
         String uuid = IdGenerator.fromStrings("123456");
         log.info("uuid(123456) => {}", uuid);
 
-        Assert.assertEquals(md5.substring(0, 8), uuid.substring(0, 8));
+        Assertions.assertEquals(md5.substring(0, 8), uuid.substring(0, 8));
     }
 }
