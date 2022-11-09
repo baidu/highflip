@@ -7,6 +7,7 @@ import highflip.v1.Highflip;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -234,6 +235,113 @@ public class HighFlipClient implements AutoCloseable {
                 .getJob(request);
 
         return response;
+    }
+
+    /**
+     *
+     * @param jobId
+     * @return
+     */
+    public Iterable<String> getJobLog(String jobId){
+        Highflip.JobLogRequest request = Highflip.JobLogRequest
+                .newBuilder()
+                .setJobId(jobId)
+                .build();
+
+        Iterator<Highflip.JobLogResponse> response = getStub()
+                .getJobLog(request);
+
+        return () -> Streams.of(response)
+                .flatMap(r -> r.getLinesList().stream())
+                .iterator();
+    }
+
+    /**
+     *
+     * @param offset
+     * @param limit
+     * @return
+     */
+    public Iterable<String> listTasks(int offset, int limit){
+        Highflip.TaskListRequest request = Highflip.TaskListRequest
+                .newBuilder()
+                .build();
+
+        Iterator<Highflip.TaskListResponse> response = getStub()
+                .listTask(request);
+
+        return () -> Streams.of(response)
+                .map(Highflip.TaskListResponse::getTaskId)
+                .iterator();
+    }
+
+    /**
+     *
+     * @param taskId
+     * @return
+     */
+    public Highflip.TaskGetResponse getTask(String taskId){
+        Highflip.TaskId request = Highflip.TaskId
+                .newBuilder()
+                .setTaskId(taskId)
+                .build();
+
+        Highflip.TaskGetResponse response = getStub()
+                .getTask(request);
+
+        return response;
+    }
+
+    /**
+     *
+     * @param taskId
+     * @return
+     */
+    public String checkTask(String taskId){
+        Highflip.TaskId request = Highflip.TaskId
+                .newBuilder()
+                .setTaskId(taskId)
+                .build();
+
+        Highflip.TaskCheckResponse response = getStub()
+                .checkTask(request);
+
+        return response.getStatus().toString();
+    }
+
+    /**
+     *
+     * @param taskId
+     * @param action
+     */
+    public void controlTask(String taskId, String action){
+        Highflip.TaskControlRequest request = Highflip.TaskControlRequest
+                .newBuilder()
+                .setTaskId(taskId)
+                .setAction(Highflip.TaskControlRequest.Action.valueOf(action))
+                .build();
+
+        Highflip.Void response = getStub()
+                .controlTask(request);
+    }
+
+    /**
+     *
+     * @param taskId
+     * @return
+     */
+    public Iterable<String> getTaskLog(String taskId){
+        Highflip.TaskLogRequest request = Highflip.TaskLogRequest
+                .newBuilder()
+                .setTaskId(taskId)
+                .build();
+
+        Iterator<Highflip.TaskLogResponse> response = getStub()
+                .getTaskLog(request);
+
+        return () -> Streams.of(response)
+                .flatMap(r -> r.getLinesList().stream())
+                .iterator();
     }
 
     /**

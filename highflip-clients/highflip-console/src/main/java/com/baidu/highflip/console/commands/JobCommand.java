@@ -66,4 +66,9 @@ public class JobCommand {
 
         client.controlJob(jobId, action);
     }
+
+    @ShellMethod(key = "job log", value = "List job logs.")
+    public Iterable<String> log(String jobId) {
+        return client.getJobLog(jobId);
+    }
 }

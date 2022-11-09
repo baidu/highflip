@@ -54,10 +54,18 @@ public class Graph extends AttributeObject implements Serializable {
     }
 
     public Node getNodeByName(String name) {
-        throw new NotYetImplementedException();
+        return getNodes()
+                .stream()
+                .filter(n -> n.getName().compareToIgnoreCase(name) == 0)
+                .findFirst()
+                .orElseThrow();
     }
 
     public Party getPartyByName(String name) {
-        throw new NotYetImplementedException();
+        return getParties()
+                .stream()
+                .filter(p -> p.getName().compareToIgnoreCase(name) == 0)
+                .findFirst()
+                .orElseThrow();
     }
 }

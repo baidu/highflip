@@ -44,4 +44,11 @@ public class Party extends AttributeObject implements Serializable {
     public static HighflipMeta.PartyProto toProto(Party party) {
         throw new NotYetImplementedException();
     }
+
+    PartyNode getPartyNodeByName(String name){
+        return getNodes().stream()
+                .filter(n -> n.getName().compareToIgnoreCase(name) == 0)
+                .findFirst()
+                .orElseThrow();
+    }
 }
