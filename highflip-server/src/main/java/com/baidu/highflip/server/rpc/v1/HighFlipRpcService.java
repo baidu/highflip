@@ -13,19 +13,22 @@ import com.baidu.highflip.core.entity.runtime.basic.Type;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
+import com.baidu.highflip.server.engine.common.PushContext;
 import com.baidu.highflip.server.entity.Configuration;
-import com.baidu.highflip.server.exception.HighFlipEngineException;
+import com.baidu.highflip.server.exception.HighFlipException;
 import com.google.common.collect.Streams;
 import highflip.HighflipMeta;
 import highflip.v1.HighFlipGrpc.HighFlipImplBase;
 import highflip.v1.Highflip;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +51,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     // @GRpcExceptionHandler
-    public Status handle(HighFlipEngineException exc, GRpcExceptionScope scope) {
+    public Status handle(HighFlipException exc, GRpcExceptionScope scope) {
         return Status.ABORTED;
     }
 
@@ -111,7 +114,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     }
 
     public void deleteConfig(Highflip.ConfigId request,
-                          StreamObserver<Highflip.Void> responseObserver) {
+                             StreamObserver<Highflip.Void> responseObserver) {
 
         getEngine().getConfiguration()
                 .delete(request.getKey());
@@ -405,11 +408,14 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
         return new StreamObserver<Highflip.DataPushRequest>() {
 
-            Data data = null;
+            PushContext context = null;
 
+            Highflip.DataFormat format = null;
+
+            @SneakyThrows
             @Override
             public void onNext(Highflip.DataPushRequest request) {
-                if (data == null) {
+                if (context == null) {
                     Highflip.DataPushRequest.Head head = request.getHead();
                     HighflipMeta.DataProto schema = head.getSchema();
                     List<Column> columns = schema.getColumnsList()
@@ -421,27 +427,42 @@ public class HighFlipRpcService extends HighFlipImplBase {
                                     column.getDescription()))
                             .collect(Collectors.toList());
 
-                    data = getEngine().createData(
+                    format = head.getFormat();
+
+                    context = getEngine().pushData(
                             schema.getName(),
                             schema.getDescription(),
-                            columns
-                    );
+                            columns);
                 } else {
-                    getEngine().pushData(data.getDataId(),
-                            0, null);
+                    switch (format){
+                        case DENSE:
+                            for(Highflip.DenseData.Row row: request.getDense().getRowsList()){
+                                context.pushDense(Arrays.asList(row.getValueList().toArray()));
+                            }
+                            break;
+                        case SPARSE:
+                            for(Highflip.SparseData.Row row: request.getSparse().getRowsList()){
+                                context.pushDense(Arrays.asList(row.getPairsList().toArray()));
+                            }
+                            break;
+                        case RAW:
+                            break;
+                    }
                 }
             }
 
             @Override
             public void onError(Throwable t) {
-
+                context.abord();
             }
 
             @Override
             public void onCompleted() {
+                context.close();
+
                 Highflip.DataId dataId = Highflip.DataId
                         .newBuilder()
-                        .setDataId(data.getDataId())
+                        .setDataId(context.getData().getDataId())
                         .build();
 
                 returnOne(responseObserver, dataId);
@@ -456,6 +477,16 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void pullData(Highflip.DataPullRequest request,
                          StreamObserver<Highflip.DataPullResponse> responseObserver) {
 
+        switch (request.getFormat()){
+            case DENSE:
+                Streams.stream(getEngine().pullDataDense(
+                        request.getDataId(),
+                        request.getOffset(),
+                        request.getLimit()));
+
+                returnMore(responseObserver, null);
+                break;
+        }
 
     }
 

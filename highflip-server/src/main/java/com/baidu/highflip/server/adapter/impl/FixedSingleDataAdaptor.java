@@ -5,6 +5,8 @@ import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.Column;
 import com.baidu.highflip.core.entity.runtime.basic.Type;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,23 +45,17 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
         return data;
     }
 
+
     @Override
-    public long getDataSize(Data data, PositionType type) {
-        if (type == PositionType.ROW) {
-            return 3;
-        }
-        return 0;
+    public Iterator<List<Object>> readDataDense(Data data) {
+
+        return DATA_BODY
+                .stream()
+                .iterator();
     }
 
     @Override
-    public Iterator<List<Object>> readData(Data data, PositionType type, long offset, long size) {
-        if (type == PositionType.ROW) {
-            return DATA_BODY
-                    .stream()
-                    .skip(offset)
-                    .limit(size)
-                    .iterator();
-        }
+    public Iterator<List<KeyPair>> readDataSparse(Data data) {
         throw new UnsupportedOperationException();
     }
 
@@ -69,12 +65,27 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
     }
 
     @Override
-    public long writeData(Data data, PositionType type, Iterator<List<Object>> body) {
+    public void writeDataRaw(Data data, InputStream body) {
+
+    }
+
+    @Override
+    public void writeDataDense(Data data, Iterator<List<Object>> body) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteData(Data data) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public OutputStream readDataRaw(Data data) {
+        return null;
     }
 }

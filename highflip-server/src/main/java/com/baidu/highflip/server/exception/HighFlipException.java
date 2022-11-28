@@ -5,5 +5,5 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class HighFlipEngineException extends RuntimeException {
+public class HighFlipException extends RuntimeException {
 }

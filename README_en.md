@@ -11,6 +11,8 @@ federated learning platform at high hierarchy.
 
 # Architecture
 
+![img.png](highflip-doc/doc/images/highflip-doc-architecture.drawio.png)
+
 # Directory
 
 ![img.png](highflip-doc/doc/images/directories.png)
@@ -38,8 +40,6 @@ interface definitions and adaptation method.
 
 - JDK 11
 - Maven >= 3.5
-- Protobuf 3
-- gRPC-Java
 
 # Owners
 

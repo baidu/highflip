@@ -12,6 +12,8 @@ HIGHFLIP项目是用于解决异构的联邦学习平台互通的问题，通过
 
 # 框架介绍
 
+![img.png](highflip-doc/doc/images/highflip-doc-architecture.drawio.png)
+
 # 目录结构
 
 ![img.png](highflip-doc/doc/images/directories.png)
@@ -57,8 +59,6 @@ HIGHFLIP项目是用于解决异构的联邦学习平台互通的问题，通过
 
 - Open JDK == 1.11
 - Maven >= 3.5
-- Protobuf >= 3.12
-- gRPC-Java
 
 # 贡献名单
 

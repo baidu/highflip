@@ -16,6 +16,7 @@ import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.server.engine.common.ConfigurationList;
+import com.baidu.highflip.server.engine.common.PushContext;
 import com.baidu.highflip.server.engine.component.HighFlipConfiguration;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
 import com.baidu.highflip.server.engine.component.HighFlipRuntime;
@@ -467,12 +468,7 @@ public class HighFlipEngine {
                 .delete(data);
     }
 
-    public Iterator<List<Object>> pullData(String dataid, long offset, long size) {
-        Data data = getData(dataid);
 
-        return getContext().getDataAdaptor()
-                .readData(data, DataAdaptor.PositionType.ROW, offset, size);
-    }
 
     public Data createData(String name, String description, List<Column> columns) {
         Data data = new Data();
@@ -484,11 +480,27 @@ public class HighFlipEngine {
                 .save(data);
     }
 
-    public void pushData(String dataid, long offset, Iterator<List<Object>> body) {
+    public PushContext pushData(String name, String description, List<Column> columns) {
+        Data data = new Data();
+        data.setName(name);
+        data.setDescription(description);
+        data.setColumns(columns);
+        getContext().getDataRepository().save(data);
+        return PushContext.createDense(getContext().getDataAdaptor(), data);
+    }
+
+    public Iterator<List<Object>> pullDataDense(String dataid, long offset, long size) {
         Data data = getData(dataid);
 
-        getContext().getDataAdaptor()
-                .writeData(data, DataAdaptor.PositionType.ROW, body);
+         return getContext().getDataAdaptor()
+                .readDataDense(data);
+    }
+
+    public Iterator<List<DataAdaptor.KeyPair>> pullDataSparse(String dataid, long offset, long size) {
+        Data data = getData(dataid);
+
+        return getContext().getDataAdaptor()
+                .readDataSparse(data);
     }
 
     /******************************************************************************

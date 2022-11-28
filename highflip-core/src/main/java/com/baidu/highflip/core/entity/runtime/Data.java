@@ -53,17 +53,24 @@ public class Data {
     @Column(name = "is_deleted")
     Boolean isDeleted = false;
 
+    @Column(name = "data_category")
+    DataCategory category;
+
+    @Column(name = "raw_size")
+    Long rawSize;
+
+    @Type(type = "json")
+    @Column(name = "dimension")
+    List<Long> Dimension;
+
+    @Type(type = "json")
+    @Column(name = "columns")
+    List<com.baidu.highflip.core.entity.runtime.basic.Column> columns = new LinkedList<>();
+
     @Column(name = "binding_id")
     String bingingId;
 
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, Object> binding;
-
-    @Column(name = "data_category")
-    DataCategory category;
-
-    @Type(type = "json")
-    @Column(name = "columns")
-    List<com.baidu.highflip.core.entity.runtime.basic.Column> columns = new LinkedList<>();
 }
