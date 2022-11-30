@@ -1,4 +1,4 @@
-package com.baidu.highflip.client;
+package com.baidu.highflip.client.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

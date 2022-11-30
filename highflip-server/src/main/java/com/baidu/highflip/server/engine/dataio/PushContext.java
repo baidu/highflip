@@ -1,4 +1,4 @@
-package com.baidu.highflip.server.engine.common;
+package com.baidu.highflip.server.engine.dataio;
 
 import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.runtime.Data;

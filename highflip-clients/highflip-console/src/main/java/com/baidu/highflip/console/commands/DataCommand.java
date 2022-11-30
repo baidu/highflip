@@ -8,10 +8,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.List;
 
 @ShellComponent
 @ShellCommandGroup("data")
@@ -38,8 +36,8 @@ public class DataCommand {
     }
 
     @ShellMethod(key = "data pull", value = "Pull a data to local")
-    public Iterable<String> pull(String dataId) {
-        throw new UnsupportedOperationException();
+    public Iterable<List<String>> pull(String dataId) {
+        return () -> client.pullDataDense(dataId);
     }
 
     @ShellMethod(key = "data pull raw", value = "Pull a raw data to local file.")
@@ -53,12 +51,18 @@ public class DataCommand {
         }
     }
 
-
-    @ShellMethod(key = "data push", value = "Push a local raw file to remote server.")
+    @ShellMethod(key = "data push raw", value = "Push a local raw file to remote server.")
     public String pushRaw(
             @ShellOption String name,
-            @ShellOption String description,
-            @ShellOption String file) {
-        throw new UnsupportedOperationException();
+            @ShellOption(defaultValue = "") String description,
+            @ShellOption String filename) {
+
+        try (InputStream intput = new FileInputStream(filename)) {
+            return client.pushDataRaw(name, description, intput);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

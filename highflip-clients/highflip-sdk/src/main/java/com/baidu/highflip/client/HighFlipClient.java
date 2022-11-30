@@ -1,5 +1,10 @@
 package com.baidu.highflip.client;
 
+import com.baidu.highflip.client.common.HighFlipURL;
+import com.baidu.highflip.client.dataio.DataPullStream;
+import com.baidu.highflip.client.dataio.DataPushStream;
+import com.baidu.highflip.client.common.OneObserver;
+import com.baidu.highflip.client.model.KeyPair;
 import com.baidu.highflip.utils.Streams;
 import highflip.HighflipMeta;
 import highflip.v1.HighFlipGrpc;
@@ -7,12 +12,10 @@ import highflip.v1.Highflip;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.List;
 
 @Slf4j
 public class HighFlipClient implements AutoCloseable {
@@ -25,11 +28,13 @@ public class HighFlipClient implements AutoCloseable {
 
     ManagedChannel channel;
 
-    HighFlipGrpc.HighFlipBlockingStub stub;
+    HighFlipGrpc.HighFlipBlockingStub blockingStub;
+
+    HighFlipGrpc.HighFlipStub stub;
 
     public HighFlipClient() {
         this.channel = null;
-        this.stub = null;
+        this.blockingStub = null;
     }
 
     public void connect(String target) {
@@ -42,9 +47,11 @@ public class HighFlipClient implements AutoCloseable {
                 .usePlaintext()
                 .build();
 
-        HighFlipGrpc.HighFlipBlockingStub stub = HighFlipGrpc.newBlockingStub(channel);
+        HighFlipGrpc.HighFlipBlockingStub blockingStub = HighFlipGrpc.newBlockingStub(channel);
+        HighFlipGrpc.HighFlipStub stub = HighFlipGrpc.newStub(channel);
 
         this.channel = channel;
+        this.blockingStub = blockingStub;
         this.stub = stub;
     }
 
@@ -55,6 +62,7 @@ public class HighFlipClient implements AutoCloseable {
         }
 
         this.stub = null;
+        this.blockingStub = null;
         this.channel = null;
     }
 
@@ -69,7 +77,11 @@ public class HighFlipClient implements AutoCloseable {
         return true;
     }
 
-    protected HighFlipGrpc.HighFlipBlockingStub getStub() {
+    protected HighFlipGrpc.HighFlipBlockingStub getBlockingStub() {
+        return this.blockingStub;
+    }
+
+    protected HighFlipGrpc.HighFlipStub getStub() {
         return this.stub;
     }
 
@@ -81,7 +93,7 @@ public class HighFlipClient implements AutoCloseable {
                 .newBuilder()
                 .build();
 
-        Iterator<Highflip.ConfigListResponse> response = getStub()
+        Iterator<Highflip.ConfigListResponse> response = getBlockingStub()
                 .listConfig(Highflip.ConfigListRequest
                         .newBuilder()
                         .build());
@@ -98,7 +110,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setKey(key)
                 .build();
 
-        Highflip.ConfigGetResponse response = getStub()
+        Highflip.ConfigGetResponse response = getBlockingStub()
                 .getConfig(request);
 
         return response;
@@ -111,7 +123,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setValue(value)
                 .build();
 
-        getStub().setConfig(request);
+        getBlockingStub().setConfig(request);
     }
 
     public void deleteConfig(String key) {
@@ -120,7 +132,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setKey(key)
                 .build();
 
-        Highflip.Void response = getStub()
+        Highflip.Void response = getBlockingStub()
                 .deleteConfig(request);
     }
 
@@ -129,7 +141,7 @@ public class HighFlipClient implements AutoCloseable {
      */
     public Highflip.PlatformGetResponse getPlatform() {
 
-        Highflip.PlatformGetResponse response = getStub()
+        Highflip.PlatformGetResponse response = getBlockingStub()
                 .getPlatform(Highflip.Void.getDefaultInstance());
 
         return response;
@@ -153,7 +165,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setVersion(platver)
                 .build();
 
-        Iterator<Highflip.PlatformMatchResponse> response = getStub()
+        Iterator<Highflip.PlatformMatchResponse> response = getBlockingStub()
                 .matchPlatform(request);
     }
 
@@ -171,7 +183,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setDag(dag)
                 .build();
 
-        Highflip.JobId response = getStub().createJob(request);
+        Highflip.JobId response = getBlockingStub().createJob(request);
         return response.getJobId();
     }
 
@@ -184,7 +196,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setJobId(jobId)
                 .build();
 
-        getStub().deleteJob(request);
+        getBlockingStub().deleteJob(request);
     }
 
     /**
@@ -198,7 +210,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setAction(Highflip.JobControlRequest.Action.valueOf(action))
                 .build();
 
-        Highflip.Void response = getStub().controlJob(request);
+        Highflip.Void response = getBlockingStub().controlJob(request);
     }
 
     public String checkJob(String jobId) {
@@ -207,7 +219,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setJobId(jobId)
                 .build();
 
-        Highflip.JobCheckResponse response = getStub().checkJob(request);
+        Highflip.JobCheckResponse response = getBlockingStub().checkJob(request);
         return response.getStatus().toString();
     }
 
@@ -218,7 +230,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setLimit(limit)
                 .build();
 
-        Iterator<Highflip.JobListResponse> response = getStub()
+        Iterator<Highflip.JobListResponse> response = getBlockingStub()
                 .listJob(request);
 
         return () -> Streams.of(response)
@@ -232,7 +244,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setJobId(jobId)
                 .build();
 
-        Highflip.JobGetResponse response = getStub()
+        Highflip.JobGetResponse response = getBlockingStub()
                 .getJob(request);
 
         return response;
@@ -249,7 +261,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setJobId(jobId)
                 .build();
 
-        Iterator<Highflip.JobLogResponse> response = getStub()
+        Iterator<Highflip.JobLogResponse> response = getBlockingStub()
                 .getJobLog(request);
 
         return () -> Streams.of(response)
@@ -268,7 +280,7 @@ public class HighFlipClient implements AutoCloseable {
                 .newBuilder()
                 .build();
 
-        Iterator<Highflip.TaskListResponse> response = getStub()
+        Iterator<Highflip.TaskListResponse> response = getBlockingStub()
                 .listTask(request);
 
         return () -> Streams.of(response)
@@ -287,7 +299,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setTaskId(taskId)
                 .build();
 
-        Highflip.TaskGetResponse response = getStub()
+        Highflip.TaskGetResponse response = getBlockingStub()
                 .getTask(request);
 
         return response;
@@ -304,7 +316,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setTaskId(taskId)
                 .build();
 
-        Highflip.TaskCheckResponse response = getStub()
+        Highflip.TaskCheckResponse response = getBlockingStub()
                 .checkTask(request);
 
         return response.getStatus().toString();
@@ -322,7 +334,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setAction(Highflip.TaskControlRequest.Action.valueOf(action))
                 .build();
 
-        Highflip.Void response = getStub()
+        Highflip.Void response = getBlockingStub()
                 .controlTask(request);
     }
 
@@ -337,7 +349,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setTaskId(taskId)
                 .build();
 
-        Iterator<Highflip.TaskLogResponse> response = getStub()
+        Iterator<Highflip.TaskLogResponse> response = getBlockingStub()
                 .getTaskLog(request);
 
         return () -> Streams.of(response)
@@ -357,7 +369,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setLimit(limit)
                 .build();
 
-        Iterator<Highflip.DataListResponse> response = getStub()
+        Iterator<Highflip.DataListResponse> response = getBlockingStub()
                 .listData(request);
 
         return () -> Streams.of(response)
@@ -371,7 +383,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setDataId(dataId)
                 .build();
 
-        Highflip.DataGetResponse response = getStub()
+        Highflip.DataGetResponse response = getBlockingStub()
                 .getData(request);
         return response;
     }
@@ -382,17 +394,38 @@ public class HighFlipClient implements AutoCloseable {
                 .setDataId(dataId)
                 .build();
 
-        Highflip.Void response = getStub()
+        Highflip.Void response = getBlockingStub()
                 .deleteData(request);
     }
 
     public String pushDataRaw(String name, String description, InputStream body) {
-        Highflip.DataPushRequest request = Highflip.DataPushRequest
-                .newBuilder()
-                .build();
+        OneObserver<Highflip.DataId> response = new OneObserver<>();
 
+        DataPushStream stream = DataPushStream.of(getStub().pushData(response));
+        stream.pushHead(name, description);
+        stream.pushRaw(body, 10);
 
-        throw new UnsupportedOperationException();
+        return response.getOrThrow().getDataId();
+    }
+
+    public String pushDataDense(String name, String description, Iterator<List<String>> body) {
+        OneObserver<Highflip.DataId> response = new OneObserver<>();
+
+        DataPushStream stream = DataPushStream.of(getStub().pushData(response));
+        stream.pushHead(name, description);
+        stream.pushDense(body, 10);
+
+        return response.getOrThrow().getDataId();
+    }
+
+    public String pushDataSparse(String name, String description, Iterator<List<KeyPair>> body) {
+        OneObserver<Highflip.DataId> response = new OneObserver<>();
+
+        DataPushStream stream = DataPushStream.of(getStub().pushData(response));
+        stream.pushHead(name, description);
+        stream.pushSparse(body, 10);
+
+        return response.getOrThrow().getDataId();
     }
 
     public InputStream pullDataRaw(String dataId) {
@@ -402,10 +435,36 @@ public class HighFlipClient implements AutoCloseable {
                 .setFormat(Highflip.DataFormat.RAW)
                 .build();
 
-        Iterator<Highflip.DataPullResponse> response = getStub()
+        Iterator<Highflip.DataPullResponse> response = getBlockingStub()
                 .pullData(request);
 
-        return new DataPullInputStream(response);
+        return DataPullStream.toRaw(response);
+    }
+
+    public Iterator<List<String>> pullDataDense(String dataId) {
+        Highflip.DataPullRequest request = Highflip.DataPullRequest
+                .newBuilder()
+                .setDataId(dataId)
+                .setFormat(Highflip.DataFormat.DENSE)
+                .build();
+
+        Iterator<Highflip.DataPullResponse> response = getBlockingStub()
+                .pullData(request);
+
+        return DataPullStream.toDense(response);
+    }
+
+    public Iterator<List<KeyPair>> pullDataSparse(String dataId) {
+        Highflip.DataPullRequest request = Highflip.DataPullRequest
+                .newBuilder()
+                .setDataId(dataId)
+                .setFormat(Highflip.DataFormat.SPARSE)
+                .build();
+
+        Iterator<Highflip.DataPullResponse> response = getBlockingStub()
+                .pullData(request);
+
+        return DataPullStream.toSparse(response);
     }
 
     public Iterable<String> listOperators(int offset, int limit){
@@ -415,7 +474,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setLimit(limit)
                 .build();
 
-        Iterator<Highflip.OperatorListResponse> response = getStub()
+        Iterator<Highflip.OperatorListResponse> response = getBlockingStub()
                 .listOperator(request);
 
         return () -> Streams.of(response)
@@ -429,7 +488,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setOperatorId(operatorId)
                 .build();
 
-        Highflip.OperatorGetResponse response = getStub()
+        Highflip.OperatorGetResponse response = getBlockingStub()
                 .getOperator(request);
 
         return response;
@@ -448,7 +507,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setLimit(limit)
                 .build();
 
-        Iterator<Highflip.PartnerListResponse> response = getStub()
+        Iterator<Highflip.PartnerListResponse> response = getBlockingStub()
                 .listPartner(request);
 
         return () -> Streams.of(response)
@@ -467,7 +526,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setPartnerId(partnerId)
                 .build();
 
-        Highflip.PartnerGetResponse response = getStub()
+        Highflip.PartnerGetResponse response = getBlockingStub()
                 .getPartner(request);
 
         return response;
@@ -486,7 +545,7 @@ public class HighFlipClient implements AutoCloseable {
                 .setDescription(description)
                 .build();
 
-        Highflip.PartnerId response = getStub()
+        Highflip.PartnerId response = getBlockingStub()
                 .createPartner(request);
 
         return response.getPartnerId();

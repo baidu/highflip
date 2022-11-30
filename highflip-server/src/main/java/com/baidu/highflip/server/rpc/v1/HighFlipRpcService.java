@@ -6,7 +6,7 @@ import com.baidu.highflip.core.entity.runtime.basic.*;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
-import com.baidu.highflip.server.engine.common.PushContext;
+import com.baidu.highflip.server.engine.dataio.PushContext;
 import com.baidu.highflip.server.entity.Configuration;
 import com.baidu.highflip.server.exception.HighFlipException;
 import com.baidu.highflip.server.utils.PullProtoUtils;
@@ -37,7 +37,6 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
     @Autowired
     HighFlipEngine engine;
-
 
     public HighFlipEngine getEngine() {
         return engine;

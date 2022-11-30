@@ -8,7 +8,7 @@ import com.baidu.highflip.core.entity.runtime.basic.*;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.server.engine.common.ConfigurationList;
-import com.baidu.highflip.server.engine.common.PushContext;
+import com.baidu.highflip.server.engine.dataio.PushContext;
 import com.baidu.highflip.server.engine.component.HighFlipConfiguration;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
 import com.baidu.highflip.server.engine.component.HighFlipRuntime;
@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -49,6 +50,9 @@ public class HighFlipEngine {
     PlatformTransactionManager transactionManager;
 
     ConcurrentMap<String, Job> activeJobs;
+
+    @Autowired
+    AsyncTaskExecutor executor;
 
     /******************************************************************************
      * COMMON
