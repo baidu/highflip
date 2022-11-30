@@ -1,6 +1,8 @@
 package com.baidu.highflip.console.commands;
 
 import com.baidu.highflip.client.HighFlipClient;
+import com.baidu.highflip.client.model.Column;
+import com.baidu.highflip.client.model.Schema;
 import com.baidu.highflip.client.reader.CSVReader;
 import com.baidu.highflip.client.reader.SVMReader;
 import highflip.v1.Highflip;
@@ -9,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.*;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @ShellComponent
@@ -45,7 +50,7 @@ public class DataCommand {
     @ShellMethod(key = "data pull raw", value = "Pull a raw data to local file.")
     public void pullRaw(
             @ShellOption String dataId,
-            @ShellOption(valueProvider = FileValueProvider.class)String filename) {
+            @ShellOption(valueProvider = FileValueProvider.class) String filename) {
         try (OutputStream output = new FileOutputStream(filename)) {
             client.pullDataRaw(dataId).transferTo(output);
         } catch (IOException e) {
@@ -56,24 +61,31 @@ public class DataCommand {
     @ShellMethod(key = "data push", value = "Push a local raw file to remote server.")
     public String push(
             @ShellOption String name,
-            @ShellOption(defaultValue = "raw", value = {"raw", "dense", "sparse"}) String format,
+            @ShellOption(defaultValue = "raw") String mode,
             @ShellOption(defaultValue = "") String description,
-            @ShellOption(arity = ShellOption.ARITY_USE_HEURISTICS) String[] columns,
+            @ShellOption(defaultValue = "10") int batch,
+            @ShellOption(defaultValue = ShellOption.NULL, arity = ShellOption.ARITY_USE_HEURISTICS) String[] columns,
             @ShellOption(valueProvider = FileValueProvider.class) String filename) {
+
+        Schema schema = Schema.builder()
+                .setName(name)
+                .setDescription(description)
+                .setColumns(Arrays.stream(columns == null? new String[0]: columns)
+                        .map(Column::valueOf)
+                        .collect(Collectors.toList()))
+                .build();
 
         try (InputStream input = new FileInputStream(filename)) {
 
-            switch (format){
-                default:
-                case "raw":
-                    return client.pushDataRaw(name, description,
-                            input);
-                case "dense":
-                    return client.pushDataDense(name, description,
-                            CSVReader.from(input).iterator());
-                case "sparse":
-                    return client.pushDataSparse(name, description,
-                            SVMReader.from(input).iterator());
+            if (mode.compareToIgnoreCase("dense") == 0) {
+                return client.pushDataDense(schema,
+                        CSVReader.from(input).iterator(), batch);
+            } else if (mode.compareToIgnoreCase("sparse") == 0) {
+                return client.pushDataSparse(schema,
+                        SVMReader.from(input).iterator(), batch);
+            } else {
+                return client.pushDataRaw(schema,
+                        input, batch);
             }
 
         } catch (IOException e) {

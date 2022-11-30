@@ -19,11 +19,17 @@ public class OneObserver<T> implements StreamObserver<T>{
     }
 
     @Override
-    public void onCompleted() {
-
+    public synchronized void onCompleted() {
+        notify();
     }
 
-    public T getOrThrow() {
+    public synchronized T getOrThrow() {
+        try {
+            wait();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         if(exp != null){
             throw new RuntimeException(exp);
         }

@@ -6,13 +6,13 @@ import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.server.engine.dataio.PushContext;
 import highflip.HighflipMeta;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -24,67 +24,106 @@ public class TestPushContext {
 
     @Test
     public void testRaw() throws InterruptedException {
+        int batch = 4;
+        int round = new Random().nextInt(100) + 1;
+        log.info("test raw, round: {}", round);
+
+        final int[] size = {0, 0};
+
         DataAdaptor adaptor = new TestDataAdaptor() {
             @Override
             public void writeDataRaw(Data data, InputStream body) {
-                byte[] buff = new byte[4];
-                while (true) {
-                    try {
+
+
+                try {
+                    byte[] buff = new byte[16];
+                    while (true) {
                         int done = body.read(buff);
-                        log.info("write = byte {}", buff);
-                    } catch (IOException e) {
-                        log.error("write = except", e);
+                        if (done < 0) {
+                            break;
+                        } else {
+                            log.info("offset: {}, write = byte {}, ", size[0], buff);
+                            size[0] += done;
+                        }
                     }
+                    log.info("size: {}, write = done", size[0]);
+                } catch (IOException e) {
+                    log.error("offset: {}, write = except", size[0], e);
                 }
             }
         };
 
         try (PushContext context = PushContext.createRaw(adaptor, new Data())) {
-            int round = new Random().nextInt(10) + 1;
             for (byte i = 0; i < round; i++) {
-                byte[] row = new byte[]{i, 1, 2, 3};
-                log.info("push = byte {}", row);
+                byte[] row = new byte[]{i, 0, 0, 0};
+                log.info("offset: {}, push = byte {}", size[1], row);
                 context.pushRaw(row);
+
+                size[1] += batch;
             }
+
+            log.info("offset: {}, push = done", size[1]);
         }
+        log.info("all done");
+
+        Assertions.assertEquals(size[0], size[1]);
     }
 
     @Test
     public void testDense() throws InterruptedException {
+        int round = new Random().nextInt(10) + 1;
+        log.info("test dense, round: {}", round);
+
+        final int[] size = {0, 0};
+
         DataAdaptor adaptor = new TestDataAdaptor() {
             @Override
             public void writeDataDense(Data data, Iterator<List<Object>> body) {
                 Iterable<List<Object>> iter = () -> body;
                 for (List<Object> row : iter) {
-                    log.info("write = dense {}", row);
+                    log.info("offset: {}, write = dense {}", size[0], row);
+
+                    size[0] += 1;
                 }
+                log.info("offset: {}, write = done", size[0]);
             }
         };
 
         try (PushContext context = PushContext.createDense(adaptor, new Data())) {
-            int round = new Random().nextInt(10) + 1;
             for (int i = 0; i < round; i++) {
                 List<Object> row = List.of(i, 1, 2, 3);
-                log.info("push = dense {}", row);
+                log.info("offset: {}, push = dense {}", size[1], row);
                 context.pushDense(row);
+
+                size[1] += 1;
             }
+            log.info("offset: {}, push = done", size[1]);
         }
+
+        Assertions.assertEquals(size[0], size[1]);
     }
 
     @Test
     public void testSparse() throws InterruptedException {
+        int round = new Random().nextInt(10) + 1;
+        log.info("test sparse, round: {}", round);
+
+        final int[] size = {0, 0};
+
         DataAdaptor adaptor = new TestDataAdaptor() {
             @Override
             public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
                 Iterable<List<KeyPair>> iter = () -> body;
                 for (List<KeyPair> row : iter) {
-                    log.info("write = sparse {}", row);
+                    log.info("offset: {}, write = sparse {}", size[0], row);
+
+                    size[0] += 1;
                 }
+                log.info("offset: {}, write = done", size[0]);
             }
         };
 
         try (PushContext context = PushContext.createSparse(adaptor, new Data())) {
-            int round = new Random().nextInt(10) + 1;
             for (int i = 0; i < round; i++) {
                 List<KeyPair> row = List.of(
                         KeyPair.of("id", i),
@@ -92,10 +131,15 @@ public class TestPushContext {
                         KeyPair.of("x2", 2),
                         KeyPair.of("x3", 3)
                 );
-                log.info("push = sparse {}", row);
+                log.info("offset: {}, push = sparse {}", size[1], row);
                 context.pushSparse(row);
+
+                size[1] += 1;
             }
+            log.info("offset: {}, push = done", size[1]);
         }
+
+        Assertions.assertEquals(size[0], size[1]);
     }
 }
 

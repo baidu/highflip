@@ -65,7 +65,7 @@ public class Data {
 
     @Type(type = "json")
     @Column(name = "dimension")
-    List<Long> Dimension;
+    List<Long> dimension;
 
     @Type(type = "json")
     @Column(name = "columns")

@@ -3,6 +3,7 @@ package com.baidu.highflip.server.engine.dataio;
 import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class PushContext implements Closeable {
 
     volatile boolean isFinished = false;
@@ -81,10 +83,14 @@ public class PushContext implements Closeable {
 
         @Override
         public int read() throws IOException {
-            if (!hasNext()) {
+            try {
+                if (!hasNext()) {
+                    return -1;
+                } else {
+                    return Byte.toUnsignedInt(next());
+                }
+            } catch (NoSuchElementException e) {
                 return -1;
-            } else {
-                return next();
             }
         }
     }
@@ -111,6 +117,7 @@ public class PushContext implements Closeable {
                     context.writeDense();
                 } catch (Exception e) {
                     context.exception = e;
+                    log.error("write dense error", e);
                 }
             }
         });
@@ -129,6 +136,7 @@ public class PushContext implements Closeable {
                     context.writeSparse();
                 } catch (Exception e) {
                     context.exception = e;
+                    log.error("write sparse error", e);
                 }
             }
         });
@@ -147,6 +155,7 @@ public class PushContext implements Closeable {
                     context.writeRaw();
                 } catch (Exception e) {
                     context.exception = e;
+                    log.error("write raw error", e);
                 }
             }
         });

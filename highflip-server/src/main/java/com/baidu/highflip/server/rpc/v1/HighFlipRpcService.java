@@ -381,9 +381,20 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
         Data data = getEngine().getData(request.getDataId());
 
+        HighflipMeta.DataProto schema = HighflipMeta.DataProto
+                .newBuilder()
+                .setName(data.getName())
+                .setDescription(data.getDescription())
+                .addAllColumns(data.getColumns()
+                        .stream()
+                        .map(com.baidu.highflip.core.entity.runtime.basic.Column::toProto)
+                        .collect(Collectors.toList()))
+                .build();
+
         Highflip.DataGetResponse response = Highflip.DataGetResponse
                 .newBuilder()
                 .setDataId(data.getDataId())
+                .setSchema(schema)
                 .setCreateTime(data.getCreateTime().toString())
                 .setUpdateTime(data.getUpdateTime().toString())
                 .build();
@@ -406,14 +417,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
             void onHead(Highflip.DataPushRequest request){
                 Highflip.DataPushRequest.Head head = request.getHead();
+
                 HighflipMeta.DataProto schema = head.getSchema();
                 List<Column> columns = schema.getColumnsList()
                         .stream()
-                        .map(column -> new Column(
-                                column.getIndex(),
-                                column.getName(),
-                                Type.valueOf(column.getType()),
-                                column.getDescription()))
+                        .map(Column::fromProto)
                         .collect(Collectors.toList());
 
                 mode = head.getMode();
@@ -421,7 +429,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
                 context = getEngine().pushData(
                         schema.getName(),
                         schema.getDescription(),
-                        DataMode.valueOf(mode.toString()),
+                        DataMode.valueOf(mode.toString().toUpperCase()),
                         columns);
             }
 
@@ -441,7 +449,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
                         }
                         break;
                     case RAW:
-                        context.pushRaw(request.getRaw()
+                         context.pushRaw(request.getRaw()
                                 .getContent()
                                 .toByteArray());
                         break;

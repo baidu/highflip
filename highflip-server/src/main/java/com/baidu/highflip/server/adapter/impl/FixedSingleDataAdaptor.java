@@ -5,11 +5,16 @@ import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.Column;
 import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.core.entity.runtime.basic.Type;
+import com.google.common.collect.Streams;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 public class FixedSingleDataAdaptor implements DataAdaptor {
 
     public static final String DATA_NAME = "test_data";
@@ -70,17 +75,60 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
 
     @Override
     public void writeDataRaw(Data data, InputStream body) {
+        int size = 0;
+        byte[] buff = new byte[1024];
+        try {
+            while(true) {
+                int done = body.read(buff);
+                if(done < 0) {
+                   break;
+                }
 
+                log.info("drop raw data, name:{}, offset:{}, size:{}",
+                        data.getName(), size, done);
+
+                size += done;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        log.info("done raw data, name:{}, size:{}",
+                data.getName(), size);
     }
 
     @Override
     public void writeDataDense(Data data, Iterator<List<Object>> body) {
-        throw new UnsupportedOperationException();
+        int size = 0;
+
+        while(body.hasNext()){
+            var row = body.next();
+
+            log.info("drop dense data, name:{}, size:{}",
+                    data.getName(), row.size());
+
+            size += 1;
+        }
+
+        log.info("done dense data, name:{}, rows:{}",
+                data.getName(), size);
     }
 
     @Override
     public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
-        throw new UnsupportedOperationException();
+        int size = 0;
+
+        while(body.hasNext()){
+            var row = body.next();
+
+            log.info("drop sparse data, name:{}, size:{}",
+                    data.getName(), row.size());
+
+            size += 1;
+        };
+
+        log.info("done sparse data, name:{}, rows:{}",
+                data.getName(), size);
     }
 
     @Override

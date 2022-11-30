@@ -1,6 +1,7 @@
 package com.baidu.highflip.client.dataio;
 
 import com.baidu.highflip.client.model.KeyPair;
+import com.baidu.highflip.client.model.Schema;
 import com.baidu.highflip.client.utils.Streams;
 import com.google.protobuf.ByteString;
 import highflip.v1.Highflip;
@@ -23,11 +24,11 @@ public class DataPushStream{
     }
 
     public void pushHead(
-        String name,
-        String description){
+            Schema schema){
 
         Highflip.DataPushRequest.Head head = Highflip.DataPushRequest.Head
                 .newBuilder()
+                .setSchema(Schema.toProto(schema))
                 .build();
 
         Highflip.DataPushRequest request = Highflip.DataPushRequest
@@ -46,7 +47,7 @@ public class DataPushStream{
         try {
             while (true){
                 int done = input.read(buffer);
-                if(done > 0) {
+                if(done >= 0) {
                     Highflip.DataPushRequest request = Highflip.DataPushRequest
                             .newBuilder()
                             .setRaw(Highflip.RawData
@@ -85,7 +86,7 @@ public class DataPushStream{
         Iterator<List<String>> input,
         int batch){
 
-        Streams.toBatch(input, 10).forEachRemaining(rows -> {
+        Streams.toBatch(input, batch).forEachRemaining(rows -> {
             Highflip.DataPushRequest request = Highflip.DataPushRequest
                     .newBuilder()
                     .setDense(toDenseData(rows))
@@ -103,11 +104,7 @@ public class DataPushStream{
 
         for(List<KeyPair> row: rows){
             Iterable<Highflip.SparseData.Pair> r = row.stream()
-                    .map(kv -> Highflip.SparseData.Pair
-                        .newBuilder()
-                        .setKey(kv.getKey())
-                        .setValue(kv.getValue())
-                        .build())
+                    .map(KeyPair::toProto)
                     .collect(Collectors.toList());
 
             builder.addRows(Highflip.SparseData.Row
@@ -123,7 +120,7 @@ public class DataPushStream{
         Iterator<List<KeyPair>> input,
         int batch){
 
-        Streams.toBatch(input, 10).forEachRemaining(rows -> {
+        Streams.toBatch(input, batch).forEachRemaining(rows -> {
             Highflip.DataPushRequest request = Highflip.DataPushRequest
                     .newBuilder()
                     .setSparse(toSparseData(rows))

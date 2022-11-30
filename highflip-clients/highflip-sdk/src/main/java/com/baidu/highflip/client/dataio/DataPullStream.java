@@ -103,7 +103,7 @@ public class DataPullStream {
                     return -1;
                 }
             }
-            return next();
+            return Byte.toUnsignedInt(next());
         }
     }
 }
