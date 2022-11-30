@@ -464,7 +464,7 @@ public class HighFlipEngine {
     public PushContext pushData(
         String name,
         String description,
-        DataFormat format,
+        DataMode format,
         List<Column> columns) {
 
         Data data = new Data();

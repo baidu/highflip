@@ -433,7 +433,7 @@ public class HighFlipClient implements AutoCloseable {
         Highflip.DataPullRequest request = Highflip.DataPullRequest
                 .newBuilder()
                 .setDataId(dataId)
-                .setFormat(Highflip.DataFormat.RAW)
+                .setMode(Highflip.DataMode.RAW)
                 .build();
 
         Iterator<Highflip.DataPullResponse> response = getBlockingStub()
@@ -446,7 +446,7 @@ public class HighFlipClient implements AutoCloseable {
         Highflip.DataPullRequest request = Highflip.DataPullRequest
                 .newBuilder()
                 .setDataId(dataId)
-                .setFormat(Highflip.DataFormat.DENSE)
+                .setMode(Highflip.DataMode.DENSE)
                 .build();
 
         Iterator<Highflip.DataPullResponse> response = getBlockingStub()
@@ -459,7 +459,7 @@ public class HighFlipClient implements AutoCloseable {
         Highflip.DataPullRequest request = Highflip.DataPullRequest
                 .newBuilder()
                 .setDataId(dataId)
-                .setFormat(Highflip.DataFormat.SPARSE)
+                .setMode(Highflip.DataMode.SPARSE)
                 .build();
 
         Iterator<Highflip.DataPullResponse> response = getBlockingStub()

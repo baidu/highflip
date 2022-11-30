@@ -402,7 +402,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
             PushContext context = null;
 
-            Highflip.DataFormat format = null;
+            Highflip.DataMode mode = null;
 
             void onHead(Highflip.DataPushRequest request){
                 Highflip.DataPushRequest.Head head = request.getHead();
@@ -416,17 +416,17 @@ public class HighFlipRpcService extends HighFlipImplBase {
                                 column.getDescription()))
                         .collect(Collectors.toList());
 
-                format = head.getFormat();
+                mode = head.getMode();
 
                 context = getEngine().pushData(
                         schema.getName(),
                         schema.getDescription(),
-                        DataFormat.valueOf(format.toString()),
+                        DataMode.valueOf(mode.toString()),
                         columns);
             }
 
             void onBody(Highflip.DataPushRequest request) throws InterruptedException {
-                switch (format) {
+                switch (mode) {
                     case DENSE:
                         for (Highflip.DenseData.Row row : request.getDense().getRowsList()) {
                             context.pushDense(new ArrayList<>(row.getValueList()));
@@ -484,7 +484,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void pullData(Highflip.DataPullRequest request,
                          StreamObserver<Highflip.DataPullResponse> responseObserver) {
 
-        switch (request.getFormat()) {
+        switch (request.getMode()) {
             case RAW: {
                 InputStream input = getEngine().pullDataRaw(
                         request.getDataId(),

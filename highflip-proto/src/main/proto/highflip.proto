@@ -290,7 +290,7 @@ message DataId{
     string data_id = 1;
 }
 
-enum DataFormat{
+enum DataMode{
     RAW = 0;
     DENSE = 1;
     SPARSE = 2;
@@ -330,7 +330,7 @@ message DataPushRequest{
 
         DataProto schema = 1;
 
-        DataFormat format = 2;
+        DataMode mode = 2;
 
         optional int64 size = 3;
 
@@ -392,7 +392,7 @@ message DataPullRequest{
 
     string data_id = 1;
 
-    DataFormat format = 2;
+    DataMode mode = 2;
 
     int32 batch = 3;
 

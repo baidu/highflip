@@ -1,6 +1,6 @@
 package com.baidu.highflip.core.entity.runtime.basic;
 
-public enum DataFormat {
+public enum DataMode {
 
     RAW,
 
