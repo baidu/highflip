@@ -39,7 +39,6 @@ public class HighFlipConfiguration implements Configuration {
     }
 
     /**
-     *
      * @return
      */
     public Iterable<String> listKeys() {
@@ -50,15 +49,13 @@ public class HighFlipConfiguration implements Configuration {
     }
 
     /**
-     *
      * @param key
      */
-    public void delete(String key){
+    public void delete(String key) {
         configs.deleteById(key);
     }
 
     /**
-     *
      * @param key
      * @param defaultValue
      * @return

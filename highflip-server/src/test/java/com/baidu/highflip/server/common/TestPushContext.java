@@ -2,6 +2,7 @@ package com.baidu.highflip.server.common;
 
 import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.server.engine.common.PushContext;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -41,6 +41,32 @@ public class TestPushContext {
         }
     }
 
+    @Test
+    public void testSparse() throws InterruptedException {
+        DataAdaptor adaptor = new TestDataAdaptor() {
+            @Override
+            public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
+                Iterable<List<KeyPair>> iter = () -> body;
+                for (List<KeyPair> row : iter) {
+                    log.info("write = {}", row);
+                }
+            }
+        };
+
+        try (PushContext context = PushContext.createSparse(adaptor, new Data())) {
+            int round = new Random().nextInt(10) + 1;
+            for (int i = 0; i < round; i++) {
+                List<KeyPair> row = List.of(
+                        KeyPair.of("id", i),
+                        KeyPair.of("x1", 1),
+                        KeyPair.of("x2", 2),
+                        KeyPair.of("x3", 3)
+                );
+                log.info("push = {}", row);
+                context.pushSparse(row);
+            }
+        }
+    }
 }
 
 
@@ -67,7 +93,7 @@ class TestDataAdaptor implements DataAdaptor {
     }
 
     @Override
-    public OutputStream readDataRaw(Data data) {
+    public InputStream readDataRaw(Data data) {
         return null;
     }
 
@@ -77,7 +103,7 @@ class TestDataAdaptor implements DataAdaptor {
     }
 
     @Override
-    public Iterator<List<DataAdaptor.KeyPair>> readDataSparse(Data data) {
+    public Iterator<List<KeyPair>> readDataSparse(Data data) {
         return null;
     }
 

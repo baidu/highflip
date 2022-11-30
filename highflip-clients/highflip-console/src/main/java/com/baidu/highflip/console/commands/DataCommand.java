@@ -8,6 +8,11 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 @ShellComponent
 @ShellCommandGroup("data")
 public class DataCommand {
@@ -37,8 +42,23 @@ public class DataCommand {
         throw new UnsupportedOperationException();
     }
 
-    @ShellMethod(key = "data push", value = "Push a data to remote")
-    public Iterable<String> push(String dataId) {
+    @ShellMethod(key = "data pull raw", value = "Pull a raw data to local file.")
+    public void pullRaw(String dataId, String filename) {
+        try (OutputStream output = new FileOutputStream(filename)) {
+            client.pullDataRaw(dataId).transferTo(output);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @ShellMethod(key = "data push", value = "Push a local raw file to remote server.")
+    public String pushRaw(
+            @ShellOption String name,
+            @ShellOption String description,
+            @ShellOption String file) {
         throw new UnsupportedOperationException();
     }
 }

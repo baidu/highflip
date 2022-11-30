@@ -1,6 +1,7 @@
 package com.baidu.highflip.core.entity.runtime;
 
 import com.baidu.highflip.core.entity.runtime.basic.DataCategory;
+import com.baidu.highflip.core.entity.runtime.basic.DataFormat;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -53,8 +54,11 @@ public class Data {
     @Column(name = "is_deleted")
     Boolean isDeleted = false;
 
-    @Column(name = "data_category")
+    @Column(name = "category")
     DataCategory category;
+
+    @Column(name = "format")
+    DataFormat format;
 
     @Column(name = "raw_size")
     Long rawSize;

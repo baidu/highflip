@@ -1,16 +1,16 @@
 spring:
-    autoconfigure:
-        exclude:
-            - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
-            - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
-            - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 
-    datasource:
-        driver-class-name: org.h2.Driver
-        url: jdbc:h2:mem:highflip
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:highflip
 grpc:
-    port: 0
-    shutdownGrace: -1
-    security:
-        auth:
-            enabled: false
+  port: 0
+  shutdownGrace: -1
+  security:
+    auth:
+      enabled: false

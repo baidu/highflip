@@ -1,11 +1,9 @@
 package com.baidu.highflip.core.adaptor;
 
 import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 
-import javax.persistence.Tuple;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.KeyPair;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,11 +16,11 @@ public interface DataAdaptor {
 
     void deleteData(Data data);
 
-    OutputStream readDataRaw(Data data);
+    InputStream readDataRaw(Data data);
 
     Iterator<List<Object>> readDataDense(Data data);
 
-    Iterator<List<KeyPair>> readDataSparse(Data data);
+    Iterator<List<com.baidu.highflip.core.entity.runtime.basic.KeyPair>> readDataSparse(Data data);
 
     Data createData(Data data);
 
@@ -32,10 +30,4 @@ public interface DataAdaptor {
 
     void writeDataSparse(Data data, Iterator<List<KeyPair>> body);
 
-    class KeyPair{
-
-        public String key;
-
-        public Object value;
-    }
 }

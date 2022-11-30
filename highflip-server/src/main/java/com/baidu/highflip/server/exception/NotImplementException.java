@@ -5,5 +5,5 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class NotImplementException extends HighFlipException{
+public class NotImplementException extends HighFlipException {
 }

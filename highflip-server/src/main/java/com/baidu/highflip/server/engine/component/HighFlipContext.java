@@ -1,21 +1,10 @@
 package com.baidu.highflip.server.engine.component;
 
-import com.baidu.highflip.core.adaptor.DataAdaptor;
-import com.baidu.highflip.core.adaptor.JobAdaptor;
-import com.baidu.highflip.core.adaptor.OperatorAdaptor;
-import com.baidu.highflip.core.adaptor.PartnerAdaptor;
-import com.baidu.highflip.core.adaptor.PlatformAdaptor;
-import com.baidu.highflip.core.adaptor.TaskAdaptor;
+import com.baidu.highflip.core.adaptor.*;
 import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.core.engine.translator.AbstractTranslator;
-import com.baidu.highflip.server.respository.DataRepository;
-import com.baidu.highflip.server.respository.JobRepository;
-import com.baidu.highflip.server.respository.OperatorRepository;
-import com.baidu.highflip.server.respository.PartnerRepository;
-import com.baidu.highflip.server.respository.PlatformRepository;
-import com.baidu.highflip.server.respository.TaskRepository;
-import com.baidu.highflip.server.respository.UserRepository;
+import com.baidu.highflip.server.respository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

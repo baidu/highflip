@@ -394,7 +394,7 @@ message DataPullRequest{
 
     DataFormat format = 2;
 
-    int64 batch = 3;
+    int32 batch = 3;
 
     optional int64 offset = 4;
 
@@ -422,7 +422,7 @@ message DataPullResponse{
 ////////////////////////////////////////////////////////////////////////////////
 message OperatorId{
 
-    string operater_id = 1;
+    string operator_id = 1;
 }
 
 message OperatorListRequest{
@@ -434,14 +434,14 @@ message OperatorListRequest{
 
 message OperatorListResponse{
 
-    string operater_id = 1;
+    string operator_id = 1;
 
     string name = 2;
 }
 
 message OperatorGetResponse{
 
-    string operater_id = 1;
+    string operator_id = 1;
 
     OperatorProto schema = 2;
 }

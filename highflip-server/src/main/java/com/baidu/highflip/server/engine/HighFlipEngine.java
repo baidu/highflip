@@ -1,18 +1,10 @@
 package com.baidu.highflip.server.engine;
 
-import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.adaptor.PlatformAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
-import com.baidu.highflip.core.entity.runtime.Data;
-import com.baidu.highflip.core.entity.runtime.Job;
-import com.baidu.highflip.core.entity.runtime.Operator;
-import com.baidu.highflip.core.entity.runtime.Partner;
-import com.baidu.highflip.core.entity.runtime.Platform;
-import com.baidu.highflip.core.entity.runtime.Task;
-import com.baidu.highflip.core.entity.runtime.basic.Action;
-import com.baidu.highflip.core.entity.runtime.basic.Column;
-import com.baidu.highflip.core.entity.runtime.basic.Status;
+import com.baidu.highflip.core.entity.runtime.*;
+import com.baidu.highflip.core.entity.runtime.basic.*;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.server.engine.common.ConfigurationList;
@@ -35,11 +27,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.InputStream;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -468,35 +457,49 @@ public class HighFlipEngine {
                 .delete(data);
     }
 
+    public PushContext pushData(
+        String name,
+        String description,
+        DataFormat format,
+        List<Column> columns) {
 
-
-    public Data createData(String name, String description, List<Column> columns) {
         Data data = new Data();
         data.setName(name);
         data.setDescription(description);
         data.setColumns(columns);
-        return getContext()
-                .getDataRepository()
-                .save(data);
-    }
-
-    public PushContext pushData(String name, String description, List<Column> columns) {
-        Data data = new Data();
-        data.setName(name);
-        data.setDescription(description);
-        data.setColumns(columns);
+        data.setFormat(format);
         getContext().getDataRepository().save(data);
-        return PushContext.createDense(getContext().getDataAdaptor(), data);
+
+        switch (format){
+            case DENSE:
+                return PushContext.createDense(
+                        getContext().getDataAdaptor(), data);
+            case SPARSE:
+                return PushContext.createSparse(
+                        getContext().getDataAdaptor(), data);
+            default:
+            case RAW:
+                return PushContext.createRaw(
+                        getContext().getDataAdaptor(), data);
+        }
     }
+
+    public InputStream pullDataRaw(String dataid, long offset, long size) {
+        Data data = getData(dataid);
+
+        return getContext().getDataAdaptor()
+                .readDataRaw(data);
+    }
+
 
     public Iterator<List<Object>> pullDataDense(String dataid, long offset, long size) {
         Data data = getData(dataid);
 
-         return getContext().getDataAdaptor()
+        return getContext().getDataAdaptor()
                 .readDataDense(data);
     }
 
-    public Iterator<List<DataAdaptor.KeyPair>> pullDataSparse(String dataid, long offset, long size) {
+    public Iterator<List<KeyPair>> pullDataSparse(String dataid, long offset, long size) {
         Data data = getData(dataid);
 
         return getContext().getDataAdaptor()

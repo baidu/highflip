@@ -1,21 +1,15 @@
 package com.baidu.highflip.server.rpc.v1;
 
 import com.baidu.highflip.core.entity.dag.Graph;
-import com.baidu.highflip.core.entity.runtime.Data;
-import com.baidu.highflip.core.entity.runtime.Job;
-import com.baidu.highflip.core.entity.runtime.Operator;
-import com.baidu.highflip.core.entity.runtime.Partner;
-import com.baidu.highflip.core.entity.runtime.Platform;
-import com.baidu.highflip.core.entity.runtime.Task;
-import com.baidu.highflip.core.entity.runtime.basic.Action;
-import com.baidu.highflip.core.entity.runtime.basic.Column;
-import com.baidu.highflip.core.entity.runtime.basic.Type;
+import com.baidu.highflip.core.entity.runtime.*;
+import com.baidu.highflip.core.entity.runtime.basic.*;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
 import com.baidu.highflip.server.engine.common.PushContext;
 import com.baidu.highflip.server.entity.Configuration;
 import com.baidu.highflip.server.exception.HighFlipException;
+import com.baidu.highflip.server.utils.PullProtoUtils;
 import com.google.common.collect.Streams;
 import highflip.HighflipMeta;
 import highflip.v1.HighFlipGrpc.HighFlipImplBase;
@@ -28,14 +22,13 @@ import org.lognet.springboot.grpc.GRpcService;
 import org.lognet.springboot.grpc.recovery.GRpcExceptionScope;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnMore;
-import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnOne;
-import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnVoid;
+import static com.baidu.highflip.server.utils.GrpcServiceUtils.*;
 import static com.baidu.highflip.server.utils.HighFlipUtils.toJobId;
 
 @Slf4j
@@ -412,42 +405,57 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
             Highflip.DataFormat format = null;
 
+            void onHead(Highflip.DataPushRequest request){
+                Highflip.DataPushRequest.Head head = request.getHead();
+                HighflipMeta.DataProto schema = head.getSchema();
+                List<Column> columns = schema.getColumnsList()
+                        .stream()
+                        .map(column -> new Column(
+                                column.getIndex(),
+                                column.getName(),
+                                Type.valueOf(column.getType()),
+                                column.getDescription()))
+                        .collect(Collectors.toList());
+
+                format = head.getFormat();
+
+                context = getEngine().pushData(
+                        schema.getName(),
+                        schema.getDescription(),
+                        DataFormat.valueOf(format.toString()),
+                        columns);
+            }
+
+            void onBody(Highflip.DataPushRequest request) throws InterruptedException {
+                switch (format) {
+                    case DENSE:
+                        for (Highflip.DenseData.Row row : request.getDense().getRowsList()) {
+                            context.pushDense(new ArrayList<>(row.getValueList()));
+                        }
+                        break;
+                    case SPARSE:
+                        for (Highflip.SparseData.Row row : request.getSparse().getRowsList()) {
+                            context.pushSparse(row.getPairsList()
+                                    .stream()
+                                    .map(pair -> new KeyPair(pair.getKey(), pair.getValue()))
+                                    .collect(Collectors.toList()));
+                        }
+                        break;
+                    case RAW:
+                        context.pushRaw(request.getRaw()
+                                .getContent()
+                                .toByteArray());
+                        break;
+                }
+            }
+
             @SneakyThrows
             @Override
             public void onNext(Highflip.DataPushRequest request) {
                 if (context == null) {
-                    Highflip.DataPushRequest.Head head = request.getHead();
-                    HighflipMeta.DataProto schema = head.getSchema();
-                    List<Column> columns = schema.getColumnsList()
-                            .stream()
-                            .map(column -> new Column(
-                                    column.getIndex(),
-                                    column.getName(),
-                                    Type.valueOf(column.getType()),
-                                    column.getDescription()))
-                            .collect(Collectors.toList());
-
-                    format = head.getFormat();
-
-                    context = getEngine().pushData(
-                            schema.getName(),
-                            schema.getDescription(),
-                            columns);
+                    onHead(request);
                 } else {
-                    switch (format){
-                        case DENSE:
-                            for(Highflip.DenseData.Row row: request.getDense().getRowsList()){
-                                context.pushDense(Arrays.asList(row.getValueList().toArray()));
-                            }
-                            break;
-                        case SPARSE:
-                            for(Highflip.SparseData.Row row: request.getSparse().getRowsList()){
-                                context.pushDense(Arrays.asList(row.getPairsList().toArray()));
-                            }
-                            break;
-                        case RAW:
-                            break;
-                    }
+                    onBody(request);
                 }
             }
 
@@ -477,17 +485,38 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void pullData(Highflip.DataPullRequest request,
                          StreamObserver<Highflip.DataPullResponse> responseObserver) {
 
-        switch (request.getFormat()){
-            case DENSE:
-                Streams.stream(getEngine().pullDataDense(
+        switch (request.getFormat()) {
+            case RAW: {
+                InputStream input = getEngine().pullDataRaw(
                         request.getDataId(),
                         request.getOffset(),
-                        request.getLimit()));
+                        request.getLimit());
 
-                returnMore(responseObserver, null);
+                returnMore(responseObserver,
+                        PullProtoUtils.toRawResponse(input, request.getBatch()));
                 break;
-        }
+            }
+            case DENSE: {
+                Iterator<List<Object>> input = getEngine().pullDataDense(
+                        request.getDataId(),
+                        request.getOffset(),
+                        request.getLimit());
 
+                returnMore(responseObserver,
+                        PullProtoUtils.toDenseResponse(input, request.getBatch()));
+                break;
+            }
+            case SPARSE: {
+                Iterator<List<KeyPair>> input = getEngine().pullDataSparse(
+                        request.getDataId(),
+                        request.getOffset(),
+                        request.getLimit());
+
+                returnMore(responseObserver,
+                        PullProtoUtils.toSparseResponse(input, request.getBatch()));
+                break;
+            }
+        }
     }
 
     /**
@@ -515,7 +544,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
                 .stream(getEngine().listOperator())
                 .map(o -> Highflip.OperatorListResponse
                         .newBuilder()
-                        .setOperaterId(o)
+                        .setOperatorId(o)
                         .build())
                 .iterator();
 
@@ -529,11 +558,12 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void getOperator(Highflip.OperatorId request,
                             StreamObserver<Highflip.OperatorGetResponse> responseObserver) {
 
-        Operator oper = getEngine().getOperator(request.getOperaterId());
+        Operator oper = getEngine()
+                .getOperator(request.getOperatorId());
 
         Highflip.OperatorGetResponse response = Highflip.OperatorGetResponse
                 .newBuilder()
-                .setOperaterId(oper.getOperatorId())
+                .setOperatorId(oper.getOperatorId())
                 .setSchema(HighflipMeta.OperatorProto
                         .newBuilder()
                         .setName(oper.getName())

@@ -9,6 +9,7 @@ import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
@@ -381,15 +382,30 @@ public class HighFlipClient implements AutoCloseable {
                 .setDataId(dataId)
                 .build();
 
-        Highflip.Void response = getStub().deleteData(request);
+        Highflip.Void response = getStub()
+                .deleteData(request);
     }
 
     public String pushDataRaw(String name, String description, InputStream body) {
+        Highflip.DataPushRequest request = Highflip.DataPushRequest
+                .newBuilder()
+                .build();
+
+
         throw new UnsupportedOperationException();
     }
 
-    public OutputStream pullDataRaw(String dataId) {
-        throw new UnsupportedOperationException();
+    public InputStream pullDataRaw(String dataId) {
+        Highflip.DataPullRequest request = Highflip.DataPullRequest
+                .newBuilder()
+                .setDataId(dataId)
+                .setFormat(Highflip.DataFormat.RAW)
+                .build();
+
+        Iterator<Highflip.DataPullResponse> response = getStub()
+                .pullData(request);
+
+        return new DataPullInputStream(response);
     }
 
     public Iterable<String> listOperators(int offset, int limit){
@@ -403,14 +419,14 @@ public class HighFlipClient implements AutoCloseable {
                 .listOperator(request);
 
         return () -> Streams.of(response)
-                .map(Highflip.OperatorListResponse::getOperaterId)
+                .map(Highflip.OperatorListResponse::getOperatorId)
                 .iterator();
     }
 
     public Highflip.OperatorGetResponse getOperator(String operatorId){
         Highflip.OperatorId request = Highflip.OperatorId
                 .newBuilder()
-                .setOperaterId(operatorId)
+                .setOperatorId(operatorId)
                 .build();
 
         Highflip.OperatorGetResponse response = getStub()

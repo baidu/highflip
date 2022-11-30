@@ -3,10 +3,10 @@ package com.baidu.highflip.server.adapter.impl;
 import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.Column;
+import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.core.entity.runtime.basic.Type;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,6 +45,10 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
         return data;
     }
 
+    @Override
+    public InputStream readDataRaw(Data data) {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public Iterator<List<Object>> readDataDense(Data data) {
@@ -82,10 +86,5 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
     @Override
     public void deleteData(Data data) {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public OutputStream readDataRaw(Data data) {
-        return null;
     }
 }
