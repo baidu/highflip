@@ -16,4 +16,9 @@ public class KeyPair {
     public static KeyPair of(String key, String value){
         return new KeyPair(key, value);
     }
+
+    @Override
+    public String toString(){
+        return String.format("%s:%s", key, value);
+    }
 }

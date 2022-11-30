@@ -34,6 +34,7 @@ public class HighFlipClient implements AutoCloseable {
 
     public HighFlipClient() {
         this.channel = null;
+        this.stub = null;
         this.blockingStub = null;
     }
 

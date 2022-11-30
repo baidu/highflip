@@ -2,6 +2,7 @@ package com.baidu.highflip.console.commands;
 
 import com.baidu.highflip.client.HighFlipClient;
 import highflip.v1.Highflip;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -11,6 +12,7 @@ import org.springframework.shell.standard.ShellOption;
 import java.io.*;
 import java.util.List;
 
+@Slf4j
 @ShellComponent
 @ShellCommandGroup("data")
 public class DataCommand {
@@ -44,8 +46,6 @@ public class DataCommand {
     public void pullRaw(String dataId, String filename) {
         try (OutputStream output = new FileOutputStream(filename)) {
             client.pullDataRaw(dataId).transferTo(output);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -59,8 +59,6 @@ public class DataCommand {
 
         try (InputStream intput = new FileInputStream(filename)) {
             return client.pushDataRaw(name, description, intput);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
