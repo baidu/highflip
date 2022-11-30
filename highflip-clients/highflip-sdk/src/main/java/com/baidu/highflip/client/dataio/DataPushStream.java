@@ -1,7 +1,7 @@
 package com.baidu.highflip.client.dataio;
 
 import com.baidu.highflip.client.model.KeyPair;
-import com.baidu.highflip.utils.Streams;
+import com.baidu.highflip.client.utils.Streams;
 import com.google.protobuf.ByteString;
 import highflip.v1.Highflip;
 import io.grpc.stub.StreamObserver;

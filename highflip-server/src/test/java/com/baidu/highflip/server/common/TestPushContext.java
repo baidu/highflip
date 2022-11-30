@@ -4,12 +4,15 @@ import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.server.engine.dataio.PushContext;
+import highflip.HighflipMeta;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -20,13 +23,40 @@ import java.util.Random;
 public class TestPushContext {
 
     @Test
+    public void testRaw() throws InterruptedException {
+        DataAdaptor adaptor = new TestDataAdaptor() {
+            @Override
+            public void writeDataRaw(Data data, InputStream body) {
+                byte[] buff = new byte[4];
+                while (true) {
+                    try {
+                        int done = body.read(buff);
+                        log.info("write = byte {}", buff);
+                    } catch (IOException e) {
+                        log.error("write = except", e);
+                    }
+                }
+            }
+        };
+
+        try (PushContext context = PushContext.createRaw(adaptor, new Data())) {
+            int round = new Random().nextInt(10) + 1;
+            for (byte i = 0; i < round; i++) {
+                byte[] row = new byte[]{i, 1, 2, 3};
+                log.info("push = byte {}", row);
+                context.pushRaw(row);
+            }
+        }
+    }
+
+    @Test
     public void testDense() throws InterruptedException {
         DataAdaptor adaptor = new TestDataAdaptor() {
             @Override
             public void writeDataDense(Data data, Iterator<List<Object>> body) {
                 Iterable<List<Object>> iter = () -> body;
                 for (List<Object> row : iter) {
-                    log.info("write = {}", row);
+                    log.info("write = dense {}", row);
                 }
             }
         };
@@ -35,7 +65,7 @@ public class TestPushContext {
             int round = new Random().nextInt(10) + 1;
             for (int i = 0; i < round; i++) {
                 List<Object> row = List.of(i, 1, 2, 3);
-                log.info("push = {}", row);
+                log.info("push = dense {}", row);
                 context.pushDense(row);
             }
         }
@@ -48,7 +78,7 @@ public class TestPushContext {
             public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
                 Iterable<List<KeyPair>> iter = () -> body;
                 for (List<KeyPair> row : iter) {
-                    log.info("write = {}", row);
+                    log.info("write = sparse {}", row);
                 }
             }
         };
@@ -62,7 +92,7 @@ public class TestPushContext {
                         KeyPair.of("x2", 2),
                         KeyPair.of("x3", 3)
                 );
-                log.info("push = {}", row);
+                log.info("push = sparse {}", row);
                 context.pushSparse(row);
             }
         }

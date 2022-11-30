@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class PushContext implements Closeable {
 
@@ -31,6 +33,8 @@ public class PushContext implements Closeable {
 
     class QueueIterator<T> implements Iterator<T> {
 
+        int timeoutSec = 1;
+
         @Override
         public boolean hasNext() {
             return !isFinished || !queue.isEmpty();
@@ -39,9 +43,18 @@ public class PushContext implements Closeable {
         @Override
         public T next() {
             try {
-                return (T) queue.take();
+                while(true){
+                    T value =  (T) queue.poll(timeoutSec, TimeUnit.SECONDS);
+                    if(value == null){
+                        if(isFinished){
+                            throw new NoSuchElementException();
+                        }
+                    } else {
+                        return value;
+                    }
+                }
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new NoSuchElementException();
             }
         }
     }

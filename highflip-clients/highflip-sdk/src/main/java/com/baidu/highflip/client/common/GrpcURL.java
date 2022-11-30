@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 @Slf4j
 @Data
 @AllArgsConstructor
-public class HighFlipURL {
+public class GrpcURL {
 
     public static final String URL_REGEX_PATTERN
             = "grpc://(?:(?<token>\\S+)@)?(?<host>[^\\:]+)(?:\\:(?<port>\\d+))?";
@@ -26,7 +26,7 @@ public class HighFlipURL {
 
     String token;
 
-    public static HighFlipURL from(String url) {
+    public static GrpcURL from(String url) {
 
         Matcher match = Pattern.compile(URL_REGEX_PATTERN)
                 .matcher(url);
@@ -42,6 +42,6 @@ public class HighFlipURL {
             nPort = Integer.valueOf(sPort);
         }
 
-        return new HighFlipURL("grpc", sHost, nPort, sToken);
+        return new GrpcURL("grpc", sHost, nPort, sToken);
     }
 }

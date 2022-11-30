@@ -1,4 +1,4 @@
-package com.baidu.highflip.exception;
+package com.baidu.highflip.client.exception;
 
 public class HighFlipException extends RuntimeException {
 

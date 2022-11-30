@@ -1,11 +1,11 @@
 package com.baidu.highflip.client;
 
-import com.baidu.highflip.client.common.HighFlipURL;
+import com.baidu.highflip.client.common.GrpcURL;
 import com.baidu.highflip.client.dataio.DataPullStream;
 import com.baidu.highflip.client.dataio.DataPushStream;
 import com.baidu.highflip.client.common.OneObserver;
 import com.baidu.highflip.client.model.KeyPair;
-import com.baidu.highflip.utils.Streams;
+import com.baidu.highflip.client.utils.Streams;
 import highflip.HighflipMeta;
 import highflip.v1.HighFlipGrpc;
 import highflip.v1.Highflip;
@@ -41,7 +41,7 @@ public class HighFlipClient implements AutoCloseable {
     public void connect(String target) {
         close();
 
-        HighFlipURL url = HighFlipURL.from(target);
+        GrpcURL url = GrpcURL.from(target);
 
         ManagedChannel channel = ManagedChannelBuilder
                 .forAddress(url.getHost(), url.getPort())

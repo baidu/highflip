@@ -1,4 +1,4 @@
-package com.baidu.highflip.utils;
+package com.baidu.highflip.client.utils;
 
 import java.util.*;
 import java.util.stream.Stream;
