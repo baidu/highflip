@@ -16,11 +16,8 @@ import java.util.List;
 @Slf4j
 public class TestWriter {
 
-    @TempDir
-    Path tempDir;
-
     @Test
-    public void testCSVWriter() throws IOException{
+    public void testCSVWriter(@TempDir Path tempDir) throws IOException{
         var data = List.of(
                 List.of("1", "0", "0", "0"),
                 List.of("2", "0", "0", "0"),
@@ -47,7 +44,7 @@ public class TestWriter {
     }
 
     @Test
-    public void testLibSVMWriter() throws IOException{
+    public void testLibSVMWriter(@TempDir Path tempDir) throws IOException{
         var data = List.of(
             List.of(KeyPair.of("LABEL", "+1"), KeyPair.of("id", "1"), KeyPair.of("x1", "0"), KeyPair.of("x2", "0")),
             List.of(KeyPair.of("LABEL", "-1"), KeyPair.of("id", "2"), KeyPair.of("x1", "0"), KeyPair.of("x2", "0")),

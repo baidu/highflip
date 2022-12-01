@@ -8,18 +8,23 @@ import com.baidu.highflip.core.entity.runtime.basic.Type;
 import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class FixedSingleDataAdaptor implements DataAdaptor {
 
     public static final String DATA_NAME = "test_data";
 
-    public static final List DATA_BODY = List.of(
+    public static final List<List<Object>> DATA_BODY = List.of(
             List.of(1, "alice", 1.1),
             List.of(2, "bob", 2.2),
             List.of(3, "can", 3.3)
@@ -52,12 +57,17 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
 
     @Override
     public InputStream readDataRaw(Data data) {
-        throw new UnsupportedOperationException();
+        StringBuffer output = new StringBuffer();
+        DATA_BODY.stream()
+                .map(r -> r.stream().map(Object::toString).collect(Collectors.toList()))
+                .map(r -> String.join(",", r))
+                .forEach(l -> output.append(l + "\n"));
+
+        return new ByteArrayInputStream(output.toString().getBytes());
     }
 
     @Override
     public Iterator<List<Object>> readDataDense(Data data) {
-
         return DATA_BODY
                 .stream()
                 .iterator();
@@ -65,7 +75,12 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
 
     @Override
     public Iterator<List<KeyPair>> readDataSparse(Data data) {
-        throw new UnsupportedOperationException();
+        return DATA_BODY
+                .stream()
+                .map(r -> IntStream.range(0, DATA_COLUMNS.size())
+                        .mapToObj(i -> KeyPair.of(DATA_COLUMNS.get(i).getName(), r.get(i)))
+                        .collect(Collectors.toList()))
+                .iterator();
     }
 
     @Override
