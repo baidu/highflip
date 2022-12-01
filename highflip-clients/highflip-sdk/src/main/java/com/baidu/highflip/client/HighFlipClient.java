@@ -1,8 +1,8 @@
 package com.baidu.highflip.client;
 
 import com.baidu.highflip.client.common.GrpcURL;
-import com.baidu.highflip.client.dataio.DataPullStream;
-import com.baidu.highflip.client.dataio.DataPushStream;
+import com.baidu.highflip.client.stream.DataPullStream;
+import com.baidu.highflip.client.stream.DataPushStream;
 import com.baidu.highflip.client.common.OneObserver;
 import com.baidu.highflip.client.model.KeyPair;
 import com.baidu.highflip.client.model.Schema;
@@ -404,7 +404,7 @@ public class HighFlipClient implements AutoCloseable {
         OneObserver<Highflip.DataId> response = new OneObserver<>();
 
         DataPushStream stream = DataPushStream.of(getStub().pushData(response));
-        stream.pushHead(schema);
+        stream.pushHead("RAW", schema);
         stream.pushRaw(body, batch);
 
         return response.getOrThrow().getDataId();
@@ -414,7 +414,7 @@ public class HighFlipClient implements AutoCloseable {
         OneObserver<Highflip.DataId> response = new OneObserver<>();
 
         DataPushStream stream = DataPushStream.of(getStub().pushData(response));
-        stream.pushHead(schema);
+        stream.pushHead("DENSE", schema);
         stream.pushDense(body, batch);
 
         return response.getOrThrow().getDataId();
@@ -424,18 +424,18 @@ public class HighFlipClient implements AutoCloseable {
         OneObserver<Highflip.DataId> response = new OneObserver<>();
 
         DataPushStream stream = DataPushStream.of(getStub().pushData(response));
-        stream.pushHead(schema);
+        stream.pushHead("SPARSE", schema);
         stream.pushSparse(body, batch);
 
         return response.getOrThrow().getDataId();
     }
 
-    public InputStream pullDataRaw(String dataId) {
+    public InputStream pullDataRaw(String dataId, int batch) {
         Highflip.DataPullRequest request = Highflip.DataPullRequest
                 .newBuilder()
                 .setDataId(dataId)
                 .setMode(Highflip.DataMode.RAW)
-                .setBatch(1024)
+                .setBatch(batch)
                 .build();
 
         Iterator<Highflip.DataPullResponse> response = getBlockingStub()
@@ -444,11 +444,12 @@ public class HighFlipClient implements AutoCloseable {
         return DataPullStream.toRaw(response);
     }
 
-    public Iterator<List<String>> pullDataDense(String dataId) {
+    public Iterator<List<String>> pullDataDense(String dataId, int batch) {
         Highflip.DataPullRequest request = Highflip.DataPullRequest
                 .newBuilder()
                 .setDataId(dataId)
                 .setMode(Highflip.DataMode.DENSE)
+                .setBatch(batch)
                 .build();
 
         Iterator<Highflip.DataPullResponse> response = getBlockingStub()
@@ -457,11 +458,12 @@ public class HighFlipClient implements AutoCloseable {
         return DataPullStream.toDense(response);
     }
 
-    public Iterator<List<KeyPair>> pullDataSparse(String dataId) {
+    public Iterator<List<KeyPair>> pullDataSparse(String dataId, int batch) {
         Highflip.DataPullRequest request = Highflip.DataPullRequest
                 .newBuilder()
                 .setDataId(dataId)
                 .setMode(Highflip.DataMode.SPARSE)
+                .setBatch(batch)
                 .build();
 
         Iterator<Highflip.DataPullResponse> response = getBlockingStub()
@@ -469,6 +471,19 @@ public class HighFlipClient implements AutoCloseable {
 
         return DataPullStream.toSparse(response);
     }
+
+    public Iterator<List<Object>> pullDataObject(String dataId) {
+        Highflip.DataPullRequest request = Highflip.DataPullRequest
+                .newBuilder()
+                .setDataId(dataId)
+                .build();
+
+        Iterator<Highflip.DataPullResponse> response = getBlockingStub()
+                .pullData(request);
+
+        return DataPullStream.toObjects(response);
+    }
+
 
     public Iterable<String> listOperators(int offset, int limit){
         Highflip.OperatorListRequest request = Highflip.OperatorListRequest

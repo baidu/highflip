@@ -1,4 +1,4 @@
-package com.baidu.highflip.client.dataio;
+package com.baidu.highflip.client.stream;
 
 import com.baidu.highflip.client.model.KeyPair;
 import com.baidu.highflip.client.utils.Streams;

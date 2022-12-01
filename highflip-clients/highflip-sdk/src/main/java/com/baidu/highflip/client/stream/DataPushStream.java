@@ -1,4 +1,4 @@
-package com.baidu.highflip.client.dataio;
+package com.baidu.highflip.client.stream;
 
 import com.baidu.highflip.client.model.KeyPair;
 import com.baidu.highflip.client.model.Schema;
@@ -24,10 +24,12 @@ public class DataPushStream{
     }
 
     public void pushHead(
+            String mode,
             Schema schema){
 
         Highflip.DataPushRequest.Head head = Highflip.DataPushRequest.Head
                 .newBuilder()
+                .setMode(Highflip.DataMode.valueOf(mode.toUpperCase()))
                 .setSchema(Schema.toProto(schema))
                 .build();
 

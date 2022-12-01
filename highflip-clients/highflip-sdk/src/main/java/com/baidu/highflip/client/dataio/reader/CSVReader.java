@@ -1,9 +1,11 @@
-package com.baidu.highflip.client.reader;
+package com.baidu.highflip.client.dataio.reader;
+
+import com.baidu.highflip.client.dataio.DataReader;
 
 import java.io.InputStream;
 import java.util.*;
 
-public class CSVReader implements Iterable<List<String>>{
+public class CSVReader implements DataReader<String>{
 
     Scanner input;
 
@@ -25,7 +27,7 @@ public class CSVReader implements Iterable<List<String>>{
 
             @Override
             public List<String> next() {
-                return List.of(input.next().split(splitter));
+                return List.of(input.nextLine().split(splitter));
             }
         };
     }
