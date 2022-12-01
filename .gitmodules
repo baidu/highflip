@@ -1,0 +1,3 @@
+[submodule "highflip-proto"]
+	path = highflip-proto
+	url = ./highflip-proto/
