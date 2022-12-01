@@ -1,3 +1,4 @@
 [submodule "highflip-proto"]
-	path = highflip-proto
-	url = ./highflip-proto/
+    path = highflip-proto
+    url = git@github.com:TPP-AI/highflip-proto.git
+	branch = master
