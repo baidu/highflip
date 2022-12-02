@@ -2,9 +2,11 @@ package com.baidu.highflip.console.commands;
 
 import com.baidu.highflip.client.HighFlipClient;
 import com.baidu.highflip.client.model.Column;
+import com.baidu.highflip.client.model.KeyPair;
 import com.baidu.highflip.client.model.Schema;
 import com.baidu.highflip.client.dataio.reader.CSVReader;
 import com.baidu.highflip.client.dataio.reader.LibSVMReader;
+import com.baidu.highflip.client.utils.Streams;
 import highflip.v1.Highflip;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.shell.standard.*;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,50 +34,80 @@ public class DataCommand {
     }
 
     @ShellMethod(key = "data get", value = "Get a data basic information")
-    public Highflip.DataGetResponse get(String dataId) {
+    public Highflip.DataGetResponse get(
+            @ShellOption(value = {"-i", "--dataid"}) String dataId) {
         return client.getData(dataId);
     }
 
     @ShellMethod(key = "data delete", value = "Delete a remote data")
-    public void delete(String dataId) {
+    public void delete(
+            @ShellOption(value = {"-i", "--dataid"}) String dataId) {
+
         client.deleteData(dataId);
     }
 
     @ShellMethod(key = "data pull", value = "Pull a data to local")
-    public Iterable<List<Object>> pull(
-            @ShellOption String dataId,
-            @ShellOption(defaultValue = "1024") int batch) {
-        return () -> client.pullDataObject(dataId);
-    }
+    public Iterable<List<String>> pull(
+            @ShellOption(value = {"-i", "--dataid"})
+                    String dataId,
+            @ShellOption(value = {"-m", "--mode"},
+                    help = "value of raw/dense/sparse",
+                    defaultValue = "dense")
+                    String mode,
+            @ShellOption(value = {"-b", "--batch"},
+                    defaultValue = "1024")
+                    int batch,
+            @ShellOption(value = {"-f", "--filename"},
+                    defaultValue = ShellOption.NULL,
+                    valueProvider = FileValueProvider.class)
+                    String filename) throws IOException {
 
-    @ShellMethod(key = "data pullfile", value = "Pull a raw data to local file.")
-    public void pullFile(
-            @ShellOption String dataId,
-            @ShellOption(defaultValue = "1024") int batch,
-            @ShellOption(valueProvider = FileValueProvider.class) String filename) {
-        try (OutputStream output = new FileOutputStream(filename)) {
-            client.pullDataRaw(dataId, batch).transferTo(output);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(filename == null){
+            if (mode.equalsIgnoreCase("dense")) {
+                return () -> client.pullDataDense(dataId, batch);
+            } else if (mode.equalsIgnoreCase("sparse")) {
+                return () -> Streams.of(client.pullDataSparse(dataId, batch))
+                        .map(r -> r.stream()
+                                .map(KeyPair::toString)
+                                .collect(Collectors.toList()))
+                        .iterator();
+            } else {
+                throw new UnsupportedOperationException(mode);
+            }
+        } else {
+            if (mode.equalsIgnoreCase("raw")){
+                try (OutputStream output = new FileOutputStream(filename)) {
+                    client.pullDataRaw(dataId, batch).transferTo(output);
+                }
+                return List.of();
+            } else {
+                throw new UnsupportedOperationException(mode);
+            }
         }
     }
 
-    @ShellMethod(key = "data pushfile", value = "Push a local raw file to remote server.")
-    public String pushFile(
+    @ShellMethod(key = "data push", value = "Push a local raw file to remote server.")
+    public String push(
         @ShellOption(value = {"-n", "--name"})
-            String name,
+                String name,
         @ShellOption(value = {"-m", "--mode"},
-            help = "value of raw/dense/sparse",
-            defaultValue = "raw") String mode,
-        @ShellOption(defaultValue = "") String description,
+                help = "value of raw/dense/sparse",
+                defaultValue = "raw")
+                String mode,
+        @ShellOption(value = {"-d", "--desc"},
+                defaultValue = "")
+                String description,
         @ShellOption(value = {"-b", "--batch"},
-                defaultValue = "10") int batch,
+                defaultValue = "64") int batch,
         @ShellOption(value = {"-c", "--column"},
-            help = "column definition, follow name:type format.",
-            arity = ShellOption.ARITY_USE_HEURISTICS,
-                defaultValue = ShellOption.NULL) String[] columns,
+                help = "column definition, follow name:type format.",
+                arity = ShellOption.ARITY_USE_HEURISTICS,
+                defaultValue = ShellOption.NULL)
+                String[] columns,
         @ShellOption(value = {"-f", "--filename"},
-            valueProvider = FileValueProvider.class) String filename) {
+                valueProvider = FileValueProvider.class)
+                String filename)
+        throws IOException {
 
         Schema schema = Schema.builder()
                 .setName(name)
@@ -86,19 +119,18 @@ public class DataCommand {
 
         try (InputStream input = new FileInputStream(filename)) {
 
-            if (mode.compareToIgnoreCase("dense") == 0) {
+            if (mode.equalsIgnoreCase("dense")) {
                 return client.pushDataDense(schema,
                         CSVReader.from(input).iterator(), batch);
-            } else if (mode.compareToIgnoreCase("sparse") == 0) {
+            } else if (mode.equalsIgnoreCase("sparse")) {
                 return client.pushDataSparse(schema,
                         LibSVMReader.from(input).iterator(), batch);
-            } else {
+            } else if (mode.equalsIgnoreCase("raw")){
                 return client.pushDataRaw(schema,
                         input, batch);
+            } else {
+                throw new UnsupportedOperationException(mode);
             }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
