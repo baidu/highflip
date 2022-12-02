@@ -1,0 +1,255 @@
+syntax = "proto3";
+
+package highflip;
+
+////////////////////////////////////////////////////////////////////////////////
+// COMMON
+///////////////////////////////////////////////////////////////////////////////
+message ValueProto{
+    oneof value{
+        bool bool = 1;
+        int32 int = 2;
+        int64 long = 3;
+        float float = 4;
+        double double = 5;
+        string string = 6;
+        bytes bytes = 7;
+        ListProto list = 8;
+        MapProto map = 9;
+    }
+}
+
+message MapProto{
+    map<string, ValueProto> map = 1;
+}
+
+message ListProto{
+    repeated ValueProto list = 1;
+}
+
+message TypedValueProto{
+    enum TypeProto{
+        BOOLEAN = 0;
+        INT = 1;
+        LONG = 2;
+        FLOAT = 3;
+        DOUBLE = 4;
+        STRING = 5;
+        BYTES = 6;
+        LIST = 7;
+        MAP = 8;
+    }
+    TypeProto type = 1;
+
+    ValueProto value = 2;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// NODE
+////////////////////////////////////////////////////////////////////////////////
+message NodeRefProto{
+
+    int32 index = 1;
+
+    string name = 2;
+}
+
+message NodeProto{
+
+    string name = 1;
+
+    string type = 2;
+
+    optional string description = 3;
+
+    map<string, TypedValueProto> attributes = 4;
+
+    repeated NodeRefProto inputs = 5;
+
+    repeated NodeRefProto outputs = 6;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// PARTY
+////////////////////////////////////////////////////////////////////////////////
+enum PartyRole{
+    HOST = 0;
+    GUEST = 1;
+    ARBITER = 2;
+}
+
+message PartyProto{
+
+    message PartyNode{
+
+        string name = 1;
+
+        map<string, TypedValueProto> attributes = 2;
+    }
+
+    string name = 1;
+
+    PartyRole role = 2;
+
+    int32 index = 3;
+
+    map<string, TypedValueProto> attributes = 4;
+
+    repeated PartyNode nodes = 5;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// GRAPH
+////////////////////////////////////////////////////////////////////////////////
+message GraphProto{
+
+    string name = 1;
+
+    string description = 2;
+
+    map<string, TypedValueProto> attributes = 3;
+
+    repeated NodeProto initialize = 4;
+
+    repeated NodeProto nodes = 5;
+
+    repeated PartyProto parties = 6;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// DATA
+////////////////////////////////////////////////////////////////////////////////
+message DataProto{
+    enum Type{
+        USER = 0;
+        INTERMEDIATE = 1;
+        RESULT = 2;
+    }
+
+    message Column{
+
+        int32 index = 1;
+
+        string name = 2;
+
+        string type = 3;
+
+        optional string description = 4;
+    }
+
+    string name = 1;
+
+    string type = 2;
+
+    string description = 3;
+
+    map<string, TypedValueProto> attributes = 4;
+
+    repeated Column columns = 5;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// OPERATION
+////////////////////////////////////////////////////////////////////////////////
+message OperatorProto{
+
+    string name = 1;
+
+    optional string description = 2;
+
+    repeated PartyRole parties = 3;
+
+    message SwitchParameter{
+
+        bool value = 1;
+
+        bool default = 2;
+    }
+
+    message ChoiceParameter{
+
+        repeated TypedValueProto choices = 1;
+
+        int32 select = 2;
+
+        repeated TypedValueProto default = 3;
+    }
+
+    message RangeParameter{
+
+        TypedValueProto default = 1;
+
+        TypedValueProto step = 2;
+
+        TypedValueProto begin = 3;
+
+        bool include_begin = 4;
+
+        TypedValueProto end = 5;
+
+        bool include_end = 6;
+    }
+
+    message TextParameter{
+
+        string default = 1;
+
+        optional int32 limit = 2;
+    }
+
+    message Parameter{
+
+        string name = 1;
+
+        string type = 2;
+
+        bool required = 3;
+
+        repeated PartyRole roles = 4;
+
+        optional string description = 5;
+
+        oneof value{
+
+            SwitchParameter switch = 6;
+
+            ChoiceParameter choice = 7;
+
+            RangeParameter range = 8;
+
+            TextParameter text = 9;
+        }
+    }
+
+    repeated Parameter parameters = 4;
+
+    message Input{
+
+        string name = 1;
+
+        string type = 2;
+
+        bool required = 3;
+
+        repeated PartyRole roles = 4;
+
+        optional string description = 5;
+    }
+
+    repeated Input inputs = 5;
+
+    message Output{
+
+        string name = 1;
+
+        string type = 2;
+
+        repeated PartyRole roles = 3;
+
+        optional string description = 4;
+
+        optional TypedValueProto value = 5;
+    }
+
+    repeated Output outputs = 6;
+}
