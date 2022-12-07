@@ -4,7 +4,6 @@ import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
 import com.baidu.highflip.core.entity.dag.common.AttributeObject;
 import highflip.HighflipMeta;
 import lombok.Data;
-import org.hibernate.cfg.NotYetImplementedException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,10 +41,22 @@ public class Party extends AttributeObject implements Serializable {
     }
 
     public static HighflipMeta.PartyProto toProto(Party party) {
-        throw new NotYetImplementedException();
+
+        HighflipMeta.PartyProto proto = HighflipMeta.PartyProto.newBuilder()
+                .setName(party.getName())
+                .setDescription(party.getDescription())
+                .putAllAttributes(AttributeMap.toProto(party.getAttributes()))
+                .setRole(HighflipMeta.PartyRole.valueOf(party.getRole()))
+                .addAllNodes(party.getNodes()
+                        .stream()
+                        .map(PartyNode::toProto)
+                        .collect(Collectors.toList()))
+                .build();
+
+        return proto;
     }
 
-    PartyNode getPartyNodeByName(String name){
+    PartyNode getPartyNodeByName(String name) {
         return getNodes().stream()
                 .filter(n -> n.getName().compareToIgnoreCase(name) == 0)
                 .findFirst()

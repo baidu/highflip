@@ -13,7 +13,7 @@ public class KeyPair {
 
     public Object value;
 
-    public static KeyPair of(String key, Object value){
+    public static KeyPair of(String key, Object value) {
         return new KeyPair(key, value);
     }
 }

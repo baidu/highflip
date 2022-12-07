@@ -20,7 +20,7 @@ public interface DataAdaptor {
 
     Iterator<List<Object>> readDataDense(Data data);
 
-    Iterator<List<com.baidu.highflip.core.entity.runtime.basic.KeyPair>> readDataSparse(Data data);
+    Iterator<List<KeyPair>> readDataSparse(Data data);
 
     Data createData(Data data);
 

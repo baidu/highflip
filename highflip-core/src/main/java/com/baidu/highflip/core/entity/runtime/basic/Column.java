@@ -1,7 +1,6 @@
 package com.baidu.highflip.core.entity.runtime.basic;
 
 import highflip.HighflipMeta;
-import highflip.v1.Highflip;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class Column {
 
     String description;
 
-    public static Column fromProto(HighflipMeta.DataProto.Column proto){
+    public static Column fromProto(HighflipMeta.DataProto.Column proto) {
         return new Column(
                 proto.getIndex(),
                 proto.getName(),
@@ -27,7 +26,7 @@ public class Column {
                 proto.getDescription());
     }
 
-    public static HighflipMeta.DataProto.Column toProto(Column data){
+    public static HighflipMeta.DataProto.Column toProto(Column data) {
         return HighflipMeta.DataProto.Column
                 .newBuilder()
                 .setIndex(data.index)

@@ -89,13 +89,16 @@ message PartyProto{
 
     string name = 1;
 
-    PartyRole role = 2;
+    string description = 2;
 
-    int32 index = 3;
+    map<string, TypedValueProto> attributes = 3;
 
-    map<string, TypedValueProto> attributes = 4;
+    repeated PartyNode nodes = 4;
 
-    repeated PartyNode nodes = 5;
+    PartyRole role = 5;
+
+    int32 index = 6;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////

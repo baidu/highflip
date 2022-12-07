@@ -21,12 +21,16 @@ public class AttributeObject {
         return attributes.getOrDefault(name, defaultValue);
     }
 
-    public void setAttribute(String name, Object attr) {
-        attributes.put(name, attr);
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
     public void setAttributes(Map<String, Object> attrs) {
         attributes.putAll(attrs);
+    }
+
+    public void setAttribute(String name, Object attr) {
+        attributes.put(name, attr);
     }
 
     public Object getForward(String name, Object defaultValue) {

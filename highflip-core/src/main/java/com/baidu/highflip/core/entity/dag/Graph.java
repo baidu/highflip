@@ -5,7 +5,6 @@ import com.baidu.highflip.core.entity.dag.common.AttributeObject;
 import highflip.HighflipMeta;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.cfg.NotYetImplementedException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -50,7 +49,20 @@ public class Graph extends AttributeObject implements Serializable {
     }
 
     public static HighflipMeta.GraphProto toProto(Graph graph) {
-        throw new NotYetImplementedException();
+        HighflipMeta.GraphProto proto = HighflipMeta.GraphProto.newBuilder()
+                .setName(graph.getName())
+                .setDescription(graph.getDescription())
+                .putAllAttributes(AttributeMap.toProto(graph.getAttributes()))
+                .addAllNodes(graph.getNodes()
+                        .stream()
+                        .map(Node::toProto)
+                        .collect(Collectors.toList()))
+                .addAllParties(graph.getParties()
+                        .stream()
+                        .map(Party::toProto)
+                        .collect(Collectors.toList()))
+                .build();
+        return proto;
     }
 
     public Node getNodeByName(String name) {
