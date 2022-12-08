@@ -54,6 +54,26 @@ message NodeRefProto{
     string name = 2;
 }
 
+message NodeInputProto{
+
+    int32 index = 1;
+
+    string name = 2;
+
+    optional string description = 3;
+
+    string type = 4;
+}
+
+message NodeOutputProto{
+
+    int32 index = 1;
+
+    string name = 2;
+
+    string type = 3;
+}
+
 message NodeProto{
 
     string name = 1;

@@ -3,7 +3,13 @@ package com.baidu.highflip.server.adapter;
 import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import com.baidu.highflip.core.engine.InstanceRegister;
-import com.baidu.highflip.server.adapter.impl.*;
+import com.baidu.highflip.server.adapter.impl.ConfigurableOperatorAdaptor;
+import com.baidu.highflip.server.adapter.impl.ConfigurablePartnerAdaptor;
+import com.baidu.highflip.server.adapter.impl.ConfigurablePlatformAdaptor;
+import com.baidu.highflip.server.adapter.impl.DumbJobAdaptor;
+import com.baidu.highflip.server.adapter.impl.DumbTaskAdaptor;
+import com.baidu.highflip.server.adapter.impl.FixedSingleDataAdaptor;
+import com.baidu.highflip.server.adapter.impl.FixedSingleUserAdaptor;
 import com.baidu.highflip.server.utils.HighFlipUtils;
 
 public class DefaultAdaptor implements HighFlipAdaptor {

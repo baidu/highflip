@@ -1,7 +1,12 @@
 package com.baidu.highflip.server.engine.component;
 
 import com.baidu.highflip.core.engine.Configuration;
-import com.baidu.highflip.core.entity.runtime.*;
+import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.Job;
+import com.baidu.highflip.core.entity.runtime.Operator;
+import com.baidu.highflip.core.entity.runtime.Partner;
+import com.baidu.highflip.core.entity.runtime.Task;
+import com.baidu.highflip.core.entity.runtime.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

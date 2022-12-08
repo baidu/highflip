@@ -6,6 +6,7 @@ import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +18,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,11 +45,11 @@ public class Data {
 
     @CreatedDate
     @Column(name = "create_time")
-    LocalDateTime createTime;
+    DateTime createTime;
 
     @LastModifiedDate
     @Column(name = "update_time")
-    LocalDateTime updateTime;
+    DateTime updateTime;
 
     @Column(name = "is_deleted")
     Boolean isDeleted = false;

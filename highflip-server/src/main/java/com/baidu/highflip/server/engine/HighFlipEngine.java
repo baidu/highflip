@@ -3,15 +3,24 @@ package com.baidu.highflip.server.engine;
 import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.adaptor.PlatformAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
-import com.baidu.highflip.core.entity.runtime.*;
-import com.baidu.highflip.core.entity.runtime.basic.*;
+import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.Job;
+import com.baidu.highflip.core.entity.runtime.Operator;
+import com.baidu.highflip.core.entity.runtime.Partner;
+import com.baidu.highflip.core.entity.runtime.Platform;
+import com.baidu.highflip.core.entity.runtime.Task;
+import com.baidu.highflip.core.entity.runtime.basic.Action;
+import com.baidu.highflip.core.entity.runtime.basic.Column;
+import com.baidu.highflip.core.entity.runtime.basic.DataMode;
+import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
+import com.baidu.highflip.core.entity.runtime.basic.Status;
 import com.baidu.highflip.core.entity.runtime.version.CompatibleVersion;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.server.engine.common.ConfigurationList;
-import com.baidu.highflip.server.engine.dataio.PushContext;
 import com.baidu.highflip.server.engine.component.HighFlipConfiguration;
 import com.baidu.highflip.server.engine.component.HighFlipContext;
 import com.baidu.highflip.server.engine.component.HighFlipRuntime;
+import com.baidu.highflip.server.engine.dataio.PushContext;
 import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +38,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.transaction.Transactional;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -120,10 +133,10 @@ public class HighFlipEngine {
         platform.setVersion(adaptor.getVersion());
         platform.setIsLocal(Boolean.TRUE);
 
-        Iterator<CompatibleVersion> iters = adaptor.getCompatibleList();
-        if (iters != null) {
+        Iterator<CompatibleVersion> iter = adaptor.getCompatibleList();
+        if (iter != null) {
             List<CompatibleVersion> compatibles = Streams
-                    .stream(iters)
+                    .stream(iter)
                     .collect(Collectors.toList());
             platform.setCompatibles(compatibles);
         }
@@ -462,10 +475,10 @@ public class HighFlipEngine {
     }
 
     public PushContext pushData(
-        String name,
-        String description,
-        DataMode format,
-        List<Column> columns) {
+            String name,
+            String description,
+            DataMode format,
+            List<Column> columns) {
 
         Data data = new Data();
         data.setName(name);
@@ -474,7 +487,7 @@ public class HighFlipEngine {
         data.setFormat(format);
         getContext().getDataRepository().save(data);
 
-        switch (format){
+        switch (format) {
             case DENSE:
                 return PushContext.createDense(
                         getContext().getDataAdaptor(), data);

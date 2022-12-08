@@ -1,11 +1,11 @@
 package com.baidu.highflip.core.entity.runtime;
 
-import com.google.type.DateTime;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +17,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +53,7 @@ public class Task {
     DateTime updateTime;
 
     @Column(name = "finish_time")
-    LocalDateTime finishTime;
+    DateTime finishTime;
 
     @Column(name = "node")
     String nodeName;

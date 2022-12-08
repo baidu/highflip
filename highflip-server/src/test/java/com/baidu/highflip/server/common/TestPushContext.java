@@ -4,7 +4,6 @@ import com.baidu.highflip.core.adaptor.DataAdaptor;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.server.engine.dataio.PushContext;
-import highflip.HighflipMeta;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ public class TestPushContext {
     @Test
     public void testRaw() throws InterruptedException {
         int batch = 4;
-        int round = new Random().nextInt(100) + 1;
+        int round = new Random().nextInt(20) + 1;
         log.info("test raw, round: {}", round);
 
         final int[] size = {0, 0};
@@ -33,8 +32,6 @@ public class TestPushContext {
         DataAdaptor adaptor = new TestDataAdaptor() {
             @Override
             public void writeDataRaw(Data data, InputStream body) {
-
-
                 try {
                     byte[] buff = new byte[16];
                     while (true) {

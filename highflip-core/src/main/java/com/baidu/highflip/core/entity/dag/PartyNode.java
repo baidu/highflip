@@ -5,7 +5,6 @@ import com.baidu.highflip.core.entity.dag.common.AttributeObject;
 import highflip.HighflipMeta;
 import lombok.Data;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -13,9 +12,6 @@ import java.util.Map;
 public class PartyNode extends AttributeObject implements Serializable {
 
     private static final long serialVersionUID = 0x85710004L;
-
-    @Transient
-    Party parent;
 
     String name;
 
@@ -34,7 +30,6 @@ public class PartyNode extends AttributeObject implements Serializable {
                 .setName(node.getName())
                 .putAllAttributes(AttributeMap.toProto(node.getAttributes()))
                 .build();
-
         return proto;
     }
 }

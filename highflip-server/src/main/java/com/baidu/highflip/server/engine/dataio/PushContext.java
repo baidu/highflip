@@ -33,77 +33,6 @@ public class PushContext implements Closeable {
 
     }
 
-    class QueueIterator<T> implements Iterator<T> {
-
-        int timeoutSec = 1;
-
-        @Override
-        public boolean hasNext() {
-            return !isFinished || !queue.isEmpty();
-        }
-
-        @Override
-        public T next() {
-            try {
-                while(true){
-                    T value =  (T) queue.poll(timeoutSec, TimeUnit.SECONDS);
-                    if(value == null){
-                        if(isFinished){
-                            throw new NoSuchElementException();
-                        }
-                    } else {
-                        return value;
-                    }
-                }
-            } catch (InterruptedException e) {
-                throw new NoSuchElementException();
-            }
-        }
-    }
-
-    class QueueInputStream extends InputStream {
-
-        QueueIterator<byte[]> iterator = new QueueIterator<>();
-
-        int index = 0;
-
-        byte[] bytes = null;
-
-        boolean hasNext() {
-            return bytes != null || iterator.hasNext();
-        }
-
-        byte next() {
-            if (bytes == null || index >= bytes.length) {
-                bytes = iterator.next();
-                index = 0;
-            }
-            return bytes[index++];
-        }
-
-        @Override
-        public int read() throws IOException {
-            try {
-                if (!hasNext()) {
-                    return -1;
-                } else {
-                    return Byte.toUnsignedInt(next());
-                }
-            } catch (NoSuchElementException e) {
-                return -1;
-            }
-        }
-    }
-
-    static abstract class ContextWriter implements Runnable {
-
-        PushContext context;
-
-        ContextWriter(PushContext context) {
-            this.context = context;
-        }
-    }
-
     public static PushContext createDense(DataAdaptor adaptor, Data data) {
         PushContext context = new PushContext();
         context.data = data;
@@ -209,5 +138,76 @@ public class PushContext implements Closeable {
 
     public void pushSparse(List<KeyPair> row) throws InterruptedException {
         queue.put(row);
+    }
+
+    static abstract class ContextWriter implements Runnable {
+
+        PushContext context;
+
+        ContextWriter(PushContext context) {
+            this.context = context;
+        }
+    }
+
+    class QueueIterator<T> implements Iterator<T> {
+
+        int timeoutSec = 1;
+
+        @Override
+        public boolean hasNext() {
+            return !isFinished || !queue.isEmpty();
+        }
+
+        @Override
+        public T next() {
+            try {
+                while (true) {
+                    T value = (T) queue.poll(timeoutSec, TimeUnit.SECONDS);
+                    if (value == null) {
+                        if (isFinished) {
+                            throw new NoSuchElementException();
+                        }
+                    } else {
+                        return value;
+                    }
+                }
+            } catch (InterruptedException e) {
+                throw new NoSuchElementException();
+            }
+        }
+    }
+
+    class QueueInputStream extends InputStream {
+
+        QueueIterator<byte[]> iterator = new QueueIterator<>();
+
+        int index = 0;
+
+        byte[] bytes = null;
+
+        boolean hasNext() {
+            return bytes != null || iterator.hasNext();
+        }
+
+        byte next() {
+            if (bytes == null || index >= bytes.length) {
+                bytes = iterator.next();
+                index = 0;
+            }
+            return bytes[index++];
+        }
+
+        @Override
+        public int read() throws IOException {
+            try {
+                if (!hasNext()) {
+                    return -1;
+                } else {
+                    return Byte.toUnsignedInt(next());
+                }
+            } catch (NoSuchElementException e) {
+                return -1;
+            }
+        }
     }
 }

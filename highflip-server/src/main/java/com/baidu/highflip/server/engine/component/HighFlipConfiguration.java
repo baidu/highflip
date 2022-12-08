@@ -1,6 +1,7 @@
 package com.baidu.highflip.server.engine.component;
 
 import com.baidu.highflip.core.engine.Configuration;
+import com.baidu.highflip.core.entity.runtime.Config;
 import com.baidu.highflip.server.respository.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,31 +9,32 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.Iterator;
 
+
 @Component
 public class HighFlipConfiguration implements Configuration {
 
     @Autowired
     ConfigurationRepository configs;
 
-    public com.baidu.highflip.server.entity.Configuration getEntry(String key) {
+    public Config getEntry(String key) {
         return configs.findById(key)
                 .orElse(null);
     }
 
     @Transactional
     public void setEntry(String key, String value) {
-        com.baidu.highflip.server.entity.Configuration entity = getEntry(key);
+        Config entity = getEntry(key);
         if (entity != null) {
             entity.setValue(value);
         } else {
-            entity = new com.baidu.highflip.server.entity.Configuration();
+            entity = new Config();
             entity.setKey(key);
             entity.setValue(value);
         }
         configs.save(entity);
     }
 
-    protected Iterator<com.baidu.highflip.server.entity.Configuration> listEntry() {
+    protected Iterator<Config> listEntry() {
         return configs.findAll()
                 .stream()
                 .iterator();
@@ -62,7 +64,7 @@ public class HighFlipConfiguration implements Configuration {
      */
     @Override
     public String getString(String key, String defaultValue) {
-        com.baidu.highflip.server.entity.Configuration entry = getEntry(key);
+        Config entry = getEntry(key);
         if (entry == null) {
             return defaultValue;
         }

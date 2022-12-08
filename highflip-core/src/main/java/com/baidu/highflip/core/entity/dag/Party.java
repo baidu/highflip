@@ -56,6 +56,15 @@ public class Party extends AttributeObject implements Serializable {
         return proto;
     }
 
+    @Override
+    public void setParent(AttributeObject parent) {
+        Graph graph = (Graph) parent;
+        for (PartyNode pn : nodes) {
+            Node node = graph.getNodeByName(pn.getName());
+            pn.setParents(List.of(this, node));
+        }
+    }
+
     PartyNode getPartyNodeByName(String name) {
         return getNodes().stream()
                 .filter(n -> n.getName().compareToIgnoreCase(name) == 0)

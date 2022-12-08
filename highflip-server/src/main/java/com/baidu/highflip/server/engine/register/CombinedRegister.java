@@ -3,7 +3,11 @@ package com.baidu.highflip.server.engine.register;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.core.utils.Foreach;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class CombinedRegister implements InstanceRegister {
 

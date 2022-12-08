@@ -1,20 +1,30 @@
 package com.baidu.highflip.core.entity.dag.common;
 
+import lombok.Data;
+
+import javax.persistence.Transient;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Data
 public class AttributeObject {
 
-    AttributeObject parent = null;
+    @Transient
+    List<AttributeObject> parents = List.of();
 
     Map<String, Object> attributes = new TreeMap<String, Object>();
 
-    public AttributeObject getParent() {
-        return parent;
+    public List<AttributeObject> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<AttributeObject> parents) {
+        this.parents = parents;
     }
 
     public void setParent(AttributeObject parent) {
-        this.parent = parent;
+        this.parents = List.of(parent);
     }
 
     public Object getAttribute(String name, Object defaultValue) {
@@ -40,11 +50,9 @@ public class AttributeObject {
             return current;
         }
 
-        AttributeObject parent = getParent();
-        if (parent != null) {
+        for (AttributeObject parent : getParents()) {
             return parent.getForward(name, defaultValue);
         }
-
         return defaultValue;
     }
 }

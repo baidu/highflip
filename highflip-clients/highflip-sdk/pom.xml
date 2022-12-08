@@ -9,11 +9,12 @@
     <name>highflip-sdk</name>
     <url>https://maven.apache.org</url>
 
-    <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
+    <parent>
+        <groupId>com.baidu</groupId>
+        <artifactId>highflip</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
 
     <dependencies>
         <dependency>
@@ -24,7 +25,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -36,10 +36,8 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -1,13 +1,21 @@
 package com.baidu.highflip.server.rpc.v1;
 
 import com.baidu.highflip.core.entity.dag.Graph;
-import com.baidu.highflip.core.entity.runtime.*;
-import com.baidu.highflip.core.entity.runtime.basic.*;
+import com.baidu.highflip.core.entity.runtime.Config;
+import com.baidu.highflip.core.entity.runtime.Data;
+import com.baidu.highflip.core.entity.runtime.Job;
+import com.baidu.highflip.core.entity.runtime.Operator;
+import com.baidu.highflip.core.entity.runtime.Partner;
+import com.baidu.highflip.core.entity.runtime.Platform;
+import com.baidu.highflip.core.entity.runtime.Task;
+import com.baidu.highflip.core.entity.runtime.basic.Action;
+import com.baidu.highflip.core.entity.runtime.basic.Column;
+import com.baidu.highflip.core.entity.runtime.basic.DataMode;
+import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.core.entity.runtime.version.PlatformVersion;
 import com.baidu.highflip.core.utils.ActionUtils;
 import com.baidu.highflip.server.engine.HighFlipEngine;
 import com.baidu.highflip.server.engine.dataio.PushContext;
-import com.baidu.highflip.server.entity.Configuration;
 import com.baidu.highflip.server.exception.HighFlipException;
 import com.baidu.highflip.server.utils.PullProtoUtils;
 import com.google.common.collect.Streams;
@@ -28,7 +36,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.baidu.highflip.server.utils.GrpcServiceUtils.*;
+import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnMore;
+import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnOne;
+import static com.baidu.highflip.server.utils.GrpcServiceUtils.returnVoid;
 import static com.baidu.highflip.server.utils.HighFlipUtils.toJobId;
 
 @Slf4j
@@ -77,7 +87,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void getConfig(Highflip.ConfigId request,
                           StreamObserver<Highflip.ConfigGetResponse> responseObserver) {
 
-        Configuration entry = getEngine()
+        Config entry = getEngine()
                 .getConfiguration()
                 .getEntry(request.getKey());
 
@@ -415,7 +425,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
             Highflip.DataMode mode = null;
 
-            void onHead(Highflip.DataPushRequest request){
+            void onHead(Highflip.DataPushRequest request) {
                 Highflip.DataPushRequest.Head head = request.getHead();
 
                 HighflipMeta.DataProto schema = head.getSchema();
@@ -449,7 +459,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
                         }
                         break;
                     case RAW:
-                         context.pushRaw(request.getRaw()
+                        context.pushRaw(request.getRaw()
                                 .getContent()
                                 .toByteArray());
                         break;

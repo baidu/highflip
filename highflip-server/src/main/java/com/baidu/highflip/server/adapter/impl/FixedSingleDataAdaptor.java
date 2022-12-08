@@ -5,17 +5,13 @@ import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.Column;
 import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
 import com.baidu.highflip.core.entity.runtime.basic.Type;
-import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringJoiner;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -93,10 +89,10 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
         int size = 0;
         byte[] buff = new byte[1024];
         try {
-            while(true) {
+            while (true) {
                 int done = body.read(buff);
-                if(done < 0) {
-                   break;
+                if (done < 0) {
+                    break;
                 }
 
                 log.info("drop raw data, name:{}, offset:{}, size:{}",
@@ -116,7 +112,7 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
     public void writeDataDense(Data data, Iterator<List<Object>> body) {
         int size = 0;
 
-        while(body.hasNext()){
+        while (body.hasNext()) {
             var row = body.next();
 
             log.info("drop dense data, name:{}, size:{}",
@@ -133,14 +129,15 @@ public class FixedSingleDataAdaptor implements DataAdaptor {
     public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
         int size = 0;
 
-        while(body.hasNext()){
+        while (body.hasNext()) {
             var row = body.next();
 
             log.info("drop sparse data, name:{}, size:{}",
                     data.getName(), row.size());
 
             size += 1;
-        };
+        }
+        ;
 
         log.info("done sparse data, name:{}, rows:{}",
                 data.getName(), size);

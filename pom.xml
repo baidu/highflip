@@ -31,6 +31,7 @@
         <module>highflip-doc</module>
         <module>highflip-clients</module>
     </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -52,11 +53,27 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.24</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>5.8.2</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>2.12.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jadira.usertype</groupId>
+                <artifactId>usertype.core</artifactId>
+                <version>6.0.1.GA</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vladmihalcea</groupId>
+                <artifactId>hibernate-types-52</artifactId>
+                <version>2.20.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
