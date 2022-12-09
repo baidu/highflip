@@ -128,7 +128,7 @@ message GraphProto{
 
     string name = 1;
 
-    string description = 2;
+    optional string description = 2;
 
     map<string, TypedValueProto> attributes = 3;
 

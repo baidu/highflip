@@ -2,11 +2,16 @@ package com.baidu.highflip.core.entity.dag;
 
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
 import com.baidu.highflip.core.entity.dag.common.AttributeObject;
+import com.baidu.highflip.core.utils.ProtoUtils;
+import com.google.common.collect.Maps;
 import highflip.HighflipMeta;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -20,26 +25,60 @@ public class Node extends AttributeObject implements Serializable {
 
     String description;
 
+    Graph graph;
+
     Map<String, String> inputs;
 
     Map<String, String> outputs;
 
+    @Data
+    public class InputRef{
+
+        Integer index;
+
+        String name;
+
+        String fromNode;
+
+        String fromOutput;
+
+        public Node getNode(){
+            return graph.getNodeByName(fromNode);
+        }
+    }
+
+    @Data
+    public class OutputRef{
+
+        Integer index;
+
+        String name;
+
+        String toNode;
+
+        String toInput;
+
+        public Node getNode(){
+            return graph.getNodeByName(toInput);
+        }
+    }
+
     public static Node fromProto(HighflipMeta.NodeProto proto) {
         Node n = new Node();
         n.setName(proto.getName());
+        n.setType(proto.getType());
         n.setDescription(proto.getDescription());
         n.setAttributes(AttributeMap.fromProto(proto.getAttributesMap()));
         return n;
     }
 
     public static HighflipMeta.NodeProto toProto(Node node) {
-        HighflipMeta.NodeProto proto = HighflipMeta.NodeProto
+        HighflipMeta.NodeProto.Builder builder = HighflipMeta.NodeProto
                 .newBuilder()
                 .setName(node.getName())
-                .setDescription(node.getDescription())
                 .setType(node.getType())
                 .putAllAttributes(AttributeMap.toProto(node.getAttributes()))
-                .addAllInputs(node.getInputs()
+                .addAllInputs(Objects.<Map<String, String>>requireNonNullElseGet(node.getInputs(), Map::of)
                         .entrySet()
                         .stream()
                         .map(n -> HighflipMeta.NodeRefProto
@@ -47,16 +86,17 @@ public class Node extends AttributeObject implements Serializable {
                                 .setName(n.getKey())
                                 .build())
                         .collect(Collectors.toList()))
-                .addAllOutputs(node.getOutputs()
+                .addAllOutputs(Objects.<Map<String, String>>requireNonNullElseGet(node.getOutputs(), Map::of)
                         .entrySet()
                         .stream()
                         .map(n -> HighflipMeta.NodeRefProto
                                 .newBuilder()
                                 .setName(n.getKey())
                                 .build())
-                        .collect(Collectors.toList()))
-                .build();
-        return proto;
+                        .collect(Collectors.toList()));
+
+        ProtoUtils.setOptional(builder, "Description", Optional.ofNullable(node.getDescription()));
+        return builder.build();
     }
 
 }

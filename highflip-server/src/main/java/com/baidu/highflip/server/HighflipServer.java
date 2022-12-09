@@ -19,8 +19,7 @@ import java.net.SocketAddress;
 @EntityScan(basePackages = {"com.baidu.highflip"})
 public class HighflipServer {
     public static void main(String[] args) {
-        new SpringApplication(HighflipServer.class)
-                .run(args);
+        SpringApplication.run(HighflipServer.class, args);
     }
 
     @EventListener

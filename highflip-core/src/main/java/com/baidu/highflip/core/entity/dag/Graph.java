@@ -2,12 +2,14 @@ package com.baidu.highflip.core.entity.dag;
 
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
 import com.baidu.highflip.core.entity.dag.common.AttributeObject;
+import com.baidu.highflip.core.utils.ProtoUtils;
 import highflip.HighflipMeta;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -49,9 +51,8 @@ public class Graph extends AttributeObject implements Serializable {
     }
 
     public static HighflipMeta.GraphProto toProto(Graph graph) {
-        HighflipMeta.GraphProto proto = HighflipMeta.GraphProto.newBuilder()
+        HighflipMeta.GraphProto.Builder builder = HighflipMeta.GraphProto.newBuilder()
                 .setName(graph.getName())
-                .setDescription(graph.getDescription())
                 .putAllAttributes(AttributeMap.toProto(graph.getAttributes()))
                 .addAllNodes(graph.getNodes()
                         .stream()
@@ -60,9 +61,10 @@ public class Graph extends AttributeObject implements Serializable {
                 .addAllParties(graph.getParties()
                         .stream()
                         .map(Party::toProto)
-                        .collect(Collectors.toList()))
-                .build();
-        return proto;
+                        .collect(Collectors.toList()));
+
+        ProtoUtils.setOptional(builder, "Description", Optional.ofNullable(graph.getDescription()));
+        return builder.build();
     }
 
     public Node getNodeByName(String name) {

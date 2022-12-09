@@ -2,12 +2,14 @@ package com.baidu.highflip.core.entity.dag;
 
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
 import com.baidu.highflip.core.entity.dag.common.AttributeObject;
+import com.baidu.highflip.core.utils.ProtoUtils;
 import highflip.HighflipMeta;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -19,8 +21,6 @@ public class Party extends AttributeObject implements Serializable {
 
     String description;
 
-    Map<String, Object> attributes;
-
     String role;
 
     List<PartyNode> nodes;
@@ -28,6 +28,7 @@ public class Party extends AttributeObject implements Serializable {
     public static Party fromProto(HighflipMeta.PartyProto proto) {
         Party p = new Party();
         p.setName(proto.getName());
+        p.setRole(proto.getRole().toString());
         p.setAttributes(AttributeMap.fromProto(proto.getAttributesMap()));
         p.setNodes(proto.getNodesList()
                 .stream()
@@ -42,18 +43,17 @@ public class Party extends AttributeObject implements Serializable {
 
     public static HighflipMeta.PartyProto toProto(Party party) {
 
-        HighflipMeta.PartyProto proto = HighflipMeta.PartyProto.newBuilder()
+        HighflipMeta.PartyProto.Builder builder = HighflipMeta.PartyProto.newBuilder()
                 .setName(party.getName())
-                .setDescription(party.getDescription())
                 .putAllAttributes(AttributeMap.toProto(party.getAttributes()))
                 .setRole(HighflipMeta.PartyRole.valueOf(party.getRole()))
                 .addAllNodes(party.getNodes()
                         .stream()
                         .map(PartyNode::toProto)
-                        .collect(Collectors.toList()))
-                .build();
+                        .collect(Collectors.toList()));
 
-        return proto;
+        ProtoUtils.setOptional(builder, "Description", Optional.ofNullable(party.getDescription()));
+        return builder.build();
     }
 
     @Override
