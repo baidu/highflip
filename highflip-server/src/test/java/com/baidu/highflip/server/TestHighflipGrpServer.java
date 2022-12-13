@@ -109,7 +109,6 @@ public class TestHighflipGrpServer extends GrpcServerTestBase {
     @Test
     public void testPushData() {
 
-
         StreamObserver<Highflip.DataPushRequest> requests = getRawStub()
                 .pushData(new StreamObserver<>() {
 
