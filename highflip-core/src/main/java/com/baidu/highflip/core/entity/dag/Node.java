@@ -29,38 +29,6 @@ public class Node extends AttributeObject implements Serializable {
 
     Map<String, String> outputs;
 
-    @Data
-    public class InputRef{
-
-        Integer index;
-
-        String name;
-
-        String fromNode;
-
-        String fromOutput;
-
-        public Node getNode(){
-            return graph.getNode(fromNode);
-        }
-    }
-
-    @Data
-    public class OutputRef{
-
-        Integer index;
-
-        String name;
-
-        String toNode;
-
-        String toInput;
-
-        public Node getNode(){
-            return graph.getNode(toInput);
-        }
-    }
-
     public static Node fromProto(HighflipMeta.NodeProto proto) {
         Node n = new Node();
         n.setName(proto.getName());
@@ -95,6 +63,38 @@ public class Node extends AttributeObject implements Serializable {
 
         ProtoUtils.setOptional(builder, "Description", Optional.ofNullable(node.getDescription()));
         return builder.build();
+    }
+
+    @Data
+    public class InputRef {
+
+        Integer index;
+
+        String name;
+
+        String fromNode;
+
+        String fromOutput;
+
+        public Node getNode() {
+            return graph.getNode(fromNode);
+        }
+    }
+
+    @Data
+    public class OutputRef {
+
+        Integer index;
+
+        String name;
+
+        String toNode;
+
+        String toInput;
+
+        public Node getNode() {
+            return graph.getNode(toInput);
+        }
     }
 
 }
