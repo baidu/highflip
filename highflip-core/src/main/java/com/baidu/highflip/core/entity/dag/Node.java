@@ -3,12 +3,10 @@ package com.baidu.highflip.core.entity.dag;
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
 import com.baidu.highflip.core.entity.dag.common.AttributeObject;
 import com.baidu.highflip.core.utils.ProtoUtils;
-import com.google.common.collect.Maps;
 import highflip.HighflipMeta;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,7 +41,7 @@ public class Node extends AttributeObject implements Serializable {
         String fromOutput;
 
         public Node getNode(){
-            return graph.getNodeByName(fromNode);
+            return graph.getNode(fromNode);
         }
     }
 
@@ -59,7 +57,7 @@ public class Node extends AttributeObject implements Serializable {
         String toInput;
 
         public Node getNode(){
-            return graph.getNodeByName(toInput);
+            return graph.getNode(toInput);
         }
     }
 

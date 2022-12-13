@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,9 +22,9 @@ public class Graph extends AttributeObject implements Serializable {
 
     String description;
 
-    List<Node> nodes;
+    Map<String, Node> nodes;
 
-    List<Party> parties;
+    Map<String, Party> parties;
 
     public static Graph fromProto(HighflipMeta.GraphProto proto) {
         Graph g = new Graph();
@@ -34,19 +34,13 @@ public class Graph extends AttributeObject implements Serializable {
         g.setNodes(proto.getNodesList()
                 .stream()
                 .map(Node::fromProto)
-                .map(n -> {
-                    n.setParent(g);
-                    return n;
-                })
-                .collect(Collectors.toList()));
+                .peek(n -> n.setParent(g))
+                .collect(Collectors.toMap(Node::getName, v -> v)));
         g.setParties(proto.getPartiesList()
                 .stream()
                 .map(Party::fromProto)
-                .map(n -> {
-                    n.setParent(g);
-                    return n;
-                })
-                .collect(Collectors.toList()));
+                .peek(n -> n.setParent(g))
+                .collect(Collectors.toMap(Party::getName, v -> v)));
         return g;
     }
 
@@ -55,10 +49,12 @@ public class Graph extends AttributeObject implements Serializable {
                 .setName(graph.getName())
                 .putAllAttributes(AttributeMap.toProto(graph.getAttributes()))
                 .addAllNodes(graph.getNodes()
+                        .values()
                         .stream()
                         .map(Node::toProto)
                         .collect(Collectors.toList()))
                 .addAllParties(graph.getParties()
+                        .values()
                         .stream()
                         .map(Party::toProto)
                         .collect(Collectors.toList()));
@@ -67,19 +63,11 @@ public class Graph extends AttributeObject implements Serializable {
         return builder.build();
     }
 
-    public Node getNodeByName(String name) {
-        return getNodes()
-                .stream()
-                .filter(n -> n.getName().compareToIgnoreCase(name) == 0)
-                .findFirst()
-                .orElseThrow();
+    public Node getNode(String name) {
+        return getNodes().get(name);
     }
 
-    public Party getPartyByName(String name) {
-        return getParties()
-                .stream()
-                .filter(p -> p.getName().compareToIgnoreCase(name) == 0)
-                .findFirst()
-                .orElseThrow();
+    public Party getParty(String name) {
+        return getParties().get(name);
     }
 }

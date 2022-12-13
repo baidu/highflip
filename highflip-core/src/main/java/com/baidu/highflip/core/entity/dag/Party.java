@@ -23,7 +23,7 @@ public class Party extends AttributeObject implements Serializable {
 
     String role;
 
-    List<PartyNode> nodes;
+    Map<String, PartyNode> nodes;
 
     public static Party fromProto(HighflipMeta.PartyProto proto) {
         Party p = new Party();
@@ -33,11 +33,8 @@ public class Party extends AttributeObject implements Serializable {
         p.setNodes(proto.getNodesList()
                 .stream()
                 .map(PartyNode::fromProto)
-                .map(n -> {
-                    n.setParent(p);
-                    return n;
-                })
-                .collect(Collectors.toList()));
+                .peek(n -> n.setParent(p))
+                .collect(Collectors.toMap(PartyNode::getName, v -> v)));
         return p;
     }
 
@@ -48,6 +45,7 @@ public class Party extends AttributeObject implements Serializable {
                 .putAllAttributes(AttributeMap.toProto(party.getAttributes()))
                 .setRole(HighflipMeta.PartyRole.valueOf(party.getRole()))
                 .addAllNodes(party.getNodes()
+                        .values()
                         .stream()
                         .map(PartyNode::toProto)
                         .collect(Collectors.toList()));
@@ -59,16 +57,13 @@ public class Party extends AttributeObject implements Serializable {
     @Override
     public void setParent(AttributeObject parent) {
         Graph graph = (Graph) parent;
-        for (PartyNode pn : nodes) {
-            Node node = graph.getNodeByName(pn.getName());
+        for (PartyNode pn : nodes.values()) {
+            Node node = graph.getNode(pn.getName());
             pn.setParents(List.of(this, node));
         }
     }
 
-    PartyNode getPartyNodeByName(String name) {
-        return getNodes().stream()
-                .filter(n -> n.getName().compareToIgnoreCase(name) == 0)
-                .findFirst()
-                .orElseThrow();
+    public PartyNode getPartyNode(String name) {
+        return getNodes().get(name);
     }
 }
