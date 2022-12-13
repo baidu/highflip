@@ -15,3 +15,6 @@ grpc:
     security:
         auth:
             enabled: false
+
+logging:
+    root.level: INFO
