@@ -1,7 +1,7 @@
 package com.baidu.highflip.core.entity.dag;
 
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
-import com.baidu.highflip.core.entity.dag.common.AttributeObject;
+import com.baidu.highflip.core.entity.dag.common.NamedAttributeObject;
 import com.baidu.highflip.core.utils.ProtoUtils;
 import highflip.HighflipMeta;
 import lombok.Data;
@@ -9,15 +9,12 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
-public class Party extends AttributeObject implements Serializable {
+public class Party extends NamedAttributeObject implements Serializable {
 
     private static final long serialVersionUID = 0x85710003L;
-
-    String name;
 
     String description;
 
@@ -50,12 +47,12 @@ public class Party extends AttributeObject implements Serializable {
                         .map(PartyNode::toProto)
                         .collect(Collectors.toList()));
 
-        ProtoUtils.setOptional(builder, "Description", Optional.ofNullable(party.getDescription()));
+        ProtoUtils.setOptional(builder, "Description", ProtoUtils.ofString(party.getDescription()));
         return builder.build();
     }
 
     @Override
-    public void setParent(AttributeObject parent) {
+    public void setParent(NamedAttributeObject parent) {
         Graph graph = (Graph) parent;
         for (PartyNode pn : nodes.values()) {
             Node node = graph.getNode(pn.getName());

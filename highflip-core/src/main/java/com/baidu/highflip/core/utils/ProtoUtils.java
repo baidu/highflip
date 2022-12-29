@@ -2,11 +2,23 @@ package com.baidu.highflip.core.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ProtoUtils {
 
+    public static Optional<String> ofString(String value) {
+        if (Objects.isNull(value)) {
+            return Optional.empty();
+        }
+
+        if (value.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(value);
+    }
 
     public static <T, V> T setOptional(T builder, String field, Optional<V> value) {
         try {

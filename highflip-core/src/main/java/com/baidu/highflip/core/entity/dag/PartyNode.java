@@ -1,21 +1,22 @@
 package com.baidu.highflip.core.entity.dag;
 
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
-import com.baidu.highflip.core.entity.dag.common.AttributeObject;
+import com.baidu.highflip.core.entity.dag.common.NamedAttributeObject;
 import highflip.HighflipMeta;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Map;
 
 @Data
-public class PartyNode extends AttributeObject implements Serializable {
+public class PartyNode extends NamedAttributeObject implements Serializable {
 
     private static final long serialVersionUID = 0x85710004L;
 
-    String name;
-
-    Map<String, Object> attributes;
+    public static PartyNode of(String name) {
+        PartyNode node = new PartyNode();
+        node.setName(name);
+        return node;
+    }
 
     public static PartyNode fromProto(HighflipMeta.PartyProto.PartyNode proto) {
         PartyNode n = new PartyNode();

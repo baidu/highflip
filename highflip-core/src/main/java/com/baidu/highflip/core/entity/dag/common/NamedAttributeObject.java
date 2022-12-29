@@ -8,22 +8,34 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Data
-public class AttributeObject {
+public class NamedAttributeObject implements Comparable<NamedAttributeObject> {
 
     @Transient
-    List<AttributeObject> parents = List.of();
+    List<NamedAttributeObject> parents = List.of();
+
+    String name;
 
     Map<String, Object> attributes = new TreeMap<String, Object>();
 
-    public List<AttributeObject> getParents() {
+    @Override
+    public int compareTo(NamedAttributeObject attributeObject) {
+        return this.getName().compareTo(attributeObject.getName());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this.getName().equals(other);
+    }
+
+    public List<NamedAttributeObject> getParents() {
         return parents;
     }
 
-    public void setParents(List<AttributeObject> parents) {
+    public void setParents(List<NamedAttributeObject> parents) {
         this.parents = parents;
     }
 
-    public void setParent(AttributeObject parent) {
+    public void setParent(NamedAttributeObject parent) {
         this.parents = List.of(parent);
     }
 
@@ -50,9 +62,11 @@ public class AttributeObject {
             return current;
         }
 
-        for (AttributeObject parent : getParents()) {
+        for (NamedAttributeObject parent : getParents()) {
             return parent.getForward(name, defaultValue);
         }
         return defaultValue;
     }
+
+
 }

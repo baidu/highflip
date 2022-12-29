@@ -56,22 +56,24 @@ message NodeRefProto{
 
 message NodeInputProto{
 
-    int32 index = 1;
+    optional int32 index = 1;
 
     string name = 2;
 
     optional string description = 3;
 
-    string type = 4;
+    string from_node = 4;
+
+    string from_output = 5;
 }
 
 message NodeOutputProto{
 
-    int32 index = 1;
+    optional int32 index = 1;
 
     string name = 2;
 
-    string type = 3;
+    optional string description = 3;
 }
 
 message NodeProto{
@@ -84,9 +86,9 @@ message NodeProto{
 
     map<string, TypedValueProto> attributes = 4;
 
-    repeated NodeRefProto inputs = 5;
+    repeated NodeInputProto inputs = 5;
 
-    repeated NodeRefProto outputs = 6;
+    repeated NodeOutputProto outputs = 6;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

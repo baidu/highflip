@@ -534,6 +534,19 @@ message ConfigGetResponse{
     string update_time = 4;
 }
 
+message ConfigInfoResponse{
+
+    string key = 1;
+
+    string type = 2;
+
+    optional string default = 3;
+
+    string description = 4;
+
+    bool is_required = 5;
+}
+
 message ConfigListRequest{
 
     int64 offset = 1;

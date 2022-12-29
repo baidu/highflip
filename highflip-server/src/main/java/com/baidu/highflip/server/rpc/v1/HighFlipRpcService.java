@@ -70,7 +70,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
                            StreamObserver<Highflip.ConfigListResponse> responseObserver) {
 
         Iterator<Highflip.ConfigListResponse> response = Streams
-                .stream(getEngine().getConfiguration().listKeys())
+                .stream(getEngine().listConfig())
                 .map(k -> Highflip.ConfigListResponse
                         .newBuilder()
                         .setKey(k)
@@ -88,8 +88,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
                           StreamObserver<Highflip.ConfigGetResponse> responseObserver) {
 
         Config entry = getEngine()
-                .getConfiguration()
-                .getEntry(request.getKey());
+                .getConfig(request.getKey());
 
         Highflip.ConfigGetResponse response = Highflip.ConfigGetResponse
                 .newBuilder()
@@ -109,8 +108,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void setConfig(Highflip.ConfigSetRequest request,
                           StreamObserver<Highflip.Void> responseObserver) {
 
-        getEngine().getConfiguration()
-                .setString(request.getKey(), request.getValue());
+        getEngine().setConfig(request.getKey(), request.getValue());
 
         returnVoid(responseObserver);
     }
@@ -118,8 +116,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void deleteConfig(Highflip.ConfigId request,
                              StreamObserver<Highflip.Void> responseObserver) {
 
-        getEngine().getConfiguration()
-                .delete(request.getKey());
+        getEngine().deleteConfig(request.getKey());
 
         returnVoid(responseObserver);
     }

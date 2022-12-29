@@ -3,12 +3,14 @@ package com.baidu.highflip.server.engine;
 import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.adaptor.PlatformAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
+import com.baidu.highflip.core.entity.runtime.Config;
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.Job;
 import com.baidu.highflip.core.entity.runtime.Operator;
 import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Platform;
 import com.baidu.highflip.core.entity.runtime.Task;
+import com.baidu.highflip.core.entity.runtime.User;
 import com.baidu.highflip.core.entity.runtime.basic.Action;
 import com.baidu.highflip.core.entity.runtime.basic.Column;
 import com.baidu.highflip.core.entity.runtime.basic.DataMode;
@@ -100,7 +102,25 @@ public class HighFlipEngine {
     /******************************************************************************
      * CONFIG
      ******************************************************************************/
+     public Iterable<String> listConfig(){
+         return getConfiguration()
+                 .listKeys();
+     }
 
+    public void setConfig(String key, String value){
+        getConfiguration()
+                .setString(key, value);
+    }
+
+    public Config getConfig(String key){
+         return getConfiguration()
+                .getEntry(key);
+    }
+
+    public void deleteConfig(String key){
+        getConfiguration()
+                .delete(key);
+    }
 
     /******************************************************************************
      * PLATFORM
@@ -115,6 +135,17 @@ public class HighFlipEngine {
             return;
         }
 
+        loadPlatform();
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED,
+                Boolean.TRUE);
+
+        log.info("Finish initialization of platform information.");
+    }
+
+    @Transactional
+    public void loadPlatform(){
         log.info("Begin to initialize platform information.");
 
         getContext().getPlatformRepository()
@@ -141,12 +172,6 @@ public class HighFlipEngine {
             platform.setCompatibles(compatibles);
         }
         getContext().getPlatformRepository().save(platform);
-
-        getConfiguration().setBoolean(
-                ConfigurationList.CONFIG_HIGHFLIP_PLATFORM_IS_INITIALIZED,
-                Boolean.TRUE);
-
-        log.info("Finish initialization of platform information.");
     }
 
     public Platform getPlatform() {
@@ -154,6 +179,11 @@ public class HighFlipEngine {
         return platform;
     }
 
+    /**
+     *
+     * @param target
+     * @return
+     */
     public Platform matchPlatform(PlatformVersion target) {
         for (Platform platform : getContext().getPlatformRepository().findAll()) {
             for (CompatibleVersion comp : platform.getCompatibles()) {
@@ -178,6 +208,18 @@ public class HighFlipEngine {
             return;
         }
 
+        loadJobs();
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED,
+                Boolean.TRUE);
+    }
+
+    /**
+     *
+     */
+    @Transactional
+    public void loadJobs(){
         log.info("Delete old job information.");
         getContext().getJobRepository()
                 .deleteAll();
@@ -194,11 +236,9 @@ public class HighFlipEngine {
 
             getContext().getJobRepository()
                     .save(newJob);
-        }
 
-        getConfiguration().setBoolean(
-                ConfigurationList.CONFIG_HIGHFLIP_JOB_IS_INITIALIZED,
-                Boolean.TRUE);
+            log.info("Load a job information.");
+        }
     }
 
     @Transactional
@@ -233,6 +273,13 @@ public class HighFlipEngine {
         }
     }
 
+    /**
+     *
+     * @param name
+     * @param description
+     * @param graph
+     * @return
+     */
     @Transactional
     @CachePut("jobs")
     public Job createJob(String name, String description, Graph graph) {
@@ -240,8 +287,6 @@ public class HighFlipEngine {
         job.setJobName(name);
         job.setDescription(description);
         job.setGraph(graph);
-
-        JobAdaptor adpt = getContext().getJobAdaptor();
 
         job = getContext().getJobAdaptor()
                 .createJob(job);
@@ -347,7 +392,6 @@ public class HighFlipEngine {
     /******************************************************************************
      * TASK
      ******************************************************************************/
-
     @Transactional
     public void initializeTasks() {
         getContext().getTaskRepository()
@@ -588,6 +632,14 @@ public class HighFlipEngine {
             return;
         }
 
+        loadPartners();
+
+        getConfiguration().setBoolean(
+                ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED,
+                Boolean.TRUE);
+    }
+
+    public void loadPartners(){
         int count = getContext()
                 .getPartnerAdaptor()
                 .getPartnerCount();
@@ -603,14 +655,16 @@ public class HighFlipEngine {
                     .getPartnerRepository()
                     .save(partner);
 
-            log.info("Initialize a partner {}", partner.getPartnerId());
+            log.info("Load a partner {}", partner.getPartnerId());
         }
-
-        getConfiguration().setBoolean(
-                ConfigurationList.CONFIG_HIGHFLIP_PARTNER_IS_INITIALIZED,
-                Boolean.TRUE);
     }
 
+    /**
+     *
+     * @param name
+     * @param description
+     * @return
+     */
     @Transactional
     public String createPartner(String name, String description) {
         Partner partner = new Partner();
@@ -625,6 +679,17 @@ public class HighFlipEngine {
                 .getPartnerId();
     }
 
+    @Transactional
+    public void deletePartner(String partnerId){
+        Partner partner = getPartner(partnerId);
+
+        getContext().getPartnerAdaptor()
+                .deletePartner(partner);
+
+        getContext()
+                .getPartnerRepository()
+                .delete(partner);
+    }
 
     public Partner getPartner(String partnerId) {
         return getContext()
@@ -638,7 +703,50 @@ public class HighFlipEngine {
                 .getPartnerRepository()
                 .findAll()
                 .stream()
-                .map(p -> p.getPartnerId())
+                .map(Partner::getPartnerId)
+                .iterator();
+    }
+
+    /******************************************************************************
+     * USER
+     ******************************************************************************/
+    @Transactional
+    public String createUser(User user){
+        getContext().getUserAdaptor()
+                .createUser(user);
+
+        return getContext()
+                .getUserRepository()
+                .save(user)
+                .getUserId();
+    }
+
+    @Transactional
+    public void deleteUser(String userId){
+        User user = getUser(userId);
+
+        getContext().getUserAdaptor()
+                .deleteUser(user);
+
+        getContext()
+            .getUserRepository()
+            .delete(user);
+    }
+
+    @Cacheable("user")
+    public User getUser(String userId){
+        return getContext()
+                .getUserRepository()
+                .findById(userId)
+                .orElseThrow();
+    }
+
+    public Iterable<String> listUser(){
+        return () -> getContext()
+                .getUserRepository()
+                .findAll()
+                .stream()
+                .map(User::getUserId)
                 .iterator();
     }
 }

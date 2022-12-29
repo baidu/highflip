@@ -106,6 +106,8 @@ public class TestHighflipGrpServer extends GrpcServerTestBase {
         }
     }
 
+
+
     @Test
     public void testPushData() {
 
@@ -183,6 +185,23 @@ public class TestHighflipGrpServer extends GrpcServerTestBase {
 
         for (String partnerId : result) {
             log.info("partner id: {}", partnerId);
+        }
+    }
+
+    @Test
+    public void testListOperator() {
+
+        Highflip.OperatorListRequest request = Highflip.OperatorListRequest
+                .newBuilder()
+                .build();
+
+        List<String> result = Streams
+                .stream(getStub().listOperator(request))
+                .map(Highflip.OperatorListResponse::getOperatorId)
+                .collect(Collectors.toList());
+
+        for (String operatorId : result) {
+            log.info("operator id: {}", operatorId);
         }
     }
 

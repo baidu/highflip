@@ -8,6 +8,8 @@ public interface PartnerAdaptor {
 
     Partner getPartner(Partner partner);
 
+    void deletePartner(Partner partner);
+
     int getPartnerCount();
 
     Partner getPartnerByIndex(int index, Partner partner);

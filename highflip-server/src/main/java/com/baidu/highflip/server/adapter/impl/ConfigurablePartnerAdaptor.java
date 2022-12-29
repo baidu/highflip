@@ -68,6 +68,11 @@ public class ConfigurablePartnerAdaptor implements PartnerAdaptor {
     }
 
     @Override
+    public void deletePartner(Partner partner) {
+
+    }
+
+    @Override
     public int getPartnerCount() {
         return partners.size();
     }
