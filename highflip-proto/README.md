@@ -5,7 +5,6 @@ HIGHFLIP PROTOCOL DEFINITION
 
 
 
-
 # Reference
 
 - onnx defines:

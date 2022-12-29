@@ -1,6 +1,6 @@
 package com.baidu.highflip.server.adaptor;
 
-import com.baidu.highflip.server.adapter.impl.ConfigurablePartnerAdaptor;
+import com.baidu.highflip.server.adaptor.impl.ConfigurablePartnerAdaptor;
 import com.baidu.highflip.server.utils.HighFlipUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.baidu.highflip.server.adapter.loader;
+package com.baidu.highflip.server.adaptor.loader;
 
 import com.baidu.highflip.core.common.AdaptorPropsList;
 import com.baidu.highflip.core.common.InstanceNameList;

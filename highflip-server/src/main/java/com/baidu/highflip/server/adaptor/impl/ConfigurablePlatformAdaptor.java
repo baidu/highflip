@@ -1,4 +1,4 @@
-package com.baidu.highflip.server.adapter.impl;
+package com.baidu.highflip.server.adaptor.impl;
 
 import com.baidu.highflip.core.adaptor.PlatformAdaptor;
 import com.baidu.highflip.core.common.AdaptorPropsList;

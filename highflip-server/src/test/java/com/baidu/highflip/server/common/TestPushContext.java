@@ -138,64 +138,66 @@ public class TestPushContext {
 
         Assertions.assertEquals(size[0], size[1]);
     }
+
+    static class TestDataAdaptor implements DataAdaptor {
+
+        @Override
+        public Data updateData(Data data) {
+            return null;
+        }
+
+        @Override
+        public int getDataCount() {
+            return 0;
+        }
+
+        @Override
+        public Data getDataByIndex(int index, Data data) {
+            return null;
+        }
+
+        @Override
+        public void deleteData(Data data) {
+
+        }
+
+        @Override
+        public InputStream readDataRaw(Data data) {
+            return null;
+        }
+
+        @Override
+        public Iterator<List<Object>> readDataDense(Data data) {
+            return null;
+        }
+
+        @Override
+        public Iterator<List<KeyPair>> readDataSparse(Data data) {
+            return null;
+        }
+
+        @Override
+        public Data createData(Data data) {
+            return null;
+        }
+
+        @Override
+        public void writeDataRaw(Data data, InputStream body) {
+
+        }
+
+        @Override
+        public void writeDataDense(Data data, Iterator<List<Object>> body) {
+
+        }
+
+        @Override
+        public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
+
+        }
+    }
 }
 
 
-class TestDataAdaptor implements DataAdaptor {
 
-    @Override
-    public Data updateData(Data data) {
-        return null;
-    }
-
-    @Override
-    public int getDataCount() {
-        return 0;
-    }
-
-    @Override
-    public Data getDataByIndex(int index, Data data) {
-        return null;
-    }
-
-    @Override
-    public void deleteData(Data data) {
-
-    }
-
-    @Override
-    public InputStream readDataRaw(Data data) {
-        return null;
-    }
-
-    @Override
-    public Iterator<List<Object>> readDataDense(Data data) {
-        return null;
-    }
-
-    @Override
-    public Iterator<List<KeyPair>> readDataSparse(Data data) {
-        return null;
-    }
-
-    @Override
-    public Data createData(Data data) {
-        return null;
-    }
-
-    @Override
-    public void writeDataRaw(Data data, InputStream body) {
-
-    }
-
-    @Override
-    public void writeDataDense(Data data, Iterator<List<Object>> body) {
-
-    }
-
-    @Override
-    public void writeDataSparse(Data data, Iterator<List<KeyPair>> body) {
-
-    }
-}
 
