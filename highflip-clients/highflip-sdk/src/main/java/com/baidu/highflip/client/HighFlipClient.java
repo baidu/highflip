@@ -1,5 +1,6 @@
 package com.baidu.highflip.client;
 
+import com.baidu.highflip.client.common.BasicToken;
 import com.baidu.highflip.client.common.GrpcURL;
 import com.baidu.highflip.client.stream.DataPullStream;
 import com.baidu.highflip.client.stream.DataPushStream;
@@ -10,6 +11,7 @@ import com.baidu.highflip.client.utils.Streams;
 import highflip.HighflipMeta;
 import highflip.v1.HighFlipGrpc;
 import highflip.v1.Highflip;
+import io.grpc.CallCredentials;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class HighFlipClient implements AutoCloseable {
@@ -51,6 +54,13 @@ public class HighFlipClient implements AutoCloseable {
 
         HighFlipGrpc.HighFlipBlockingStub blockingStub = HighFlipGrpc.newBlockingStub(channel);
         HighFlipGrpc.HighFlipStub stub = HighFlipGrpc.newStub(channel);
+
+        Optional<BasicToken> token = BasicToken.of(
+                url.getUser(), url.getPass());
+        if(token.isPresent()){
+            blockingStub = blockingStub.withCallCredentials(token.get());
+            stub = stub.withCallCredentials(token.get());
+        }
 
         this.channel = channel;
         this.blockingStub = blockingStub;

@@ -741,6 +741,11 @@ public class HighFlipEngine {
                 .orElseThrow();
     }
 
+    public boolean validateUser(String user, String pass){
+        log.info("validate user={}", user);
+        return true;
+    }
+
     public Iterable<String> listUser(){
         return () -> getContext()
                 .getUserRepository()

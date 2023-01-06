@@ -47,7 +47,7 @@ public class BindingJson {
                 } else {
                     byte[] bytes = mapper.writeValueAsBytes(value);
                     String base64 = Base64.getEncoder().encodeToString(bytes);
-                    gen.writeString(OBJECT_PREFIX + bytes);
+                    gen.writeString(OBJECT_PREFIX + base64);
                 }
             }
             gen.writeEndObject();
