@@ -27,11 +27,13 @@ docker run -it highflip-server:1.0.0-SNAPSHOT
 ```
 
 ## 常用配置选项
-|选项名称|类型| 默认值    | 描述   |
-|-------|----|--------|------|
-|grpc.port|int| 8751   | 服务监听端口 |
+|选项名称|类型| 默认值  | 描述   |
+|-------|----|------|------|
+|grpc.port|int|8751  | 服务监听端口 |
+|grpc.security.auth.enabled|boolean|false|是否开启身份验证|
 |highflip.server.adaptor.path|string| |适配器jar所在路径|
 |logging.root.level|string| |日志显示等级|
+
 
 ## 默认的适配器
 - PlatformAdaptor: DefaultPlatformAdaptor
