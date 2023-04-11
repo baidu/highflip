@@ -38,6 +38,7 @@
         <module>highflip-server</module>
         <module>highflip-doc</module>
         <module>highflip-clients</module>
+        <module>highflip-editor</module>
     </modules>
 
     <dependencyManagement>
