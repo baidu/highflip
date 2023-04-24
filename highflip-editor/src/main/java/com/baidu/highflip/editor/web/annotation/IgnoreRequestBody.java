@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * ignore request body when print access log.
- * use in {@link com.baidu.dragonshare.web.aop.AccessLogAop}
+ * use in {@link com.baidu.highflip.editor.web.aop.AccessLogAop}
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
