@@ -3,18 +3,18 @@ package com.baidu.highflip.editor.model;
 /**
  * customized response of controller
  */
-public class Result {
+public class Result<T> {
     /**
      * similar to http status code
      */
     private int code;
     private String message;
-    private Object data;
+    private T data;
 
     public Result() {
     }
 
-    public Result(int code, String message, Object data) {
+    public Result(int code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -26,8 +26,8 @@ public class Result {
         return result;
     }
 
-    public static Result success(Object data) {
-        Result result = new Result();
+    public static <T> Result<T> success(T data) {
+        Result result = new Result<T>();
         result.code = 200;
         result.data = data;
         return result;
@@ -48,7 +48,7 @@ public class Result {
         return message;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
@@ -60,7 +60,7 @@ public class Result {
         this.message = message;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

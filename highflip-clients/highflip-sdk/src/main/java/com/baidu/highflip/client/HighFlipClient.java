@@ -42,6 +42,12 @@ public class HighFlipClient implements AutoCloseable {
         this.blockingStub = null;
     }
 
+    public static HighFlipClient newHighFlipClient(String target) {
+        HighFlipClient highFlipClient = new HighFlipClient();
+        highFlipClient.connect(target);
+        return highFlipClient;
+    }
+
     public void connect(String target) {
         close();
 
