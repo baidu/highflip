@@ -84,6 +84,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getConfig(Highflip.ConfigId request,
                           StreamObserver<Highflip.ConfigGetResponse> responseObserver) {
 
@@ -105,6 +106,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void setConfig(Highflip.ConfigSetRequest request,
                           StreamObserver<Highflip.Void> responseObserver) {
 
@@ -113,6 +115,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
         returnVoid(responseObserver);
     }
 
+    @Override
     public void deleteConfig(Highflip.ConfigId request,
                              StreamObserver<Highflip.Void> responseObserver) {
 
@@ -129,6 +132,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getPlatform(Highflip.Void request,
                             StreamObserver<Highflip.PlatformGetResponse> responseObserver) {
 
@@ -147,6 +151,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void matchPlatform(Highflip.PlatformMatchRequest request,
                               StreamObserver<Highflip.PlatformMatchResponse> responseObserver) {
 
@@ -189,6 +194,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getJob(Highflip.JobId request,
                        StreamObserver<Highflip.JobGetResponse> responseObserver) {
         Job job = getEngine().getJob(request.getJobId());
@@ -210,6 +216,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void checkJob(Highflip.JobId request,
                          StreamObserver<Highflip.JobCheckResponse> responseObserver) {
 
@@ -227,6 +234,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void deleteJob(Highflip.JobId request,
                           StreamObserver<Highflip.Void> responseObserver) {
 
@@ -239,6 +247,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void listJob(Highflip.JobListRequest request,
                         StreamObserver<Highflip.JobListResponse> responseObserver) {
 
@@ -259,6 +268,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void controlJob(Highflip.JobControlRequest request,
                            StreamObserver<Highflip.Void> responseObserver) {
 
@@ -270,6 +280,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
         returnVoid(responseObserver);
     }
 
+    @Override
     public void getJobLog(Highflip.JobLogRequest request,
                           StreamObserver<Highflip.JobLogResponse> responseObserver) {
 
@@ -282,6 +293,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void listTask(Highflip.TaskListRequest request,
                          StreamObserver<Highflip.TaskListResponse> responseObserver) {
 
@@ -300,6 +312,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getTask(Highflip.TaskId request,
                         StreamObserver<Highflip.TaskGetResponse> responseObserver) {
 
@@ -320,6 +333,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void checkTask(Highflip.TaskId request,
                           StreamObserver<Highflip.TaskCheckResponse> responseObserver) {
 
@@ -340,6 +354,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void controlTask(Highflip.TaskControlRequest request,
                             StreamObserver<Highflip.Void> responseObserver) {
 
@@ -355,6 +370,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getTaskLog(Highflip.TaskLogRequest request,
                            StreamObserver<Highflip.TaskLogResponse> responseObserver) {
 
@@ -368,6 +384,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void listData(Highflip.DataListRequest request,
                          StreamObserver<Highflip.DataListResponse> responseObserver) {
 
@@ -383,6 +400,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getData(Highflip.DataId request,
                         StreamObserver<Highflip.DataGetResponse> responseObserver) {
 
@@ -413,6 +431,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param responseObserver
      * @return
      */
+    @Override
     public StreamObserver<Highflip.DataPushRequest> pushData(
             StreamObserver<Highflip.DataId> responseObserver) {
 
@@ -496,6 +515,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void pullData(Highflip.DataPullRequest request,
                          StreamObserver<Highflip.DataPullResponse> responseObserver) {
 
@@ -537,6 +557,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void deleteData(Highflip.DataId request,
                            StreamObserver<Highflip.Void> responseObserver) {
 
@@ -552,6 +573,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void listOperator(Highflip.OperatorListRequest request,
                              StreamObserver<Highflip.OperatorListResponse> responseObserver) {
         Iterator<Highflip.OperatorListResponse> response = Streams
@@ -569,6 +591,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getOperator(Highflip.OperatorId request,
                             StreamObserver<Highflip.OperatorGetResponse> responseObserver) {
 
@@ -594,6 +617,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void createPartner(Highflip.PartnerCreateRequest request,
                               StreamObserver<Highflip.PartnerId> responseObserver) {
 
@@ -614,6 +638,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void getPartner(Highflip.PartnerId request,
                            StreamObserver<Highflip.PartnerGetResponse> responseObserver) {
 
@@ -635,6 +660,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void listPartner(Highflip.PartnerListRequest request,
                             StreamObserver<Highflip.PartnerListResponse> responseObserver) {
 
@@ -653,6 +679,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
      * @param request
      * @param responseObserver
      */
+    @Override
     public void controlPartner(Highflip.PartnerControlRequest request,
                                StreamObserver<Highflip.Void> responseObserver) {
 
