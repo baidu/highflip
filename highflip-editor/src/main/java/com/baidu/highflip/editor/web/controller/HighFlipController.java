@@ -26,6 +26,8 @@ import highflip.v1.Highflip;
 @RequestMapping(value = "highflip")
 public class HighFlipController {
 
+    private static String TOKEN = "Token";
+
     @Autowired
     HighFlipEditorService highFlipEditorService;
 
@@ -82,7 +84,7 @@ public class HighFlipController {
     @RequestMapping(value = "job", method = RequestMethod.POST)
     public Result saveJob(HttpServletRequest request,
                           @RequestBody SaveJobRequest saveJobRequest) {
-        String token = request.getHeader("TOKEN");
+        String token = request.getHeader(TOKEN);
         if (StringUtils.isBlank(token)) {
             return Result.failure(400, "The required header TOKEN has not found");
         }
@@ -92,7 +94,7 @@ public class HighFlipController {
 
     @RequestMapping(value = "job", method = RequestMethod.GET)
     public Result getJob(HttpServletRequest request) {
-        String token = request.getHeader("TOKEN");
+        String token = request.getHeader(TOKEN);
         if (StringUtils.isBlank(token)) {
             return Result.failure(400, "The required header TOKEN has not found");
         }
