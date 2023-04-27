@@ -2,12 +2,14 @@ package com.baidu.highflip.editor.web.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.baidu.highflip.client.HighFlipClient;
+import com.baidu.highflip.editor.model.HighFlipEditorException;
 import com.baidu.highflip.editor.utils.StringUtils;
 
 import highflip.v1.Highflip;
@@ -18,8 +20,10 @@ public class HighFlipEditorService {
     private static final Logger LOG =
             LoggerFactory.getLogger(HighFlipEditorService.class);
 
-    public HighFlipEditorService() {
+    private ConcurrentHashMap<String, String> jobs;
 
+    public HighFlipEditorService() {
+        jobs = new ConcurrentHashMap<>();
     }
 
     public void login(String username, String password,
@@ -89,6 +93,21 @@ public class HighFlipEditorService {
             }
         }
         return dataList;
+    }
+
+    // save job
+    public void saveJob(String key, String jsonOfJob) {
+        if (jobs == null) {
+            jobs = new ConcurrentHashMap<>();
+        }
+        jobs.put(key, jsonOfJob);
+    }
+
+    public String getJob(String key){
+        if(StringUtils.isBlank(key)){
+            throw new HighFlipEditorException("Key is blank");
+        }
+        return jobs.get(key);
     }
 
 }
