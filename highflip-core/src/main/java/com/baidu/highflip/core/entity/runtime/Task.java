@@ -31,7 +31,7 @@ public class Task {
 
     @Id
     @Column(name = "task_id", length = 36)
-    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GenericGenerator(name = "id_gen", strategy = "com.baidu.highflip.core.utils.CustomUuidGenerator")
     @GeneratedValue(generator = "id_gen")
     String taskid;
 

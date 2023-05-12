@@ -584,4 +584,11 @@ public class HighFlipClient implements AutoCloseable {
 
         return response.getPartnerId();
     }
+
+    public Highflip.GetServiceConfigResponse getServiceConfig() {
+        final Highflip.GetServiceConfigResponse serviceConfig =
+                getBlockingStub().getServiceConfig(
+                        Highflip.Void.getDefaultInstance());
+        return serviceConfig;
+    }
 }

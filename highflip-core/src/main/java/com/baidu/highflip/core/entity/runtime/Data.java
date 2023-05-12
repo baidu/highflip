@@ -32,8 +32,8 @@ import java.util.Map;
 public class Data {
 
     @Id
-    @Column(name = "data_id", length = 36)
-    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @Column(name = "data_id", length = 72)
+    @GenericGenerator(name = "id_gen", strategy = "com.baidu.highflip.core.utils.CustomUuidGenerator")
     @GeneratedValue(generator = "id_gen")
     String dataId;
 

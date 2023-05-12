@@ -15,10 +15,13 @@ public class NodeOutputRef {
 
     String description;
 
+    String value;
+
     public static HighflipMeta.NodeOutputProto toProto(NodeOutputRef ref) {
         HighflipMeta.NodeOutputProto.Builder builder = HighflipMeta.NodeOutputProto
                 .newBuilder()
-                .setName(ref.getName());
+                .setName(ref.getName())
+                .setValue(ref.getValue());
 
         ProtoUtils.setOptional(builder, "Description", ProtoUtils.ofString(ref.getDescription()));
         return builder.build();
@@ -29,6 +32,7 @@ public class NodeOutputRef {
                 .builder()
                 .setName(proto.getName())
                 .setDescription(proto.getDescription())
+                .setValue(proto.getValue())
                 .build();
     }
 }

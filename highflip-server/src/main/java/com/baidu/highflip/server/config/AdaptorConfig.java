@@ -1,8 +1,11 @@
 package com.baidu.highflip.server.config;
 
+import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.server.adaptor.DefaultAdaptor;
 import com.baidu.highflip.server.adaptor.loader.AdaptorLoader;
+import com.baidu.highflip.server.engine.component.HighFlipRuntime;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +25,9 @@ public class AdaptorConfig {
 
     @Autowired
     InstanceRegister register;
+
+    @Autowired
+    HighFlipRuntime highFlipRuntime;
 
     AdaptorLoader loader = null;
 
@@ -73,5 +79,6 @@ public class AdaptorConfig {
     void initialDefaultAdaptor() {
         DefaultAdaptor adaptor = new DefaultAdaptor();
         adaptor.setup(register);
+        register.register(InstanceNameList.HIGHFLIP_RUNTIME, highFlipRuntime);
     }
 }
