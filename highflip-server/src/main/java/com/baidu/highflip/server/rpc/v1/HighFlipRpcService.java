@@ -1,5 +1,6 @@
 package com.baidu.highflip.server.rpc.v1;
 
+import com.baidu.highflip.core.adaptor.ServiceAdaptor;
 import com.baidu.highflip.core.entity.dag.Graph;
 import com.baidu.highflip.core.entity.runtime.Config;
 import com.baidu.highflip.core.entity.runtime.Data;
@@ -221,12 +222,17 @@ public class HighFlipRpcService extends HighFlipImplBase {
                          StreamObserver<Highflip.JobCheckResponse> responseObserver) {
 
         Job job = getEngine().getJob(request.getJobId());
+        com.baidu.highflip.core.entity.runtime.basic.Status jobStatus =
+                getEngine().getContext()
+                           .getJobAdaptor()
+                           .getJobStatus(job);
 
         Highflip.JobCheckResponse response = Highflip.JobCheckResponse
                 .newBuilder()
                 .setJobId(job.getJobId())
+                .setStatus(Highflip.JobCheckResponse.JobStatus.valueOf(
+                        jobStatus.toString().toUpperCase()))
                 .build();
-
         returnOne(responseObserver, response);
     }
 
@@ -685,4 +691,17 @@ public class HighFlipRpcService extends HighFlipImplBase {
 
     }
 
+    @Override
+    public void getServiceConfig(Highflip.Void request,
+                                 StreamObserver<Highflip.GetServiceConfigResponse> responseObserver) {
+        final ServiceAdaptor serviceAdaptor =
+                getEngine().getContext().getServiceAdaptor();
+        Highflip.GetServiceConfigResponse response =
+                Highflip.GetServiceConfigResponse.newBuilder()
+                                                 .setUrl(serviceAdaptor.getUrl())
+                                                 .setPartyId(serviceAdaptor.getPartyId())
+                                                 .setRole(serviceAdaptor.getRole())
+                                                 .build();
+        returnOne(responseObserver, response);
+    }
 }

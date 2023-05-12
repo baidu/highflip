@@ -6,6 +6,7 @@ import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.server.adaptor.impl.ConfigurableOperatorAdaptor;
 import com.baidu.highflip.server.adaptor.impl.ConfigurablePartnerAdaptor;
 import com.baidu.highflip.server.adaptor.impl.ConfigurablePlatformAdaptor;
+import com.baidu.highflip.server.adaptor.impl.ConfigurableServiceAdaptor;
 import com.baidu.highflip.server.adaptor.impl.DumbJobAdaptor;
 import com.baidu.highflip.server.adaptor.impl.DumbTaskAdaptor;
 import com.baidu.highflip.server.adaptor.impl.FixedSingleDataAdaptor;
@@ -22,6 +23,11 @@ public class DefaultAdaptor implements HighFlipAdaptor {
 
     public static final String PLATFORM_PROPERTIES = "/adaptor/highflip.platform.properties";
 
+    /**
+     * 用于配置本侧服务的配置信息
+     */
+    public static final String SERVICE_PROPERTIES = "/adaptor/highflip.service.properties";
+
     @Override
     public void setup(InstanceRegister register) {
         register.register(InstanceNameList.HIGHFLIP_ADAPTOR_JOB, new DumbJobAdaptor());
@@ -37,6 +43,9 @@ public class DefaultAdaptor implements HighFlipAdaptor {
 
         register.register(InstanceNameList.HIGHFLIP_ADAPTOR_PLATFORM,
                 new ConfigurablePlatformAdaptor(HighFlipUtils.getProperty(PLATFORM_PROPERTIES)));
+
+        register.register(InstanceNameList.HIGHFLIP_ADAPTOR_SERVICE,
+                          new ConfigurableServiceAdaptor(HighFlipUtils.getProperty(SERVICE_PROPERTIES)));
     }
 
     @Override

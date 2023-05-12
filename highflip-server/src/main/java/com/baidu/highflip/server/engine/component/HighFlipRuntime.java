@@ -69,4 +69,10 @@ public class HighFlipRuntime implements com.baidu.highflip.core.engine.HighFlipR
     public Operator getOperator(String operatorId) {
         return null;
     }
+
+    @Override
+    public Data registerData(Data data) {
+        Data dataSaved = getContext().getDataRepository().save(data);
+        return dataSaved;
+    }
 }

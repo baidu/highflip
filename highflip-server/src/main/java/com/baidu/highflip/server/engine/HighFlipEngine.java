@@ -290,7 +290,6 @@ public class HighFlipEngine {
 
         job = getContext().getJobAdaptor()
                 .createJob(job);
-
         job = getContext().getJobRepository()
                 .save(job);
 
@@ -316,7 +315,6 @@ public class HighFlipEngine {
         }
         return job;
     }
-
 
     // @Scheduled
     protected void updateJob() {

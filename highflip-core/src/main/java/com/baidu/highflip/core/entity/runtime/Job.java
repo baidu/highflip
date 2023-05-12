@@ -37,7 +37,7 @@ public class Job {
 
     @Id
     @Column(name = "job_id", length = 36)
-    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GenericGenerator(name = "id_gen", strategy = "com.baidu.highflip.core.utils.CustomUuidGenerator")
     @GeneratedValue(generator = "id_gen")
     String jobId;
 
@@ -59,7 +59,7 @@ public class Job {
     DateTime finishTime;
 
     @Type(type = "json")
-    @Column(name = "graph")
+    @Column(name = "graph", length = 10240)
     Graph graph;
 
     @Column(name = "status")

@@ -3,6 +3,7 @@ package com.baidu.highflip.core.entity.dag;
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
 import com.baidu.highflip.core.entity.dag.common.NamedAttributeObject;
 import com.baidu.highflip.core.utils.ProtoUtils;
+
 import highflip.HighflipMeta;
 import lombok.Data;
 

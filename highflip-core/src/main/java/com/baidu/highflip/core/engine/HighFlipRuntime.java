@@ -26,4 +26,6 @@ public interface HighFlipRuntime {
     User getUser(String userId);
 
     Operator getOperator(String operatorId);
+
+    Data registerData(Data data);
 }

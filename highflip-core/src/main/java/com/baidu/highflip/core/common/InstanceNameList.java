@@ -25,4 +25,7 @@ public class InstanceNameList {
     public static final String HIGHFLIP_ADAPTOR_PARTNER = "highflip.adaptor.partner";
 
     public static final String HIGHFLIP_ADAPTOR_USER = "highflip.adaptor.user";
+
+    public static final String HIGHFLIP_ADAPTOR_SERVICE = "highflip.adaptor.service";
+
 }

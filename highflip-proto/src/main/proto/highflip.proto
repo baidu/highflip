@@ -559,6 +559,15 @@ message ConfigListResponse{
     string key = 1;
 }
 
+message GetServiceConfigResponse{
+
+    string url = 1;
+
+    string party_id = 2;
+
+    string role = 3;
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // SERVICE
@@ -608,4 +617,7 @@ service HighFlip{
     rpc getPartner(PartnerId) returns(PartnerGetResponse);
     rpc listPartner(PartnerListRequest) returns(stream PartnerListResponse);
     rpc controlPartner(PartnerControlRequest) returns(Void);
+
+    // adaptor service config
+    rpc getServiceConfig(Void) returns(GetServiceConfigResponse);
 }
