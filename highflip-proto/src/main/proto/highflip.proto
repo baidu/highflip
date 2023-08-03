@@ -230,6 +230,8 @@ message TaskGetResponse{
     repeated string input_tasks = 9;
 
     repeated string output_tasks = 10;
+
+    repeated string output_data_ids = 11;
 }
 
 
@@ -617,7 +619,4 @@ service HighFlip{
     rpc getPartner(PartnerId) returns(PartnerGetResponse);
     rpc listPartner(PartnerListRequest) returns(stream PartnerListResponse);
     rpc controlPartner(PartnerControlRequest) returns(Void);
-
-    // adaptor service config
-    rpc getServiceConfig(Void) returns(GetServiceConfigResponse);
 }

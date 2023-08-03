@@ -6,6 +6,7 @@ import com.baidu.highflip.core.entity.runtime.Operator;
 import com.baidu.highflip.core.entity.runtime.Partner;
 import com.baidu.highflip.core.entity.runtime.Task;
 import com.baidu.highflip.core.entity.runtime.User;
+import com.baidu.highflip.core.entity.runtime.basic.Status;
 
 public interface HighFlipRuntime {
 
@@ -28,4 +29,8 @@ public interface HighFlipRuntime {
     Operator getOperator(String operatorId);
 
     Data registerData(Data data);
+
+    Iterable<Task> listTask(String jobId);
+
+    void updateTask(Task task);
 }

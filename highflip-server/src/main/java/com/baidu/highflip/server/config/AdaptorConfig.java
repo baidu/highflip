@@ -1,6 +1,5 @@
 package com.baidu.highflip.server.config;
 
-import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.server.adaptor.DefaultAdaptor;
 import com.baidu.highflip.server.adaptor.loader.AdaptorLoader;
@@ -77,8 +76,7 @@ public class AdaptorConfig {
     }
 
     void initialDefaultAdaptor() {
-        DefaultAdaptor adaptor = new DefaultAdaptor();
+        DefaultAdaptor adaptor = new DefaultAdaptor(highFlipRuntime);
         adaptor.setup(register);
-        register.register(InstanceNameList.HIGHFLIP_RUNTIME, highFlipRuntime);
     }
 }

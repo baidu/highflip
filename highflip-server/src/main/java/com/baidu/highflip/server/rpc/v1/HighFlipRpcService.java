@@ -226,6 +226,8 @@ public class HighFlipRpcService extends HighFlipImplBase {
                 getEngine().getContext()
                            .getJobAdaptor()
                            .getJobStatus(job);
+        // check and update job
+        getEngine().updateJob();
 
         Highflip.JobCheckResponse response = Highflip.JobCheckResponse
                 .newBuilder()
@@ -302,9 +304,11 @@ public class HighFlipRpcService extends HighFlipImplBase {
     @Override
     public void listTask(Highflip.TaskListRequest request,
                          StreamObserver<Highflip.TaskListResponse> responseObserver) {
-
+        final Job job = getEngine().getJob(request.getJobId());
+        log.info("job id: {}, job binging id: {}", job.getJobId(),
+                 job.getBingingId());
         Iterator<Highflip.TaskListResponse> response = Streams
-                .stream(getEngine().listTask(request.getJobId()))
+                .stream(getEngine().listTask(job.getBingingId()))
                 .map(t -> Highflip.TaskListResponse
                         .newBuilder()
                         .setTaskId(t.getTaskid())
@@ -328,8 +332,10 @@ public class HighFlipRpcService extends HighFlipImplBase {
                 .newBuilder()
                 .setTaskId(task.getTaskid())
                 .setJobId(task.getJobid())
+                .setNodeName(task.getNodeName())
                 .setCreateTime(task.getCreateTime().toString())
                 .setUpdateTime(task.getUpdateTime().toString())
+                .addAllOutputDataIds(task.getOutputData())
                 .build();
 
         returnOne(responseObserver, response);
@@ -689,19 +695,5 @@ public class HighFlipRpcService extends HighFlipImplBase {
     public void controlPartner(Highflip.PartnerControlRequest request,
                                StreamObserver<Highflip.Void> responseObserver) {
 
-    }
-
-    @Override
-    public void getServiceConfig(Highflip.Void request,
-                                 StreamObserver<Highflip.GetServiceConfigResponse> responseObserver) {
-        final ServiceAdaptor serviceAdaptor =
-                getEngine().getContext().getServiceAdaptor();
-        Highflip.GetServiceConfigResponse response =
-                Highflip.GetServiceConfigResponse.newBuilder()
-                                                 .setUrl(serviceAdaptor.getUrl())
-                                                 .setPartyId(serviceAdaptor.getPartyId())
-                                                 .setRole(serviceAdaptor.getRole())
-                                                 .build();
-        returnOne(responseObserver, response);
     }
 }

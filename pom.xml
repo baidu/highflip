@@ -29,6 +29,12 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <grpc.version>1.49.0</grpc.version>
+        <spring.boot.version>2.7.3</spring.boot.version>
+        <lombok.version>1.18.22</lombok.version>
+        <testng.version>6.11</testng.version>
+        <jmockit.version>1.43</jmockit.version>
+        <guava.version>31.1-jre</guava.version>
+        <spring.security.version>6.0.2</spring.security.version>
 
         <!-- maven plugin version properties -->
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
@@ -48,12 +54,11 @@
 
     <developers>
         <developer>
-            <id>dev</id>
-            <name>chenzhiyu</name>
-            <email>work123@Baidu</email>
-            <url>https://oss.sonatype.org/</url>
-            <organization>The HighFlip Project</organization>
-            <organizationUrl>https://oss.sonatype.org/</organizationUrl>
+            <name>Baidu dianshi</name>
+            <email>dianshi-help@baidu.com</email>
+            <url>https://dianshi.baidu.com/</url>
+            <organization>dianshi</organization>
+            <organizationUrl>https://dianshi.baidu.com/</organizationUrl>
         </developer>
     </developers>
 
