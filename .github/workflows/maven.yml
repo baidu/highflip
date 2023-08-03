@@ -37,17 +37,17 @@ jobs:
         gpg-private-key: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY }}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
     - name: Publish to the Maven Central Repository
-        run: |
-          mvn clean \
-            --no-transfer-progress \
-            --batch-mode \
-            -Prelease \
-            -DskipTests \
-            deploy --file pom.xml
-        env:
-          MAVEN_USERNAME: ${{ secrets.HIGHFLIP_MAVEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.HIGHFLIP_MAVEN_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY_PASSWORD }}
+      run: |
+        mvn clean \
+          --no-transfer-progress \
+          --batch-mode \
+          -Prelease \
+          -DskipTests \
+          deploy --file pom.xml
+      env:
+        MAVEN_USERNAME: ${{ secrets.HIGHFLIP_MAVEN_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.HIGHFLIP_MAVEN_TOKEN }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY_PASSWORD }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
