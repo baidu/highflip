@@ -35,6 +35,10 @@ public class Task {
     @GeneratedValue(generator = "id_gen")
     String taskid;
 
+    /**
+     * job id is not the job id in highflip but the job id in corresponding
+     * federated learning service
+     */
     @Column(name = "job_id")
     String jobid;
 
@@ -81,4 +85,9 @@ public class Task {
     @Type(type = "json")
     @Column(name = "binding")
     Map<String, Object> binding;
+
+    @Type(type = "json")
+    @Column(name = "output_data")
+    List<String> outputData;
+
 }

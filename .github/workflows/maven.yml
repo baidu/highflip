@@ -13,6 +13,11 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'The branch to build'
+        required: true
 
 jobs:
   build:
@@ -29,16 +34,8 @@ jobs:
         cache: maven
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
-        gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+        gpg-private-key: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY }}
         gpg-passphrase: MAVEN_GPG_PASSPHRASE
-    - name: Build with Maven
-      run: mvn -B -Prelease -DskipTests package --file pom.xml
-    - name: Create release
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          artifacts: "${{ github.workspace }}/target/*.jar"
-          token: ${{ secrets.GITHUB_TOKEN }}
     - name: Publish to the Maven Central Repository
         run: |
           mvn clean \
@@ -46,11 +43,11 @@ jobs:
             --batch-mode \
             -Prelease \
             -DskipTests \
-            deploy
+            deploy --file pom.xml
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          MAVEN_USERNAME: ${{ secrets.HIGHFLIP_MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.HIGHFLIP_MAVEN_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY_PASSWORD }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph

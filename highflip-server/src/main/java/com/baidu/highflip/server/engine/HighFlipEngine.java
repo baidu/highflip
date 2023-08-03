@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,7 @@ public class HighFlipEngine {
     @Autowired
     PlatformTransactionManager transactionManager;
 
-    ConcurrentMap<String, Job> activeJobs;
+    ConcurrentMap<String, Job> activeJobs = new ConcurrentHashMap<>();
 
     @Autowired
     AsyncTaskExecutor executor;
@@ -313,11 +314,12 @@ public class HighFlipEngine {
             getContext().getTaskRepository()
                     .saveAll(news);
         }
+        activeJobs.putIfAbsent(job.getJobId(), job);
         return job;
     }
 
     // @Scheduled
-    protected void updateJob() {
+    public void updateJob() {
 
         JobAdaptor adaptor = getContext().getJobAdaptor();
 
@@ -326,6 +328,10 @@ public class HighFlipEngine {
             if (status != job.getStatus()) {
                 job.setStatus(status);
                 getContext().getJobRepository().save(job);
+                getContext().getJobAdaptor().updateJob(job);
+            }
+            if (status == Status.SUCCEEDED || status == Status.FAILED) {
+                activeJobs.remove(job.getJobId());
             }
         });
     }
@@ -411,14 +417,15 @@ public class HighFlipEngine {
     }
 
     // @Scheduled
-    private void updateTask() {
-
+    public void updateTask(Task task) {
+        getContext().getTaskRepository().save(task);
     }
 
     public Iterable<Task> listTask(String jobid) {
-
-        return getContext().getTaskRepository()
-                .findAllByJobid(jobid);
+        final List<Task> tasks = getContext().getTaskRepository()
+                                                  .findAllByJobid(jobid);
+        log.info("tasks size: {}", tasks.size());
+        return tasks;
     }
 
     @Cacheable(value = "tasks")
