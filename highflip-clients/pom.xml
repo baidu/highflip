@@ -4,13 +4,13 @@
 
     <parent>
         <artifactId>highflip</artifactId>
-        <groupId>com.baidu</groupId>
+        <groupId>com.baidu.highflip</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
 
-    <groupId>com.baidu</groupId>
+    <groupId>com.baidu.highflip</groupId>
     <artifactId>highflip-clients</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
