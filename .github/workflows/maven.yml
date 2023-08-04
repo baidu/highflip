@@ -51,6 +51,8 @@ jobs:
 
       - name: Publish to the Maven Central Repository
         run: |
+          echo "this is a test: "
+          echo ${{ secrets.HIGHFLIP_MAVEN_USERNAME }} \
           mvn clean --no-transfer-progress --batch-mode -Prelease -DskipTests \
             deploy --file pom.xml -pl highflip-proto,highflip-core,highflip-clients/highflip-sdk -am
         env:
