@@ -25,4 +25,16 @@ public class AdaptorPropsList {
 
     public static final String PROPS_HIGHFLIP_ADAPTOR_PLATFORM_VERSION_DEFAULT = "0.0.0";
 
+    public static final String PROPS_HIGHFLIP_ADAPTOR_SERVICE_URL = "highflip.adaptor.service.url";
+
+    public static final String PROPS_HIGHFLIP_ADAPTOR_SERVICE_URL_DEFAULT = "http://127.0.0.1:9380";
+
+    public static final String PROPS_HIGHFLIP_ADAPTOR_SERVICE_PARTY_ID = "highflip.adaptor.service.party.id";
+
+    public static final String PROPS_HIGHFLIP_ADAPTOR_SERVICE_PARTY_ID_DEFAULT = "9999";
+
+    public static final String PROPS_HIGHFLIP_ADAPTOR_SERVICE_ROLE = "highflip.adaptor.service.role";
+
+    public static final String PROPS_HIGHFLIP_ADAPTOR_SERVICE_ROLE_DEFAULT = "guest";
+
 }

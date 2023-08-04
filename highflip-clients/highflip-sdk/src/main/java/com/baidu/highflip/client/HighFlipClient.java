@@ -42,6 +42,12 @@ public class HighFlipClient implements AutoCloseable {
         this.blockingStub = null;
     }
 
+    public static HighFlipClient newHighFlipClient(String target) {
+        HighFlipClient highFlipClient = new HighFlipClient();
+        highFlipClient.connect(target);
+        return highFlipClient;
+    }
+
     public void connect(String target) {
         close();
 
@@ -283,13 +289,17 @@ public class HighFlipClient implements AutoCloseable {
 
     /**
      *
+     * @param jobId  job id in highflip
      * @param offset
      * @param limit
      * @return
      */
-    public Iterable<String> listTasks(int offset, int limit){
+    public Iterable<String> listTasks(String jobId, int offset, int limit) {
         Highflip.TaskListRequest request = Highflip.TaskListRequest
                 .newBuilder()
+                .setJobId(jobId)
+                .setOffset(offset)
+                .setLimit(limit)
                 .build();
 
         Iterator<Highflip.TaskListResponse> response = getBlockingStub()

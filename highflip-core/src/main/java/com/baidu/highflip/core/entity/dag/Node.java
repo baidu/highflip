@@ -6,15 +6,18 @@ import com.baidu.highflip.core.entity.dag.common.NamedAttributeObject;
 import com.baidu.highflip.core.entity.dag.common.NodeInputRef;
 import com.baidu.highflip.core.entity.dag.common.NodeOutputRef;
 import com.baidu.highflip.core.utils.ProtoUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import highflip.HighflipMeta;
 import lombok.Data;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.springframework.data.annotation.Transient;
 
 @Data
 public class Node extends NamedAttributeObject implements Serializable {
@@ -25,7 +28,7 @@ public class Node extends NamedAttributeObject implements Serializable {
 
     String description;
 
-    @Transient
+    @JsonIgnore
     Graph graph;
 
     Category category;
@@ -108,6 +111,7 @@ public class Node extends NamedAttributeObject implements Serializable {
                 getInputs().get(name).getFromNode());
     }
 
+    @JsonIgnore
     public List<Node> getInputNodes() {
         return getInputs()
                 .values()

@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.baidu</groupId>
+    <groupId>com.baidu.highflip</groupId>
     <artifactId>highflip-core</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
@@ -11,7 +11,7 @@
     <url>http://maven.apache.org</url>
 
     <parent>
-        <groupId>com.baidu</groupId>
+        <groupId>com.baidu.highflip</groupId>
         <artifactId>highflip</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.baidu</groupId>
+            <groupId>com.baidu.highflip</groupId>
             <artifactId>highflip-proto</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
