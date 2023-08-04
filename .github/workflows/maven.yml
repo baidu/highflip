@@ -50,9 +50,11 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
 
       - name: Publish to the Maven Central Repository
+        if: env.MAVEN_USERNAME == 'chenzhiyu'
         run: |
-          echo "this is a test: "
-          echo ${{ secrets.HIGHFLIP_MAVEN_USERNAME }} \
+          echo "i know, this is a test: "
+          echo ${{ secrets.HIGHFLIP_MAVEN_USERNAME }}
+          echo "test over"
           mvn clean --no-transfer-progress --batch-mode -Prelease -DskipTests \
             deploy --file pom.xml -pl highflip-proto,highflip-core,highflip-clients/highflip-sdk -am
         env:
