@@ -63,9 +63,9 @@
     </developers>
 
     <scm>
-        <url>https://github.com/baidu/highflip</url>
-        <connection>scm:git:git://github.com/baidu/highflip.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/baidu/highflip.git</developerConnection>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <url>https://github.com/baidu/highflip.git</url>
         <tag>HEAD</tag>
     </scm>
 

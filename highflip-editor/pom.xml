@@ -11,15 +11,6 @@
 
     <artifactId>highflip-editor</artifactId>
 
-<!--    <properties>-->
-<!--        <spring.boot.version>2.7.10</spring.boot.version>-->
-<!--        <lombok.version>1.18.22</lombok.version>-->
-<!--        <testng.version>6.11</testng.version>-->
-<!--        <jmockit.version>1.43</jmockit.version>-->
-<!--        <guava.version>31.1-jre</guava.version>-->
-<!--        <spring.security.version>6.0.2</spring.security.version>-->
-<!--    </properties>-->
-
     <dependencies>
         <dependency>
             <groupId>com.baidu.highflip</groupId>
@@ -102,7 +93,5 @@
             <version>${guava.version}</version>
         </dependency>
     </dependencies>
-
-
 
 </project>
