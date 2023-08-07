@@ -6,12 +6,11 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Deploy Java jar with maven
 
 on:
-  push:
-    branches: [ "master" ]
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build:
