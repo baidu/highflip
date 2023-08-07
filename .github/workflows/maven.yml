@@ -14,10 +14,6 @@ on:
   pull_request:
     branches: [ "master" ]
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'The branch to build'
-        required: true
 
 jobs:
   build:
@@ -25,25 +21,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: maven
-        server-username: MAVEN_USERNAME
-        server-password: MAVEN_PASSWORD
-        gpg-private-key: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY }}
-        gpg-passphrase: MAVEN_GPG_PASSPHRASE
-    - name: Publish to the Maven Central Repository
-        run: |
-          mvn clean \
-            --no-transfer-progress \
-            --batch-mode \
-            -Prelease \
-            -DskipTests \
-            deploy --file pom.xml
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Build with Maven
+        run: mvn -B package -DskipTests -Prelease --file pom.xml
+
+      - name: Set up Apache Maven Central
+        uses: actions/setup-java@v3
+        with: # running setup-java again overwrites the settings.xml
+          java-version: '11'
+          distribution: 'temurin'
+          server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: MAVEN_USERNAME # env variable for username in deploy
+          server-password: MAVEN_PASSWORD # env variable for token in deploy
+          gpg-private-key: ${{ secrets.HIGHFLIP_GPG_SECRET_KEY }} # Value of the GPG private key to import
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+
+      - name: Publish to the Maven Central Repository
+        run:
+          mvn clean --no-transfer-progress --batch-mode -Prelease -DskipTests deploy --file pom.xml -pl highflip-proto,highflip-core,highflip-clients/highflip-sdk -am
         env:
           MAVEN_USERNAME: ${{ secrets.HIGHFLIP_MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.HIGHFLIP_MAVEN_TOKEN }}
