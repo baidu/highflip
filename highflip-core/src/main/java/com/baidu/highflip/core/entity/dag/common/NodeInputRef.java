@@ -19,12 +19,15 @@ public class NodeInputRef {
 
     String fromOutput;
 
+    String value;
+
     public static HighflipMeta.NodeInputProto toProto(com.baidu.highflip.core.entity.dag.common.NodeInputRef ref) {
         HighflipMeta.NodeInputProto.Builder builder = HighflipMeta.NodeInputProto
                 .newBuilder()
                 .setName(ref.getName())
                 .setFromNode(ref.getFromNode())
-                .setFromOutput(ref.getFromOutput());
+                .setFromOutput(ref.getFromOutput())
+                .setValue(ref.getValue());
 
         ProtoUtils.setOptional(builder, "Description", ProtoUtils.ofString(ref.getDescription()));
         return builder.build();
@@ -37,6 +40,7 @@ public class NodeInputRef {
                 .setDescription(proto.getDescription())
                 .setFromNode(proto.getFromNode())
                 .setFromOutput(proto.getFromOutput())
+                .setValue(proto.getValue())
                 .build();
     }
 }

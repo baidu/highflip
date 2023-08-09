@@ -2,10 +2,12 @@ package com.baidu.highflip.server.adaptor;
 
 import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
+import com.baidu.highflip.core.engine.HighFlipRuntime;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import com.baidu.highflip.server.adaptor.impl.ConfigurableOperatorAdaptor;
 import com.baidu.highflip.server.adaptor.impl.ConfigurablePartnerAdaptor;
 import com.baidu.highflip.server.adaptor.impl.ConfigurablePlatformAdaptor;
+import com.baidu.highflip.server.adaptor.impl.ConfigurableServiceAdaptor;
 import com.baidu.highflip.server.adaptor.impl.DumbJobAdaptor;
 import com.baidu.highflip.server.adaptor.impl.DumbTaskAdaptor;
 import com.baidu.highflip.server.adaptor.impl.FixedSingleDataAdaptor;
@@ -22,6 +24,17 @@ public class DefaultAdaptor implements HighFlipAdaptor {
 
     public static final String PLATFORM_PROPERTIES = "/adaptor/highflip.platform.properties";
 
+    /**
+     * 用于配置本侧服务的配置信息
+     */
+    public static final String SERVICE_PROPERTIES = "/adaptor/highflip.service.properties";
+
+    private HighFlipRuntime  highFlipRuntime;
+
+    public DefaultAdaptor(HighFlipRuntime  highFlipRuntime) {
+        this.highFlipRuntime = highFlipRuntime;
+    }
+
     @Override
     public void setup(InstanceRegister register) {
         register.register(InstanceNameList.HIGHFLIP_ADAPTOR_JOB, new DumbJobAdaptor());
@@ -37,6 +50,20 @@ public class DefaultAdaptor implements HighFlipAdaptor {
 
         register.register(InstanceNameList.HIGHFLIP_ADAPTOR_PLATFORM,
                 new ConfigurablePlatformAdaptor(HighFlipUtils.getProperty(PLATFORM_PROPERTIES)));
+
+        final ConfigurableServiceAdaptor configurableServiceAdaptor =
+                new ConfigurableServiceAdaptor(
+                        HighFlipUtils.getProperty(SERVICE_PROPERTIES));
+        register.register(InstanceNameList.HIGHFLIP_ADAPTOR_SERVICE, configurableServiceAdaptor);
+
+        highFlipRuntime.getConfiguration().setString("highflip.adaptor.service.url",
+                                                     configurableServiceAdaptor.getUrl());
+        highFlipRuntime.getConfiguration().setString("highflip.adaptor.service.party.id",
+                                                     configurableServiceAdaptor.getPartyId());
+        highFlipRuntime.getConfiguration().setString("highflip.adaptor.service.role",
+                                                     configurableServiceAdaptor.getRole());
+
+        register.register(InstanceNameList.HIGHFLIP_RUNTIME, highFlipRuntime);
     }
 
     @Override

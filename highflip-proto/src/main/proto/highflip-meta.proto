@@ -65,6 +65,8 @@ message NodeInputProto{
     string from_node = 4;
 
     string from_output = 5;
+
+    string value = 6;
 }
 
 message NodeOutputProto{
@@ -74,6 +76,8 @@ message NodeOutputProto{
     string name = 2;
 
     optional string description = 3;
+
+    string value = 4;
 }
 
 message NodeProto{

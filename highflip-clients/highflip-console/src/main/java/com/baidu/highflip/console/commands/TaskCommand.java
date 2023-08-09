@@ -17,12 +17,13 @@ public class TaskCommand {
     @Autowired
     HighFlipClient client;
 
-    @ShellMethod(key = "task list", value = "List all task ids")
+    @ShellMethod(key = "task list", value = "List job all task ids")
     public Iterable<String> list(
+            @ShellOption String jobId,
             @ShellOption(defaultValue = "0") Integer offset,
             @ShellOption(defaultValue = "0") Integer limit) {
 
-        return client.listTasks(offset, limit);
+        return client.listTasks(jobId, offset, limit);
     }
 
     @ShellMethod(key = "task get", value = "Get a task information")
