@@ -50,7 +50,6 @@ public class FFateTask {
 
     public static Task convertToEntity(FFateTask data) {
         Task task = new Task();
-        task.setJobid(data.getF_job_id());
         task.setName(data.getF_component_name());
         task.setCreateTime(new DateTime(data.getF_create_time()));
         task.setUpdateTime(new DateTime(data.getF_update_time()));

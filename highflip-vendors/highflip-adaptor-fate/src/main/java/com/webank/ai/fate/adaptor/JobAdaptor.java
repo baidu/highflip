@@ -58,7 +58,7 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
     @Override
     public com.baidu.highflip.core.entity.runtime.Job updateJob(com.baidu.highflip.core.entity.runtime.Job job) {
 
-        String bindId = job.getBingingId();
+        String bindId = job.getJobId();
         final Iterable<Task> tasks =
                 getContext().getHighFlipRuntime().listTask(bindId);
         for (Task task : tasks) {
@@ -181,6 +181,8 @@ public class JobAdaptor implements com.baidu.highflip.core.adaptor.JobAdaptor {
         for (int i = 0; i < tasks.size(); i++) {
             Task queryTask = queryResult.get(i);
             Task ret = tasks.get(i);
+            // task bind job id in highflip
+            queryTask.setJobid(job.getJobId());
             queryTask.setTaskid(ret.getTaskid());
             BeanUtils.copyProperties(queryTask, ret);
         }

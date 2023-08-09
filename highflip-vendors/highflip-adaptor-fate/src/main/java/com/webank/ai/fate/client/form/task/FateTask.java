@@ -48,21 +48,13 @@ public class FateTask {
 
     public static Task convertToEntity(FateTask data) {
         Task task = new Task();
-//        task.setTaskid();
-        task.setJobid(data.getJob_id());
         task.setName(data.getComponent_name());
-//        task.setDescription();
         task.setCreateTime(new DateTime(data.getCreate_time()));
         task.setUpdateTime(new DateTime(data.getUpdate_time()));
         task.setFinishTime(new DateTime(data.getEnd_time()));
         task.setNodeName(data.getComponent_name());
         task.setStatus(data.getStatus());
-//        task.setMessage();
-//        task.setIsDeleted();
-//        task.setPrevious();
-//        task.setNext();
         task.setBingingId(data.getTask_id());
-//        task.setBinding();
         return task;
     }
 

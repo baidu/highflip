@@ -308,7 +308,7 @@ public class HighFlipRpcService extends HighFlipImplBase {
         log.info("job id: {}, job binging id: {}", job.getJobId(),
                  job.getBingingId());
         Iterator<Highflip.TaskListResponse> response = Streams
-                .stream(getEngine().listTask(job.getBingingId()))
+                .stream(getEngine().listTask(request.getJobId()))
                 .map(t -> Highflip.TaskListResponse
                         .newBuilder()
                         .setTaskId(t.getTaskid())
