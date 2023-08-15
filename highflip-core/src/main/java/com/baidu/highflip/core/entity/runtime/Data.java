@@ -68,7 +68,7 @@ public class Data {
     List<Long> dimension;
 
     @Type(type = "json")
-    @Column(name = "columns")
+    @Column(name = "columns", length = 10000)
     List<com.baidu.highflip.core.entity.runtime.basic.Column> columns = new LinkedList<>();
 
     @Column(name = "binding_id")
