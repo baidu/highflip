@@ -33,7 +33,7 @@ public class Platform {
 
     @Id
     @Column(name = "platform_id", length = 36)
-    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GenericGenerator(name = "id_gen", strategy = "com.baidu.highflip.core.utils.CustomUuidGenerator")
     @GeneratedValue(generator = "id_gen")
     String platformId;
 

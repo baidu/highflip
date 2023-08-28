@@ -3,6 +3,8 @@ package com.baidu.highflip.core.entity.dag;
 import com.baidu.highflip.core.entity.dag.codec.AttributeMap;
 import com.baidu.highflip.core.entity.dag.common.NamedAttributeObject;
 import com.baidu.highflip.core.utils.ProtoUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import highflip.HighflipMeta;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -96,7 +98,7 @@ public class Graph extends NamedAttributeObject implements Serializable {
         return getParties().keySet();
     }
 
-
+    @JsonIgnore
     protected void setNodeCategory() {
         calcMiddleNodes();
         calcOutputNodes();

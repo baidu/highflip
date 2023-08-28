@@ -2,15 +2,18 @@ package com.baidu.highflip.core.entity.dag.common;
 
 import lombok.Data;
 
-import javax.persistence.Transient;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 public class NamedAttributeObject implements Comparable<NamedAttributeObject> {
 
-    @Transient
+    @JsonIgnore
     List<NamedAttributeObject> parents = List.of();
 
     String name;

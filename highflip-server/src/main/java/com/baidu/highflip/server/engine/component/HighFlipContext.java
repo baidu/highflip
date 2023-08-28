@@ -5,6 +5,7 @@ import com.baidu.highflip.core.adaptor.JobAdaptor;
 import com.baidu.highflip.core.adaptor.OperatorAdaptor;
 import com.baidu.highflip.core.adaptor.PartnerAdaptor;
 import com.baidu.highflip.core.adaptor.PlatformAdaptor;
+import com.baidu.highflip.core.adaptor.ServiceAdaptor;
 import com.baidu.highflip.core.adaptor.TaskAdaptor;
 import com.baidu.highflip.core.adaptor.UserAdaptor;
 import com.baidu.highflip.core.common.InstanceNameList;
@@ -124,5 +125,10 @@ public class HighFlipContext {
     }
     public UserRepository getUserRepository() {
         return userReps;
+    }
+
+    // SERVICE
+    public ServiceAdaptor getServiceAdaptor() {
+        return getInstance(InstanceNameList.HIGHFLIP_ADAPTOR_SERVICE);
     }
 }

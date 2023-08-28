@@ -33,7 +33,7 @@ public class Data {
 
     @Id
     @Column(name = "data_id", length = 36)
-    @GenericGenerator(name = "id_gen", strategy = "uuid2")
+    @GenericGenerator(name = "id_gen", strategy = "com.baidu.highflip.core.utils.CustomUuidGenerator")
     @GeneratedValue(generator = "id_gen")
     String dataId;
 
@@ -68,7 +68,7 @@ public class Data {
     List<Long> dimension;
 
     @Type(type = "json")
-    @Column(name = "columns")
+    @Column(name = "columns", length = 10000)
     List<com.baidu.highflip.core.entity.runtime.basic.Column> columns = new LinkedList<>();
 
     @Column(name = "binding_id")

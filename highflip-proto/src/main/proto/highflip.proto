@@ -230,6 +230,8 @@ message TaskGetResponse{
     repeated string input_tasks = 9;
 
     repeated string output_tasks = 10;
+
+    repeated string output_data_ids = 11;
 }
 
 
@@ -558,7 +560,6 @@ message ConfigListResponse{
 
     string key = 1;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // SERVICE
