@@ -5,26 +5,38 @@ import com.baidu.highflip.core.common.InstanceNameList;
 import com.baidu.highflip.core.engine.HighFlipAdaptor;
 import com.baidu.highflip.core.engine.InstanceRegister;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.boot.loader.LaunchedURLClassLoader;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Properties;
-
 
 @Slf4j
 @Component
 public class AdaptorLoader {
-    private URLClassLoader loader;
+    private LaunchedURLClassLoader loader;
 
     private Properties props = new Properties();
 
     public void loadJar(URL url) throws IOException {
 
-        loader = new URLClassLoader(new URL[]{url});
+        loader = (LaunchedURLClassLoader) Thread.currentThread()
+                                                .getContextClassLoader();
+        try {
+            Method addURL =
+                    LaunchedURLClassLoader.class.getSuperclass()
+                                                .getDeclaredMethod("addURL",
+                                                                   new Class[] {URL.class});
+            addURL.setAccessible(true);
+            addURL.invoke(loader, new Object[] {url});
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         try (InputStream stream = loader
                 .getResourceAsStream(AdaptorPropsList.HIGHFLIP_PROPERTIES_FILE)) {
