@@ -14,28 +14,34 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Properties;
 
 @Slf4j
 @Component
 public class AdaptorLoader {
-    private LaunchedURLClassLoader loader;
+    private URLClassLoader loader;
 
     private Properties props = new Properties();
 
     public void loadJar(URL url) throws IOException {
 
-        loader = (LaunchedURLClassLoader) Thread.currentThread()
-                                                .getContextClassLoader();
-        try {
-            Method addURL =
-                    LaunchedURLClassLoader.class.getSuperclass()
-                                                .getDeclaredMethod("addURL",
-                                                                   new Class[] {URL.class});
-            addURL.setAccessible(true);
-            addURL.invoke(loader, new Object[] {url});
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (Thread.currentThread()
+                  .getContextClassLoader() instanceof LaunchedURLClassLoader) {
+            loader = (LaunchedURLClassLoader) Thread.currentThread()
+                                                    .getContextClassLoader();
+            try {
+                Method addURL =
+                        LaunchedURLClassLoader.class.getSuperclass()
+                                                    .getDeclaredMethod("addURL",
+                                                                       new Class[] {URL.class});
+                addURL.setAccessible(true);
+                addURL.invoke(loader, new Object[] {url});
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            loader = new URLClassLoader(new URL[] {url});
         }
 
         try (InputStream stream = loader
