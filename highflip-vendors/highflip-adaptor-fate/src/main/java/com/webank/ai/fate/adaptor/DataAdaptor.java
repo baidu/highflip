@@ -1,7 +1,5 @@
 package com.webank.ai.fate.adaptor;
 
-import static com.webank.ai.fate.common.FateConstants.DATA_ID_SEPARATOR;
-
 import com.baidu.highflip.core.entity.runtime.Data;
 import com.baidu.highflip.core.entity.runtime.basic.DataCategory;
 import com.baidu.highflip.core.entity.runtime.basic.KeyPair;
@@ -14,14 +12,17 @@ import feign.Response;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -82,9 +83,17 @@ public class DataAdaptor implements com.baidu.highflip.core.adaptor.DataAdaptor 
             try (Response response = getContext().getClient()
                                                  .downloadComponentResultData(jobId, componentName,
                                                                               role, partyId)) {
-                String content = DecompressUtils.decompressTarGzToStringMap(
-                        response.body().asInputStream(),
-                        s -> s.contains("csv")).get("data.csv");
+                final Map<String, String> res =
+                        DecompressUtils.decompressTarGzToStringMap(
+                                response.body().asInputStream(),
+                                s -> s.contains("csv"));
+                if (res == null) {
+                    return new ArrayList<List<Object>>().iterator();
+                }
+                String content = res.get("data.csv");
+                if (StringUtils.isEmpty(content)) {
+                    return new ArrayList<List<Object>>().iterator();
+                }
                 return Arrays.stream(content.split("\n"))
                              .map(s -> Arrays.stream(s.split(DEFAULT_DELIMITER))
                                              .map(d -> (Object) d)
